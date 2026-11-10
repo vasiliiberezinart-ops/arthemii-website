@@ -1303,6 +1303,8 @@
         .section__chevron svg { width: 22px; height: 22px; display: block; }
         .section.is-open .section__chevron { transform: rotate(180deg); }
         .section__toggle:hover .section__chevron { color: var(--text); }
+        /* Section descriptions show only when the section is open */
+        .section.is-collapsible:not(.is-open) .section__toggle .section__desc { display: none; }
         .section__body {
             display: grid;
             grid-template-rows: 0fr;
@@ -2538,9 +2540,9 @@
             });
         });
 
-        /* ===== COLLAPSIBLE SECTIONS (all homepage sections except About and Technologies) ===== */
+        /* ===== COLLAPSIBLE SECTIONS (all homepage sections) ===== */
         (function () {
-            const KEEP_OPEN = ['about', 'technologies'];
+            const KEEP_OPEN = [];  // add a section id here to keep it always open
             const REVEAL = '.reveal, .video-card, .work-card, .philosophy-card, .exhibition-block, .tech-block';
             const sections = Array.from(document.querySelectorAll('main > section.section[id]'))
                 .filter(function (s) { return KEEP_OPEN.indexOf(s.id) === -1; });
