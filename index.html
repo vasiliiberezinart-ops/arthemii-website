@@ -1176,6 +1176,8 @@
             overflow: hidden;
             background: #000;
             aspect-ratio: 16/9;
+            width: 100%;
+            align-self: start;
         }
         .workspace__video video {
             width: 100%;
@@ -1190,11 +1192,26 @@
             gap: var(--spacing-md);
         }
         .workspace__photo {
+            position: relative;
             border-radius: var(--radius-md);
             overflow: hidden;
             background: var(--bg-alt);
             min-height: 0;
             cursor: zoom-in;
+        }
+        /* Photos fill their cells without dictating the row height (the video sets it) */
+        .workspace__photo > img,
+        .workspace__photo > picture {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .workspace__photo > picture img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
         }
         .workspace__photo img {
             width: 100%;
