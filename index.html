@@ -531,6 +531,14 @@
             object-position: 50% 65%;
             border-radius: var(--radius-md);
             background: #111;
+            pointer-events: none;
+        }
+        /* Hide the native "play" overlay iOS shows when it blocks autoplay */
+        .hero__video::-webkit-media-controls,
+        .hero__video::-webkit-media-controls-start-playback-button,
+        .hero__video::-webkit-media-controls-overlay-play-button {
+            display: none !important;
+            -webkit-appearance: none;
         }
         @media (max-width: 1024px) {
             .hero__image--video { aspect-ratio: 4/5; }
@@ -1855,9 +1863,7 @@
                 </div>
             </div>
             <div class="hero__image hero__image--video">
-                <video class="hero__video" autoplay muted loop playsinline preload="auto" poster="video-posters/kinetic2.jpg" aria-label="Kinetic glass sculpture by Arthemii Ionaere">
-                    <source src="video-files/kinetic2.mp4" type="video/mp4">
-                </video>
+                <video class="hero__video" src="video-files/kinetic2.mp4" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback x-webkit-airplay="deny" preload="auto" poster="video-posters/kinetic2.jpg" aria-label="Kinetic glass sculpture by Arthemii Ionaere"></video>
                 <div class="hero__image-caption">Kinetic Fresnel lens prism — 2026</div>
             </div>
         </section>
@@ -2769,14 +2775,45 @@
             });
         }
 
-        /* ===== HERO VIDEO: make sure it autoplays (muted, looped) ===== */
+        /* ===== HERO VIDEO: make sure it autoplays (muted, looped) on desktop and mobile ===== */
         (function () {
             const hv = document.querySelector('.hero__video');
             if (!hv) return;
+            // Mobile browsers only autoplay videos that are muted and inline
             hv.muted = true;
-            const tryPlay = function () { const p = hv.play(); if (p && p.catch) p.catch(function () {}); };
-            if (hv.readyState >= 2) tryPlay(); else hv.addEventListener('canplay', tryPlay, { once: true });
-            document.addEventListener('visibilitychange', function () { if (!document.hidden && hv.paused) tryPlay(); });
+            hv.defaultMuted = true;
+            hv.setAttribute('muted', '');
+            hv.playsInline = true;
+
+            function tryPlay() {
+                if (!hv.paused) return;
+                const p = hv.play();
+                if (p && p.catch) p.catch(function () {});
+            }
+
+            tryPlay();
+            ['loadedmetadata', 'loadeddata', 'canplay'].forEach(function (ev) { hv.addEventListener(ev, tryPlay); });
+            window.addEventListener('pageshow', tryPlay);
+            document.addEventListener('visibilitychange', function () { if (!document.hidden) tryPlay(); });
+
+            // Play whenever it comes into view (some phones pause it off-screen)
+            if ('IntersectionObserver' in window) {
+                new IntersectionObserver(function (entries) {
+                    entries.forEach(function (e) { if (e.isIntersecting) tryPlay(); });
+                }, { threshold: 0.1 }).observe(hv);
+            }
+
+            // iPhone in Low Power Mode or with "Auto-Play Video Previews" off blocks autoplay:
+            // start it on the visitor's first touch, tap or key press anywhere on the page.
+            const unlock = function () {
+                tryPlay();
+                if (!hv.paused) ['touchstart', 'touchend', 'click', 'keydown'].forEach(function (ev) {
+                    document.removeEventListener(ev, unlock, true);
+                });
+            };
+            ['touchstart', 'touchend', 'click', 'keydown'].forEach(function (ev) {
+                document.addEventListener(ev, unlock, { capture: true, passive: true });
+            });
         })();
 
         /* ========== AUTOPLAY VIDEOS ON SCROLL ========== */
