@@ -1259,6 +1259,68 @@
             .workspace__photos { grid-template-columns: 1fr; }
         }
 
+        /* ========== COLLAPSIBLE SECTIONS ========== */
+        .section.is-collapsible {
+            padding: var(--spacing-xl) 0;
+            transition: padding 0.5s var(--ease-out-expo);
+        }
+        .section.is-collapsible.is-open { padding: var(--spacing-3xl) 0; }
+        @media (max-width: 768px) {
+            .section.is-collapsible { padding: var(--spacing-lg) 0; }
+            .section.is-collapsible.is-open { padding: var(--spacing-xl) 0; }
+        }
+        .section__toggle {
+            position: relative;
+            max-width: none;
+            margin-bottom: 0;
+            padding-right: 3.75rem;
+            cursor: pointer;
+            -webkit-user-select: none;
+            user-select: none;
+            transition: margin-bottom 0.5s var(--ease-out-expo);
+        }
+        .section__toggle > *:not(.section__chevron) { max-width: 700px; }
+        .section__toggle.section__header--center { padding-left: 3.75rem; }
+        .section__toggle.section__header--center > *:not(.section__chevron) { margin-left: auto; margin-right: auto; }
+        .section.is-open > .container > .section__toggle { margin-bottom: var(--spacing-2xl); }
+        .section__toggle:focus-visible { outline: 2px solid var(--text); outline-offset: 8px; border-radius: 4px; }
+        .section__chevron {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            width: 2.5rem;
+            height: 2.5rem;
+            margin-top: -1.25rem;
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            transition: border-color 0.3s ease;
+        }
+        .section__chevron::before,
+        .section__chevron::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 12px;
+            height: 1.5px;
+            background: var(--text);
+            transform: translate(-50%, -50%);
+            transition: transform 0.4s var(--ease-out-expo);
+        }
+        .section__chevron::after { transform: translate(-50%, -50%) rotate(90deg); }
+        .section.is-open .section__chevron::after { transform: translate(-50%, -50%) rotate(0deg); }
+        .section__toggle:hover .section__chevron { border-color: var(--text); }
+        .section__body {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.6s var(--ease-out-expo);
+        }
+        .section.is-open > .container > .section__body { grid-template-rows: 1fr; }
+        .section__body-inner { overflow: hidden; min-height: 0; }
+        .section.is-open.is-settled .section__body-inner { overflow: visible; }
+        .has-synthetic-header .residency-banner__body > .section__label,
+        .has-synthetic-header .residency-banner__title { display: none; }
+
         /* ========== LIGHTBOX ========== */
         .lightbox {
             position: fixed;
@@ -2478,6 +2540,92 @@
                 }
             });
         });
+
+        /* ===== COLLAPSIBLE SECTIONS (all homepage sections except About and Technologies) ===== */
+        (function () {
+            const KEEP_OPEN = ['about', 'technologies'];
+            const REVEAL = '.reveal, .video-card, .work-card, .philosophy-card, .exhibition-block, .tech-block';
+            const sections = Array.from(document.querySelectorAll('main > section.section[id]'))
+                .filter(function (s) { return KEEP_OPEN.indexOf(s.id) === -1; });
+
+            sections.forEach(function (section) {
+                const container = section.querySelector(':scope > .container') || section;
+                let header = container.querySelector(':scope > .section__header');
+                if (!header) {
+                    // Sections without a header (e.g. Residency): build one from their label and title
+                    const label = section.querySelector('.section__label');
+                    if (!label) return;
+                    const title = section.querySelector('.residency-banner__title, h2, h3');
+                    header = document.createElement('header');
+                    header.className = 'section__header';
+                    header.appendChild(label.cloneNode(true));
+                    if (title) {
+                        const h = document.createElement('h2');
+                        h.className = 'section__title';
+                        h.textContent = title.textContent;
+                        header.appendChild(h);
+                    }
+                    container.insertBefore(header, container.firstChild);
+                    section.classList.add('has-synthetic-header');
+                }
+
+                const body = document.createElement('div');
+                body.className = 'section__body';
+                body.id = section.id + '-content';
+                const inner = document.createElement('div');
+                inner.className = 'section__body-inner';
+                body.appendChild(inner);
+                while (header.nextSibling) inner.appendChild(header.nextSibling);
+                container.appendChild(body);
+
+                const chevron = document.createElement('span');
+                chevron.className = 'section__chevron';
+                chevron.setAttribute('aria-hidden', 'true');
+                header.appendChild(chevron);
+                header.classList.add('section__toggle');
+                header.setAttribute('role', 'button');
+                header.setAttribute('tabindex', '0');
+                header.setAttribute('aria-controls', body.id);
+                section.classList.add('is-collapsible');
+
+                let settleTimer = null;
+                function setOpen(open) {
+                    clearTimeout(settleTimer);
+                    section.classList.toggle('is-open', open);
+                    section.classList.remove('is-settled');
+                    header.setAttribute('aria-expanded', open ? 'true' : 'false');
+                    inner.inert = !open;
+                    if (open) {
+                        inner.querySelectorAll(REVEAL).forEach(function (el) { el.classList.add('is-visible'); });
+                        settleTimer = setTimeout(function () { section.classList.add('is-settled'); }, 650);
+                    }
+                }
+                section._setOpen = setOpen;
+                setOpen(false);
+
+                header.addEventListener('click', function () { setOpen(!section.classList.contains('is-open')); });
+                header.addEventListener('keydown', function (e) {
+                    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setOpen(!section.classList.contains('is-open')); }
+                });
+            });
+
+            // Open the section that contains a linked target (#hash links or a URL with a hash)
+            function openFor(target) {
+                const section = target && target.closest ? target.closest('section.is-collapsible') : null;
+                if (section && !section.classList.contains('is-open')) section._setOpen(true);
+            }
+            document.addEventListener('click', function (e) {
+                const a = e.target.closest && e.target.closest('a[href^="#"]');
+                if (!a || a.getAttribute('href') === '#') return;
+                try { openFor(document.querySelector(a.getAttribute('href'))); } catch (err) {}
+            }, true);
+            function openFromHash() {
+                if (!location.hash) return;
+                try { openFor(document.querySelector(location.hash)); } catch (err) {}
+            }
+            window.addEventListener('hashchange', openFromHash);
+            openFromHash();
+        })();
 
         /* ===== SCROLL REVEAL (IntersectionObserver) ===== */
         const revealObserver = new IntersectionObserver((entries) => {
