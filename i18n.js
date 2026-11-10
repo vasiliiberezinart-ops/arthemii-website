@@ -13,6 +13,10 @@
 
   var LANGS = ['en', 'de', 'es'];
   var T = {
+    "Sending…": ["Wird gesendet…", "Enviando…"],
+    "Please fill in your name, email and message.": ["Bitte geben Sie Ihren Namen, Ihre E-Mail-Adresse und Ihre Nachricht ein.", "Por favor, introduce tu nombre, tu correo electrónico y tu mensaje."],
+    "Please enter a valid email address.": ["Bitte geben Sie eine gültige E-Mail-Adresse ein.", "Por favor, introduce una dirección de correo electrónico válida."],
+    "Sorry, the message could not be sent. Please try again later or write to info@arthemii.com.": ["Die Nachricht konnte leider nicht gesendet werden. Bitte versuchen Sie es später erneut oder schreiben Sie an info@arthemii.com.", "Lo sentimos, no se pudo enviar el mensaje. Inténtalo de nuevo más tarde o escribe a info@arthemii.com."],
     "About": ["Über mich", "Acerca de"],
     "Exhibitions": ["Ausstellungen", "Exposiciones"],
     "Technologies": ["Techniken", "Tecnologías"],
@@ -395,7 +399,7 @@
   function skipNode(node) {
     var el = node.parentNode;
     while (el && el.nodeType === 1) {
-      if (SKIP[el.tagName] || el.hasAttribute('data-no-i18n') || el.getAttribute('translate') === 'no') return true;
+      if (SKIP[el.tagName] || el.hasAttribute('data-no-i18n')) return true;
       el = el.parentNode;
     }
     return false;
@@ -448,10 +452,28 @@
     });
   }
 
+  // Keep browser auto-translate (e.g. Chrome's) away from the switcher and,
+  // once a visitor has picked German or Spanish, from the page itself.
+  function protectSwitcher() {
+    document.querySelectorAll('.header__lang').forEach(function (el) {
+      el.setAttribute('translate', 'no');
+      el.classList.add('notranslate');
+    });
+  }
+
   function setLang(lang) {
     if (LANGS.indexOf(lang) === -1) lang = 'en';
     current = lang;
-    document.documentElement.lang = lang;
+    var html = document.documentElement;
+    html.lang = lang;
+    if (lang === 'en') {
+      html.removeAttribute('translate');
+      html.classList.remove('notranslate');
+    } else {
+      html.setAttribute('translate', 'no');
+      html.classList.add('notranslate');
+    }
+    protectSwitcher();
     walk(document.body);
     applyTitle();
     updateButtons();
