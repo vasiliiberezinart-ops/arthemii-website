@@ -395,7 +395,7 @@
   function skipNode(node) {
     var el = node.parentNode;
     while (el && el.nodeType === 1) {
-      if (SKIP[el.tagName] || el.hasAttribute('data-no-i18n') || el.getAttribute('translate') === 'no') return true;
+      if (SKIP[el.tagName] || el.hasAttribute('data-no-i18n')) return true;
       el = el.parentNode;
     }
     return false;
@@ -448,10 +448,28 @@
     });
   }
 
+  // Keep browser auto-translate (e.g. Chrome's) away from the switcher and,
+  // once a visitor has picked German or Spanish, from the page itself.
+  function protectSwitcher() {
+    document.querySelectorAll('.header__lang').forEach(function (el) {
+      el.setAttribute('translate', 'no');
+      el.classList.add('notranslate');
+    });
+  }
+
   function setLang(lang) {
     if (LANGS.indexOf(lang) === -1) lang = 'en';
     current = lang;
-    document.documentElement.lang = lang;
+    var html = document.documentElement;
+    html.lang = lang;
+    if (lang === 'en') {
+      html.removeAttribute('translate');
+      html.classList.remove('notranslate');
+    } else {
+      html.setAttribute('translate', 'no');
+      html.classList.add('notranslate');
+    }
+    protectSwitcher();
     walk(document.body);
     applyTitle();
     updateButtons();
