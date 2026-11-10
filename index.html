@@ -2465,35 +2465,6 @@
             if (nextBtn) nextBtn.addEventListener('click', function(e) { e.stopPropagation(); show(index + 1); });
         });
 
-        /* ===== CONTACT FORM ===== */
-        const contactForm = document.getElementById('contactForm');
-
-        if (contactForm) {
-            contactForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-
-                const name = this.querySelector('#name').value.trim();
-                const email = this.querySelector('#email').value.trim();
-                const message = this.querySelector('#message').value.trim();
-
-                if (!name || !email || !message) {
-                    return;
-                }
-
-                const submitBtn = this.querySelector('.contact-form__submit');
-                const originalText = submitBtn.textContent;
-                submitBtn.disabled = true;
-                submitBtn.textContent = '...';
-
-                setTimeout(() => {
-                    alert(window.I18N ? I18N.t('Thank you! I will get back to you soon.') : 'Thank you! I will get back to you soon.');
-                    this.reset();
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = originalText;
-                }, 1200);
-            });
-        }
-
         /* ===== ACTIVE NAV HIGHLIGHT ===== */
         const sections = document.querySelectorAll('section[id]');
 
@@ -2616,5 +2587,6 @@
         })();
     </script>
     <script src="i18n.js"></script>
+    <script src="contact.js"></script>
 </body>
 </html>
