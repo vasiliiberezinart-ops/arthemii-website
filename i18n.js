@@ -14,6 +14,7 @@
   var LANGS = ['en', 'de', 'es', 'fr', 'ru'];
   var IDX = { de: 0, es: 1, fr: 2, ru: 3 };
   var T = {
+    "Kinetic Fresnel lens prism \u2014 2026": ["Kinetisches Fresnel-Linsen-Prisma — 2026", "Prisma cinético con lente de Fresnel — 2026", "Prisme cinétique à lentille de Fresnel — 2026", "Кинетическая призма с линзой Френеля — 2026"],
     "Sending…": ["Wird gesendet…", "Enviando…", "Envoi en cours…", "Отправка…"],
     "Please fill in your name, email and message.": ["Bitte geben Sie Ihren Namen, Ihre E-Mail-Adresse und Ihre Nachricht ein.", "Por favor, introduce tu nombre, tu correo electrónico y tu mensaje.", "Veuillez indiquer votre nom, votre e-mail et votre message.", "Пожалуйста, укажите имя, e-mail и сообщение."],
     "Please enter a valid email address.": ["Bitte geben Sie eine gültige E-Mail-Adresse ein.", "Por favor, introduce una dirección de correo electrónico válida.", "Veuillez saisir une adresse e-mail valide.", "Пожалуйста, введите корректный адрес e-mail."],
