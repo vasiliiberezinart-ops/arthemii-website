@@ -1273,43 +1273,36 @@
             position: relative;
             max-width: none;
             margin-bottom: 0;
-            padding-right: 3.75rem;
             cursor: pointer;
             -webkit-user-select: none;
             user-select: none;
             transition: margin-bottom 0.5s var(--ease-out-expo);
         }
-        .section__toggle > *:not(.section__chevron) { max-width: 700px; }
-        .section__toggle.section__header--center { padding-left: 3.75rem; }
-        .section__toggle.section__header--center > *:not(.section__chevron) { margin-left: auto; margin-right: auto; }
+        .section__toggle > * { max-width: 700px; }
+        .section__toggle.section__header--center > * { margin-left: auto; margin-right: auto; }
         .section.is-open > .container > .section__toggle { margin-bottom: var(--spacing-2xl); }
         .section__toggle:focus-visible { outline: 2px solid var(--text); outline-offset: 8px; border-radius: 4px; }
+        .section__label-row {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: var(--spacing-md);
+        }
+        .section__header--center .section__label-row { justify-content: center; }
+        .section__label-row .section__label { margin-bottom: 0; }
         .section__chevron {
-            position: absolute;
-            right: 0;
-            top: 50%;
-            width: 2.5rem;
-            height: 2.5rem;
-            margin-top: -1.25rem;
-            border: 1px solid var(--border);
-            border-radius: 50%;
-            transition: border-color 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2rem;
+            height: 2rem;
+            flex-shrink: 0;
+            color: var(--text-secondary);
+            transition: transform 0.45s var(--ease-out-expo), color 0.3s ease;
         }
-        .section__chevron::before,
-        .section__chevron::after {
-            content: '';
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            width: 12px;
-            height: 1.5px;
-            background: var(--text);
-            transform: translate(-50%, -50%);
-            transition: transform 0.4s var(--ease-out-expo);
-        }
-        .section__chevron::after { transform: translate(-50%, -50%) rotate(90deg); }
-        .section.is-open .section__chevron::after { transform: translate(-50%, -50%) rotate(0deg); }
-        .section__toggle:hover .section__chevron { border-color: var(--text); }
+        .section__chevron svg { width: 22px; height: 22px; display: block; }
+        .section.is-open .section__chevron { transform: rotate(180deg); }
+        .section__toggle:hover .section__chevron { color: var(--text); }
         .section__body {
             display: grid;
             grid-template-rows: 0fr;
@@ -2581,7 +2574,18 @@
                 const chevron = document.createElement('span');
                 chevron.className = 'section__chevron';
                 chevron.setAttribute('aria-hidden', 'true');
-                header.appendChild(chevron);
+                chevron.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>';
+                const sectionLabel = header.querySelector(':scope > .section__label');
+                if (sectionLabel) {
+                    // Arrow sits right after the section name
+                    const row = document.createElement('div');
+                    row.className = 'section__label-row';
+                    header.insertBefore(row, sectionLabel);
+                    row.appendChild(sectionLabel);
+                    row.appendChild(chevron);
+                } else {
+                    header.appendChild(chevron);
+                }
                 header.classList.add('section__toggle');
                 header.setAttribute('role', 'button');
                 header.setAttribute('tabindex', '0');
