@@ -1431,3 +1431,12 @@
         ::-webkit-scrollbar-track { background: var(--bg); }
         ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
+        /* Header with language switcher: keep links on one line and switch to the menu earlier */
+        .header__link { white-space: nowrap; }
+        @media (max-width: 1180px) {
+            .header__nav { gap: var(--spacing-md); }
+        }
+        @media (max-width: 1024px) {
+            .header__nav { display: none; }
+            .header__menu-btn { display: block; }
+        }

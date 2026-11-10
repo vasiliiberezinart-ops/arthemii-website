@@ -56,6 +56,11 @@
             <a href="../gallery/" class="header__link">Gallery</a>
             <a href="../videos/" class="header__link">Videos</a>
             <a href="../contact/" class="header__link">Contact</a>
+            <div class="header__lang" role="group" aria-label="Language">
+                <button type="button" class="header__lang-btn is-active" data-lang="en" aria-label="English">EN</button>
+                <button type="button" class="header__lang-btn" data-lang="de" aria-label="Deutsch">DE</button>
+                <button type="button" class="header__lang-btn" data-lang="es" aria-label="Español">ES</button>
+            </div>
         </nav>
         <button class="header__menu-btn" id="menuBtn" aria-label="Menu"><span></span><span></span></button>
     </header>
@@ -68,6 +73,11 @@
         <a href="../gallery/" class="mobile-nav__link">Gallery</a>
         <a href="../videos/" class="mobile-nav__link">Videos</a>
         <a href="../contact/" class="mobile-nav__link">Contact</a>
+        <div class="header__lang" role="group" aria-label="Language">
+            <button type="button" class="header__lang-btn is-active" data-lang="en" aria-label="English">EN</button>
+            <button type="button" class="header__lang-btn" data-lang="de" aria-label="Deutsch">DE</button>
+            <button type="button" class="header__lang-btn" data-lang="es" aria-label="Español">ES</button>
+        </div>
     </div>
     <main style="padding-top:calc(72px + 2rem)">
 <!-- ========== CONTACT ========== -->
@@ -151,5 +161,6 @@
         c.onmouseleave=function(){v.pause();v.currentTime=0};
     })(vcs[i])};
     </script>
+    <script src="../i18n.js"></script>
 </body>
 </html>
