@@ -19,6 +19,26 @@
         .hero__eyebrow, .hero__title, .hero__subtitle, .hero__desc, .hero__actions, .hero__image {
             opacity: 1 !important; transform: none !important; animation: none !important;
         }
+        /* ===== About page: wide portrait with glass ===== */
+        .about-banner {
+            margin: 0 0 var(--spacing-xl);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            background: #fff;
+            box-shadow: 0 30px 60px -40px rgba(0,0,0,0.35);
+        }
+        .about-banner picture, .about-banner img {
+            display: block;
+            width: 100%;
+            height: auto;
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
+        }
+        @media (max-width: 768px) {
+            .about-banner { margin-bottom: var(--spacing-lg); border-radius: var(--radius-sm); }
+            /* phones: a taller crop that keeps the face and the glass */
+            .about-banner img { aspect-ratio: 4 / 3; object-position: 58% 35%; }
+        }
     </style>
 </head>
 <body>
@@ -67,6 +87,10 @@
                     <div class="section__label" data-i18n="about_label">About</div>
                     <h2 class="section__title" data-i18n="about_title">Establishing a new architectural language within the bionic style, realized through the glass industry.</h2>
                 </header>
+
+                <figure class="about-banner reveal">
+                    <picture><source type="image/webp" srcset="../img/opt/about-arthemii-glass-800.webp 800w, ../img/opt/about-arthemii-glass-1600.webp 1600w, ../img/opt/about-arthemii-glass-2048.webp 2048w" sizes="(max-width: 1280px) 100vw, 1240px"><img src="../img/opt/about-arthemii-glass-1600.jpg" alt="Arthemii Ionaere beside an iridescent glass sculpture" width="1600" height="900" decoding="async" fetchpriority="high"></picture>
+                </figure>
 
                 <div class="about-grid">
                     <div class="about-text reveal">
