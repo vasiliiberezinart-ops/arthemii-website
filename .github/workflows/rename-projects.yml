@@ -1,0 +1,39 @@
+name: One-off - rename Technologies to Projects
+
+on:
+  push:
+    branches: [rename-technologies-projects]
+    paths: ['.github/workflows/rename-projects.yml']
+
+jobs:
+  rename:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Rename visible "Technologies" labels to "Projects"
+        run: |
+          files=$(grep -rl --include=*.html -e '>Technologies<' -e '<title>Technologies —' . || true)
+          sed -i 's/>Technologies</>Projects</g; s/<title>Technologies —/<title>Projects —/' $files
+          sed -i 's/data-i18n="nav_technologies"/data-i18n="nav_projects"/' index.html
+          python3 - <<'PYEOF'
+          p = 'i18n.js'
+          s = open(p, encoding='utf-8').read()
+          a = '"Technologies": ["Techniken", "Tecnologías", "Techniques", "Техники"],'
+          b = '"Technologies — Arthemii Ionaere": ["Techniken — Arthemii Ionaere", "Tecnologías — Arthemii Ionaere", "Techniques — Arthemii Ionaere", "Техники — Arthemii Ionaere"],'
+          assert a in s and b in s
+          s = s.replace(a, '"Projects": ["Projekte", "Proyectos", "Projets", "Проекты"],')
+          s = s.replace(b, '"Projects — Arthemii Ionaere": ["Projekte — Arthemii Ionaere", "Proyectos — Arthemii Ionaere", "Projets — Arthemii Ionaere", "Проекты — Arthemii Ionaere"],')
+          open(p, 'w', encoding='utf-8').write(s)
+          PYEOF
+
+      - name: Commit and remove this one-off workflow
+        run: |
+          git rm -q .github/workflows/rename-projects.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Rename Technologies to Projects in nav, footer and section titles"
+          git push
