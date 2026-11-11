@@ -183,6 +183,7 @@
     "Ethereal Structures": ["Ätherische Strukturen", "Estructuras etéreas", "Structures éthérées", "Эфирные структуры"],
     "AI Architecture": ["KI-Architektur", "Arquitectura IA", "Architecture IA", "ИИ-архитектура"],
     "Moving studies of bionic buildings and sculptures in real landscapes and cities, generated with AI.": ["Bewegte Studien bionischer Gebäude und Skulpturen in realen Landschaften und Städten, mit KI generiert.", "Estudios en movimiento de edificios y esculturas biónicas en paisajes y ciudades reales, generados con IA.", "Études animées de bâtiments et de sculptures bioniques dans des paysages et des villes réels, générées par IA.", "Видеоэтюды бионических зданий и скульптур в реальных пейзажах и городах, созданные с помощью ИИ."],
+    "AI Content Video": ["KI-Content-Video", "Vídeo de contenido IA", "Vidéo de contenu IA", "Видео ИИ-контента"],
     "Studio Fragment": ["Atelierfragment", "Fragmento del estudio", "Fragment d’atelier", "Фрагмент мастерской"],
     "Behind the scenes in the studio — 2025": ["Hinter den Kulissen im Atelier — 2025", "Entre bastidores en el estudio — 2025", "Dans les coulisses de l’atelier — 2025", "За кулисами мастерской — 2025"],
     "Amber Reflections": ["Bernsteinreflexe", "Reflejos ámbar", "Reflets d’ambre", "Янтарные отражения"],
