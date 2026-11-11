@@ -8,6 +8,7 @@
  *
  * YouTube cards (.yt-placeholder) play their local copy from video-files/;
  * if that file is missing the YouTube player is used instead.
+ * Instagram cards (.video-card__embed[data-ig="reel/CODE"]) play in the Instagram player.
  */
 (function () {
   'use strict';
@@ -29,6 +30,7 @@
     '.vlightbox__video,.vlightbox__frame{max-width:100%;max-height:100%;display:block;background:#000;border:0;outline:none}' +
     '.vlightbox__video{width:auto;height:auto}' +
     '.vlightbox__frame{width:min(100%,calc((100vh - 10rem) * 16 / 9));aspect-ratio:16/9;height:auto}' +
+    '.vlightbox__frame--ig{aspect-ratio:auto;width:min(100%,calc((100vh - 8rem) * .5625 + 2px),540px);height:100%;max-height:100%;background:#fff;border-radius:8px}' +
     '.vlightbox.is-loading .vlightbox__video{opacity:.4}' +
     '.vlightbox__caption{position:absolute;left:50%;bottom:clamp(.9rem,2.2vw,1.4rem);transform:translateX(-50%);max-width:min(70vw,640px);' +
       'text-align:center;color:#fff;line-height:1.35;pointer-events:none}' +
@@ -114,7 +116,14 @@
   function abs(u) { try { return new URL(u, location.href).href; } catch (e) { return u; } }
 
   function infoFor(card) {
-    var info = { src: '', poster: '', yt: '' };
+    var info = { src: '', poster: '', yt: '', ig: '' };
+    var igEl = card.querySelector('[data-ig]');
+    if (igEl) {
+      info.ig = igEl.getAttribute('data-ig');
+      var pi = igEl.querySelector('img');
+      if (pi) info.poster = abs(pi.getAttribute('src') || pi.getAttribute('data-src') || '');
+      return info;
+    }
     var v = card.querySelector('.video-card__embed video');
     if (v) {
       var s = v.querySelector('source');
@@ -164,6 +173,20 @@
     lb.classList.remove('is-loading');
   }
 
+  function playInstagram(path) {
+    clearStage();
+    var f = document.createElement('iframe');
+    f.className = 'vlightbox__frame vlightbox__frame--ig';
+    f.src = 'https://www.instagram.com/' + path.split('/').map(encodeURIComponent).join('/') + '/embed/';
+    f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+    f.allowFullscreen = true;
+    f.setAttribute('scrolling', 'no');
+    f.title = 'Instagram video';
+    stage.appendChild(f);
+    player = f;
+    lb.classList.remove('is-loading');
+  }
+
   function playFile(info) {
     clearStage();
     var v = document.createElement('video');
@@ -198,7 +221,8 @@
     metaEl.textContent = (group.length > 1 ? (index + 1) + ' / ' + group.length : '') +
       (text(card, '.video-card__desc') ? (group.length > 1 ? '  ·  ' : '') + text(card, '.video-card__desc') : '');
     lb.classList.add('is-loading');
-    if (info.src) playFile(info);
+    if (info.ig) playInstagram(info.ig);
+    else if (info.src) playFile(info);
     else if (info.yt) playYouTube(info.yt);
     else lb.classList.remove('is-loading');
   }
@@ -217,7 +241,7 @@
   function open(card) {
     var grid = card.closest('.video-grid');
     group = grid ? Array.prototype.slice.call(grid.querySelectorAll('.video-card')) : [card];
-    group = group.filter(function (c) { return infoFor(c).src || infoFor(c).yt; });
+    group = group.filter(function (c) { var i = infoFor(c); return i.src || i.yt || i.ig; });
     if (group.indexOf(card) < 0) group = [card];
     lb.classList.toggle('is-single', group.length < 2);
     lastFocus = document.activeElement;
