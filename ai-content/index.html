@@ -51,6 +51,16 @@
         .renders__photos { margin-bottom: var(--spacing-lg); }
         .renders__poster { width: 100%; height: 100%; object-fit: cover; display: block; background: var(--bg-alt); }
         .renders__videos .video-card__embed { background: #111; }
+        .ai-arch { margin-top: var(--spacing-2xl); }
+        .ai-arch__header { margin-bottom: var(--spacing-md); max-width: 640px; }
+        .ai-arch__title { font-family: var(--font-serif); font-size: clamp(1.375rem, 2.6vw, 1.75rem); font-weight: 400; margin-bottom: var(--spacing-xs); }
+        .ai-arch__desc { color: var(--text-secondary); font-size: 0.9375rem; line-height: 1.7; }
+        .ai-arch__videos video { width: 100%; height: 100%; object-fit: cover; display: block; background: #111; }
+        /* 14 videos: the first one spans two columns so the 3-column grid ends without a gap */
+        .ai-arch__videos > .video-card:first-child { grid-column: span 2; }
+        .ai-arch__videos > .video-card:first-child .video-card__embed { aspect-ratio: auto; height: 100%; }
+        .ai-arch__videos > .video-card:first-child video { position: absolute; inset: 0; }
+        @media (max-width: 768px) { .ai-arch__videos > .video-card:first-child { grid-column: auto; } .ai-arch__videos > .video-card:first-child .video-card__embed { aspect-ratio: 16/10; height: auto; } }
         .renders__sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
     </style>
 </head>
@@ -140,16 +150,6 @@
                         </div>
                     </article>
                     <article class="video-card">
-                        <div class="video-card__embed" data-ig="reel/DQzl3XvDPRf">
-                            <img class="renders__poster" src="../img/renders/DQzl3XvDPRf-poster.jpg" alt="Video render by Arthemii Ionaere" loading="lazy" decoding="async">
-                        </div>
-                    </article>
-                    <article class="video-card">
-                        <div class="video-card__embed" data-ig="reel/DQzlq6wDKvK">
-                            <img class="renders__poster" src="../img/renders/DQzlq6wDKvK-poster.jpg" alt="Video render by Arthemii Ionaere" loading="lazy" decoding="async">
-                        </div>
-                    </article>
-                    <article class="video-card">
                         <div class="video-card__embed" data-ig="reel/DQzlbliDL78">
                             <img class="renders__poster" src="../img/renders/DQzlbliDL78-poster.jpg" alt="Video render by Arthemii Ionaere" loading="lazy" decoding="async">
                         </div>
@@ -186,14 +186,6 @@
                         </div>
                     </article>
                     <article class="video-card">
-                        <div class="video-card__embed" data-ig="reel/DICeN2-yEq1">
-                            <img class="renders__poster" src="../img/renders/DICeN2-yEq1-poster.jpg" alt="Future Gothic" loading="lazy" decoding="async">
-                        </div>
-                        <div class="video-card__info renders__sr">
-                            <h3 class="video-card__title">Future Gothic</h3>
-                        </div>
-                    </article>
-                    <article class="video-card">
                         <div class="video-card__embed" data-ig="reel/DIAZhfytCBD">
                             <img class="renders__poster" src="../img/renders/DIAZhfytCBD-poster.jpg" alt="Portal of Light and Shadow" loading="lazy" decoding="async">
                         </div>
@@ -219,6 +211,84 @@
                             <img class="renders__poster" src="../img/renders/DH_8NNkS-e--poster.jpg" alt="Video render by Arthemii Ionaere" loading="lazy" decoding="async">
                         </div>
                     </article>
+                </div>
+                <div class="ai-arch">
+                    <header class="ai-arch__header reveal">
+                        <h3 class="ai-arch__title" data-i18n="ai_arch_title">AI Architecture</h3>
+                        <p class="ai-arch__desc" data-i18n="ai_arch_desc">Moving studies of bionic buildings and sculptures in real landscapes and cities, generated with AI.</p>
+                    </header>
+                    <div class="video-grid ai-arch__videos">
+                        <article class="video-card">
+                            <div class="video-card__embed">
+                                <video poster="../img/renders/ai-02-poster.jpg" src="../video-files/ai/ai-02.mp4" muted loop playsinline preload="metadata" aria-label="AI architecture video by Arthemii Ionaere"></video>
+                            </div>
+                        </article>
+                        <article class="video-card">
+                            <div class="video-card__embed">
+                                <video poster="../img/renders/ai-01-poster.jpg" src="../video-files/ai/ai-01.mp4" muted loop playsinline preload="metadata" aria-label="AI architecture video by Arthemii Ionaere"></video>
+                            </div>
+                        </article>
+                        <article class="video-card">
+                            <div class="video-card__embed">
+                                <video poster="../img/renders/ai-03-poster.jpg" src="../video-files/ai/ai-03.mp4" muted loop playsinline preload="metadata" aria-label="AI architecture video by Arthemii Ionaere"></video>
+                            </div>
+                        </article>
+                        <article class="video-card">
+                            <div class="video-card__embed">
+                                <video poster="../img/renders/ai-04-poster.jpg" src="../video-files/ai/ai-04.mp4" muted loop playsinline preload="metadata" aria-label="AI architecture video by Arthemii Ionaere"></video>
+                            </div>
+                        </article>
+                        <article class="video-card">
+                            <div class="video-card__embed">
+                                <video poster="../img/renders/ai-05-poster.jpg" src="../video-files/ai/ai-05.mp4" muted loop playsinline preload="metadata" aria-label="AI architecture video by Arthemii Ionaere"></video>
+                            </div>
+                        </article>
+                        <article class="video-card">
+                            <div class="video-card__embed">
+                                <video poster="../img/renders/ai-06-poster.jpg" src="../video-files/ai/ai-06.mp4" muted loop playsinline preload="metadata" aria-label="AI architecture video by Arthemii Ionaere"></video>
+                            </div>
+                        </article>
+                        <article class="video-card">
+                            <div class="video-card__embed">
+                                <video poster="../img/renders/ai-07-poster.jpg" src="../video-files/ai/ai-07.mp4" muted loop playsinline preload="metadata" aria-label="AI architecture video by Arthemii Ionaere"></video>
+                            </div>
+                        </article>
+                        <article class="video-card">
+                            <div class="video-card__embed">
+                                <video poster="../img/renders/ai-08-poster.jpg" src="../video-files/ai/ai-08.mp4" muted loop playsinline preload="metadata" aria-label="AI architecture video by Arthemii Ionaere"></video>
+                            </div>
+                        </article>
+                        <article class="video-card">
+                            <div class="video-card__embed">
+                                <video poster="../img/renders/ai-09-poster.jpg" src="../video-files/ai/ai-09.mp4" muted loop playsinline preload="metadata" aria-label="AI architecture video by Arthemii Ionaere"></video>
+                            </div>
+                        </article>
+                        <article class="video-card">
+                            <div class="video-card__embed">
+                                <video poster="../img/renders/ai-10-poster.jpg" src="../video-files/ai/ai-10.mp4" muted loop playsinline preload="metadata" aria-label="AI architecture video by Arthemii Ionaere"></video>
+                            </div>
+                        </article>
+                        <article class="video-card">
+                            <div class="video-card__embed">
+                                <video poster="../img/renders/ai-11-poster.jpg" src="../video-files/ai/ai-11.mp4" muted loop playsinline preload="metadata" aria-label="AI architecture video by Arthemii Ionaere"></video>
+                            </div>
+                        </article>
+                        <article class="video-card">
+                            <div class="video-card__embed">
+                                <video poster="../img/renders/ai-12-poster.jpg" src="../video-files/ai/ai-12.mp4" muted loop playsinline preload="metadata" aria-label="AI architecture video by Arthemii Ionaere"></video>
+                            </div>
+                        </article>
+                        <article class="video-card">
+                            <div class="video-card__embed">
+                                <video poster="../img/renders/ai-13-poster.jpg" src="../video-files/ai/ai-13.mp4" muted loop playsinline preload="metadata" aria-label="AI architecture video by Arthemii Ionaere"></video>
+                            </div>
+                        </article>
+                        <article class="video-card">
+                            <div class="video-card__embed">
+                                <video poster="../img/renders/ai-14-poster.jpg" src="../video-files/ai/ai-14.mp4" muted loop playsinline preload="metadata" aria-label="AI architecture video by Arthemii Ionaere"></video>
+                            </div>
+                        </article>
+                    </div>
                 </div>
             </div>
         </section>
