@@ -19,6 +19,32 @@
         .hero__eyebrow, .hero__title, .hero__subtitle, .hero__desc, .hero__actions, .hero__image {
             opacity: 1 !important; transform: none !important; animation: none !important;
         }
+    
+        /* ===== YouTube channel link (Video section) ===== */
+        .yt-channel {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.625rem;
+            margin-top: var(--spacing-md);
+            padding: 0.5rem 1.125rem 0.5rem 0.5rem;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            background: var(--bg-elevated, #fff);
+            font-size: 0.9375rem;
+            font-weight: 500;
+            letter-spacing: 0.01em;
+            color: var(--text);
+            text-decoration: none;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+        }
+        .yt-channel svg { width: 28px; height: 28px; flex-shrink: 0; display: block; }
+        .yt-channel:hover {
+            border-color: #ff0000;
+            box-shadow: 0 6px 18px rgba(255,0,0,0.16);
+            transform: translateY(-1px);
+        }
+        .section__toggle > .yt-channel { max-width: none; }
     </style>
 </head>
 <body>
@@ -67,6 +93,10 @@
                     <div class="section__label" data-i18n="video_label">Video</div>
                     <h2 class="section__title" data-i18n="video_title">Moving images and stories</h2>
                     <p class="section__desc" data-i18n="video_desc">Video works that explore the abstract world of light and movement — from kinetic art objects to immersive visual explorations.</p>
+                    <a class="yt-channel" href="https://www.youtube.com/@IonaereArthe" target="_blank" rel="noopener" aria-label="YouTube channel @IonaereArthe">
+                        <svg viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" rx="5.5" fill="#FF0000"/><path d="M11.2 5.6v8.8l7.6-4.4z" fill="#fff"/></svg>
+                        <span>YouTube · @IonaereArthe</span>
+                    </a>
                 </header>
 
                 <div class="video-grid">
