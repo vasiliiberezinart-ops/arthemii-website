@@ -1,0 +1,137 @@
+name: One-off - gallery photo pages previous/next
+
+on:
+  push:
+    branches: [gallery-photo-nav]
+    paths: ['.github/workflows/gallery-photo-nav.yml']
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Add previous / next to every gallery photo page
+        run: |
+          cat > "$RUNNER_TEMP/gallery_nav.py" <<'PYEOF'
+          """Gallery photo pages: previous / next navigation.
+
+          Run from the repository root. Pages that already have the navigation are left as they are.
+          """
+          import html
+          import os
+          import re
+
+          GRID = 'gallery/index.html'
+          DUP_IMG = '2024-12-Screenshot-2024-12-24-at-01.20.32'   # grid photo that pointed at another photo's page
+          NEW_SLUG = 'light-installation-2'
+
+          ARROW_PREV = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>'
+          ARROW_NEXT = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>'
+
+
+          def read(p):
+              with open(p, encoding='utf-8') as f:
+                  return f.read()
+
+
+          def write(p, s):
+              with open(p, 'w', encoding='utf-8') as f:
+                  f.write(s)
+
+
+          # ---------- 1. Grid page: every photo gets its own page, clicks open that page ----------
+          grid = read(GRID)
+          grid = grid.replace('    <script src="../lightbox.js"></script>\n', '')
+          grid = re.sub(r'<a href="light-installation/"( style="--r:[^"]+"><div class="gallery__item"><picture><source type="image/webp" srcset="\.\./img/opt/'
+                        + re.escape(DUP_IMG) + ')', r'<a href="' + NEW_SLUG + r'/"\1', grid)
+          write(GRID, grid)
+
+          order = re.findall(r'<a href="([^"/]+)/" style="--r:', grid)
+          assert len(order) == len(set(order)), 'a page is linked twice from the grid'
+
+          # ---------- 2. Page for the photo that had none ----------
+          new_page = 'gallery/%s/index.html' % NEW_SLUG
+          if not os.path.exists(new_page):
+              src = read('gallery/light-installation/index.html')
+              src = src.replace('../../img/2024-05-IMG_7158-scaled.jpg', '../../img/%s.png' % DUP_IMG)
+              os.makedirs(os.path.dirname(new_page), exist_ok=True)
+              write(new_page, src)
+
+          # ---------- 3. Navigation on every photo page ----------
+          titles = {}
+          for slug in order:
+              page = read('gallery/%s/index.html' % slug)
+              titles[slug] = html.unescape(re.search(r'<h1[^>]*>(.*?)</h1>', page, re.S).group(1).strip())
+
+
+          def picture_for(img_tag):
+              """Swap the original (often multi-MB) file for the optimised 1600/2400 versions when they exist."""
+              m = re.search(r'src="\.\./\.\./img/([^"]+)\.(jpe?g|png|webp)"', img_tag, re.I)
+              if not m:
+                  return img_tag
+              base = m.group(1)
+              opt = 'img/opt/%s' % base
+              if not (os.path.exists(opt + '-1600.webp') and os.path.exists(opt + '-1600.jpg')):
+                  return img_tag
+              srcset = ', '.join('../../%s-%d.webp %dw' % (opt, w, w) for w in (800, 1600, 2400) if os.path.exists('%s-%d.webp' % (opt, w)))
+              img = re.sub(r'src="[^"]+"', 'src="../../%s-1600.jpg"' % opt, img_tag, count=1)
+              return ('<picture><source type="image/webp" srcset="%s" sizes="(max-width: 1000px) 100vw, 1000px">%s</picture>'
+                      % (srcset, img))
+
+
+          n = len(order)
+          for i, slug in enumerate(order):
+              path = 'gallery/%s/index.html' % slug
+              page = read(path)
+
+              if 'class="photo-nav"' in page:
+                  continue  # already done
+
+              prev_slug = order[(i - 1) % n]
+              next_slug = order[(i + 1) % n]
+              pt = html.escape(titles[prev_slug])
+              nt = html.escape(titles[next_slug])
+
+              # image box: becomes .photo-view with arrows over the photo
+              box_open = '<div style="border-radius:12px;overflow:hidden;margin-bottom:var(--spacing-md);background:var(--bg-alt)">'
+              assert page.count(box_open) == 1, path
+              page = page.replace(box_open, box_open.replace('<div style=', '<div class="photo-view" style='))
+              img_m = re.search(r'(<div class="photo-view"[^>]*>\s*)(<img [^>]*>)', page)
+              img_tag = img_m.group(2)
+              if 'img/opt/' not in img_tag:
+                  img_tag = picture_for(img_tag)
+              arrows = ('\n                    <a class="photo-view__arrow photo-view__arrow--prev" href="../%s/" rel="prev" aria-label="Previous photo: %s">%s</a>'
+                        '\n                    <a class="photo-view__arrow photo-view__arrow--next" href="../%s/" rel="next" aria-label="Next photo: %s">%s</a>'
+                        % (prev_slug, pt, ARROW_PREV, next_slug, nt, ARROW_NEXT))
+              page = page[:img_m.start(2)] + img_tag + arrows + page[img_m.end(2):]
+
+              # previous / counter / next row under the text
+              sig = '<p style="color:var(--text-tertiary);font-size:0.8125rem;margin-top:var(--spacing-sm)">Arthemii Ionaere — Contemporary Stained Glass</p>'
+              assert page.count(sig) == 1, path
+              nav = ('\n                <nav class="photo-nav" aria-label="Gallery photos">'
+                     '\n                    <a class="photo-nav__link photo-nav__link--prev" href="../%s/" rel="prev"><span class="photo-nav__dir">&larr; <span>Previous</span></span><span class="photo-nav__title">%s</span></a>'
+                     '\n                    <span class="photo-nav__count">%d / %d</span>'
+                     '\n                    <a class="photo-nav__link photo-nav__link--next" href="../%s/" rel="next"><span class="photo-nav__dir"><span>Next</span> &rarr;</span><span class="photo-nav__title">%s</span></a>'
+                     '\n                </nav>'
+                     % (prev_slug, pt, i + 1, n, next_slug, nt))
+              page = page.replace(sig, sig + nav)
+
+              page = page.replace('    <script src="../../i18n.js"></script>',
+                                  '    <script src="../../photo-nav.js"></script>\n    <script src="../../i18n.js"></script>', 1)
+              write(path, page)
+
+          print('pages:', n)
+          PYEOF
+          python3 "$RUNNER_TEMP/gallery_nav.py"
+
+      - name: Commit and remove this one-off workflow
+        run: |
+          git rm -q .github/workflows/gallery-photo-nav.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Gallery photo pages: previous / next navigation"
+          git push
