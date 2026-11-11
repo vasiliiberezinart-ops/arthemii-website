@@ -34,6 +34,8 @@
             --text-tertiary: #999999;
             --border: #e5e5e3;
             --border-strong: #ccccca;
+            /* Soft off-white gradient behind homepage sections */
+            --section-bg: linear-gradient(160deg, #fdfcfa 0%, #f6f4f0 55%, #f1efea 100%);
 
             --font-sans: 'Hahmlet', Georgia, 'Times New Roman', serif;
             --font-serif: 'Hahmlet', Georgia, serif;
@@ -617,6 +619,7 @@
         /* ========== SECTIONS ========== */
         .section {
             padding: var(--spacing-3xl) 0;
+            background: var(--section-bg);
         }
 
         .section__header {
