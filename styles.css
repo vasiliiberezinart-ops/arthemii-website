@@ -291,7 +291,7 @@
         .mobile-nav {
             position: fixed;
             inset: 0;
-            z-index: 999;
+            z-index: 1001;
             background: var(--bg);
             display: flex;
             flex-direction: column;
@@ -320,10 +320,13 @@
 
         .mobile-nav__close {
             position: absolute;
-            top: var(--spacing-lg);
-            right: var(--spacing-lg);
-            width: 32px;
-            height: 32px;
+            top: 14px;
+            right: 14px;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -333,10 +336,14 @@
         .mobile-nav__close::after {
             content: '';
             position: absolute;
-            width: 20px;
-            height: 1.5px;
+            width: 22px;
+            height: 2px;
             background: var(--text);
         }
+
+        .mobile-nav__close:active { background: var(--bg-alt); }
+
+        body:has(.mobile-nav.is-open) { overflow: hidden; }
 
         .mobile-nav__close::before { transform: rotate(45deg); }
         .mobile-nav__close::after { transform: rotate(-45deg); }
