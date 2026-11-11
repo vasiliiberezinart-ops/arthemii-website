@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Glass craftsmanship techniques by Arthemii Ionaere">
+    <meta name="theme-color" content="#fafafa">
+    <title>Projects — Arthemii Ionaere</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="icon" href="../img/2024-05-cropped-Screenshot-2024-05-25-at-06.54.34-32x32.jpg" sizes="32x32">
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        .header { transform: none !important; animation: none !important; }
+        .reveal, .video-card, .work-card, .philosophy-card, .exhibition-block, .tech-block {
+            opacity: 1 !important; transform: none !important; transition: none !important;
+        }
+        .hero__eyebrow, .hero__title, .hero__subtitle, .hero__desc, .hero__actions, .hero__image {
+            opacity: 1 !important; transform: none !important; animation: none !important;
+        }
+        /* ===== Projects page: photos in horizontal strips (tall row, wide row) ===== */
+        .tech-block__inner { grid-template-columns: 1fr; gap: var(--spacing-md); }
+        .tech-block__inner > div:first-child { max-width: 720px; }
+        .tech-strips { display: flex; flex-direction: column; gap: var(--spacing-xs); min-width: 0; }
+        .tech-strip { position: relative; }
+        .tech-strip__track {
+            display: flex;
+            gap: var(--spacing-xs);
+            overflow-x: auto;
+            overscroll-behavior-x: contain;
+            scroll-snap-type: x proximity;
+            scrollbar-width: thin;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 6px;
+        }
+        .tech-strip__track { align-items: center; }
+        .tech-strip__track .tech-block__photo {
+            flex: 0 0 auto;
+            height: var(--strip-h);
+            aspect-ratio: var(--r);
+            scroll-snap-align: start;
+            cursor: zoom-in;
+        }
+        .tech-strip__track .tech-block__photo picture,
+        .tech-strip__track .tech-block__photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+        .tech-strip--tall { --strip-h: 440px; }
+        /* wide photos: 4x the area (2x width and height), but never wider than the screen */
+        .tech-strip--wide .tech-block__photo { height: min(600px, 80vh, calc((100vw - 136px) / var(--r))); }
+        @media (max-width: 768px) {
+            .tech-strip--tall { --strip-h: 340px; }
+            .tech-strip--wide .tech-block__photo { height: min(400px, calc((100vw - 48px) / var(--r))); }
+        }
+        .tech-strip__btn {
+            position: absolute;
+            top: calc(50% - 3px);
+            width: 44px;
+            height: 44px;
+            margin-top: -22px;
+            border: none;
+            border-radius: 50%;
+            background: rgba(17,17,17,0.55);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s, background 0.2s;
+        }
+        .tech-strip__btn svg { width: 22px; height: 22px; stroke: currentColor; stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+        .tech-strip__btn:hover, .tech-strip__btn:focus-visible { background: rgba(17,17,17,0.8); outline: none; }
+        .tech-strip__btn--prev { left: 8px; }
+        .tech-strip__btn--next { right: 8px; }
+        .tech-strip.can-prev .tech-strip__btn--prev,
+        .tech-strip.can-next .tech-strip__btn--next { opacity: 1; pointer-events: auto; }
+        @media (hover: none) { .tech-strip__btn { display: none; } }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="../" class="header__logo">Arthemii Ionaere</a>
+        <nav class="header__nav">
+            <a href="../about/" class="header__link">About</a>
+            <a href="../works/" class="header__link">Works</a>
+            <a href="../projects/" class="header__link">Projects</a>
+            <a href="../gallery/" class="header__link">Gallery</a>
+            <a href="../videos/" class="header__link">Videos</a>
+            <a href="../ai-content/" class="header__link">AI Content</a>
+            <a href="../contact/" class="header__link">Contact</a>
+            <div class="header__lang" role="group" aria-label="Language">
+                <button type="button" class="header__lang-btn is-active" data-lang="en" aria-label="English">EN</button>
+                <button type="button" class="header__lang-btn" data-lang="de" aria-label="Deutsch">DE</button>
+                <button type="button" class="header__lang-btn" data-lang="es" aria-label="Español">ES</button>
+                <button type="button" class="header__lang-btn" data-lang="fr" aria-label="Français">FR</button>
+                <button type="button" class="header__lang-btn" data-lang="ru" aria-label="Русский">RU</button>
+            </div>
+        </nav>
+        <button class="header__menu-btn" id="menuBtn" aria-label="Menu"><span></span><span></span></button>
+    </header>
+    <div class="mobile-nav" id="mobileNav">
+        <button class="mobile-nav__close" id="mobileNavClose" aria-label="Close"></button>
+        <a href="../about/" class="mobile-nav__link">About</a>
+        <a href="../works/" class="mobile-nav__link">Works</a>
+        <a href="../projects/" class="mobile-nav__link">Projects</a>
+        <a href="../gallery/" class="mobile-nav__link">Gallery</a>
+        <a href="../videos/" class="mobile-nav__link">Videos</a>
+        <a href="../ai-content/" class="mobile-nav__link">AI Content</a>
+        <a href="../contact/" class="mobile-nav__link">Contact</a>
+        <div class="header__lang" role="group" aria-label="Language">
+            <button type="button" class="header__lang-btn is-active" data-lang="en" aria-label="English">EN</button>
+            <button type="button" class="header__lang-btn" data-lang="de" aria-label="Deutsch">DE</button>
+            <button type="button" class="header__lang-btn" data-lang="es" aria-label="Español">ES</button>
+            <button type="button" class="header__lang-btn" data-lang="fr" aria-label="Français">FR</button>
+            <button type="button" class="header__lang-btn" data-lang="ru" aria-label="Русский">RU</button>
+        </div>
+    </div>
+    <main style="padding-top:calc(72px + 2rem)">
+<!-- ========== PROJECTS ========== -->
+        <section class="section" id="projects">
+            <div class="container">
+                <header class="section__header reveal">
+                    <div class="section__label">Projects</div>
+                    <h2 class="section__title">Craftsmanship & Techniques</h2>
+                    <p class="section__desc">Four distinct approaches to working with colored glass — from traditional Tiffany technique to experimental shadow prism installations.</p>
+                </header>
+
+                <!-- Tech 1: Metal Frame -->
+                <article class="tech-block reveal">
+                    <div class="tech-block__inner">
+                        <div>
+                            <div class="tech-block__num">01</div>
+                            <h3 class="tech-block__title">Metal Frame Sculpting</h3>
+                            <p class="tech-block__desc">Specialized metal forms serve as the skeleton for stained glass, crafted using a proprietary "edge" technique for precise angles and durability. Metal forms are bent to the required radius for each design. Glass elements are kiln-fired to match the metal framework's curvature. Nearly all creations feature integrated electrical wiring for lighting elements. Can be installed on ceilings, floors, or walls. Approximately 1.5 months from initial design to final implementation.</p>
+                        </div>
+                        <div class="tech-strips">
+                            <div class="tech-strip tech-strip--tall">
+                                <div class="tech-strip__track">
+                                    <div class="tech-block__photo" style="--r:0.361"><picture><source type="image/webp" srcset="../img/opt/2024-02-IMG_1548-800.webp 800w, ../img/opt/2024-02-IMG_1548-1600.webp 1600w, ../img/opt/2024-02-IMG_1548-2400.webp 2400w" sizes="(max-width: 640px) 80vw, 600px"><img src="../img/opt/2024-02-IMG_1548-1600.jpg" alt="Assembly" loading="lazy" decoding="async"></picture></div>
+                                    <div class="tech-block__photo" style="--r:0.361"><picture><source type="image/webp" srcset="../img/opt/2024-02-IMG_1555-800.webp 800w, ../img/opt/2024-02-IMG_1555-1600.webp 1600w, ../img/opt/2024-02-IMG_1555-2400.webp 2400w" sizes="(max-width: 640px) 80vw, 600px"><img src="../img/opt/2024-02-IMG_1555-1600.jpg" alt="Finished sculpture" loading="lazy" decoding="async"></picture></div>
+                                    <div class="tech-block__photo" style="--r:0.361"><picture><source type="image/webp" srcset="../img/opt/2024-05-D7E9A648-1E0A-4ECC-BCD6-D96AF5511CB3-800.webp 800w, ../img/opt/2024-05-D7E9A648-1E0A-4ECC-BCD6-D96AF5511CB3-1600.webp 1600w, ../img/opt/2024-05-D7E9A648-1E0A-4ECC-BCD6-D96AF5511CB3-2400.webp 2400w" sizes="(max-width: 640px) 80vw, 600px"><img src="../img/opt/2024-05-D7E9A648-1E0A-4ECC-BCD6-D96AF5511CB3-1600.jpg" alt="Lit sculpture" loading="lazy" decoding="async"></picture></div>
+                                </div>
+                                <button type="button" class="tech-strip__btn tech-strip__btn--prev" aria-label="Scroll left"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+                                <button type="button" class="tech-strip__btn tech-strip__btn--next" aria-label="Scroll right"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+                            </div>
+                            <div class="tech-strip tech-strip--wide">
+                                <div class="tech-strip__track">
+                                    <div class="tech-block__photo" style="--r:2.333"><picture><source type="image/webp" srcset="../img/opt/2024-02-IMG_1539-800.webp 800w, ../img/opt/2024-02-IMG_1539-1600.webp 1600w, ../img/opt/2024-02-IMG_1539-2400.webp 2400w" sizes="(max-width: 640px) 80vw, 600px"><img src="../img/opt/2024-02-IMG_1539-1600.jpg" alt="Metal frame" loading="lazy" decoding="async"></picture></div>
+                                    <div class="tech-block__photo" style="--r:2.332"><picture><source type="image/webp" srcset="../img/opt/2024-02-IMG_1542-800.webp 800w, ../img/opt/2024-02-IMG_1542-1600.webp 1600w, ../img/opt/2024-02-IMG_1542-2400.webp 2400w" sizes="(max-width: 640px) 80vw, 600px"><img src="../img/opt/2024-02-IMG_1542-1600.jpg" alt="Frame bending" loading="lazy" decoding="async"></picture></div>
+                                    <div class="tech-block__photo" style="--r:2.332"><picture><source type="image/webp" srcset="../img/opt/2024-02-IMG_1546-800.webp 800w, ../img/opt/2024-02-IMG_1546-1600.webp 1600w, ../img/opt/2024-02-IMG_1546-2400.webp 2400w" sizes="(max-width: 640px) 80vw, 600px"><img src="../img/opt/2024-02-IMG_1546-1600.jpg" alt="Glass fitting" loading="lazy" decoding="async"></picture></div>
+                                    <div class="tech-block__photo" style="--r:1.5"><picture><source type="image/webp" srcset="../img/opt/2024-05-Screenshot-2024-05-13-at-22.24.31-800.webp 800w, ../img/opt/2024-05-Screenshot-2024-05-13-at-22.24.31-1600.webp 1600w, ../img/opt/2024-05-Screenshot-2024-05-13-at-22.24.31-2400.webp 2400w" sizes="(max-width: 640px) 80vw, 600px"><img src="../img/opt/2024-05-Screenshot-2024-05-13-at-22.24.31-1600.jpg" alt="Design detail" loading="lazy" decoding="async"></picture></div>
+                                    <div class="tech-block__photo" style="--r:1.5"><picture><source type="image/webp" srcset="../img/opt/2024-05-Screenshot-2024-05-13-at-22.25.06-800.webp 800w, ../img/opt/2024-05-Screenshot-2024-05-13-at-22.25.06-1600.webp 1600w, ../img/opt/2024-05-Screenshot-2024-05-13-at-22.25.06-2400.webp 2400w" sizes="(max-width: 640px) 80vw, 600px"><img src="../img/opt/2024-05-Screenshot-2024-05-13-at-22.25.06-1600.jpg" alt="Final piece" loading="lazy" decoding="async"></picture></div>
+                                </div>
+                                <button type="button" class="tech-strip__btn tech-strip__btn--prev" aria-label="Scroll left"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+                                <button type="button" class="tech-strip__btn tech-strip__btn--next" aria-label="Scroll right"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tech-block__divider"></div>
+                </article>
+
+                <!-- Tech 2: Falling Shadows -->
+                <article class="tech-block reveal">
+                    <div class="tech-block__inner">
+                        <div>
+                            <div class="tech-block__num">02</div>
+                            <h3 class="tech-block__title">Falling Shadows</h3>
+                            <p class="tech-block__desc">Shadow prism technology designed for easy transport and quick installation. Specially prepared glass elements are assembled on-site to create sculptures functioning as prisms. When illuminated, the glass refracts light to cast mesmerizing patterns of light and shadow onto surrounding surfaces. Setup can be completed within days before the event — approximately 2-3 hours per installation. Ideal for temporary exhibitions and immersive environments.</p>
+                        </div>
+                        <div class="tech-strips">
+                            <div class="tech-strip tech-strip--wide">
+                                <div class="tech-strip__track">
+                                    <div class="tech-block__photo" style="--r:1.333"><picture><source type="image/webp" srcset="../img/opt/2024-02-IMG_7255-800.webp 800w, ../img/opt/2024-02-IMG_7255-1600.webp 1600w, ../img/opt/2024-02-IMG_7255-2400.webp 2400w" sizes="(max-width: 640px) 80vw, 600px"><img src="../img/opt/2024-02-IMG_7255-1600.jpg" alt="Shadow prism" loading="lazy" decoding="async"></picture></div>
+                                    <div class="tech-block__photo" style="--r:1.34"><picture><source type="image/webp" srcset="../img/opt/2024-02-IMG_7291-800.webp 800w, ../img/opt/2024-02-IMG_7291-1600.webp 1600w, ../img/opt/2024-02-IMG_7291-2400.webp 2400w" sizes="(max-width: 640px) 80vw, 600px"><img src="../img/opt/2024-02-IMG_7291-1600.jpg" alt="Light patterns" loading="lazy" decoding="async"></picture></div>
+                                    <div class="tech-block__photo" style="--r:1.34"><picture><source type="image/webp" srcset="../img/opt/2024-02-Untitled-800.webp 800w, ../img/opt/2024-02-Untitled-1600.webp 1600w, ../img/opt/2024-02-Untitled-2400.webp 2400w" sizes="(max-width: 640px) 80vw, 600px"><img src="../img/opt/2024-02-Untitled-1600.jpg" alt="Shadow installation" loading="lazy" decoding="async"></picture></div>
+                                    <div class="tech-block__photo" style="--r:1.381"><picture><source type="image/webp" srcset="../img/opt/2024-05-IMG_2352-800.webp 800w, ../img/opt/2024-05-IMG_2352-1600.webp 1600w, ../img/opt/2024-05-IMG_2352-2400.webp 2400w" sizes="(max-width: 640px) 80vw, 600px"><img src="../img/opt/2024-05-IMG_2352-1600.jpg" alt="Prism assembly" loading="lazy" decoding="async"></picture></div>
+                                    <div class="tech-block__photo" style="--r:1.333"><picture><source type="image/webp" srcset="../img/opt/2024-05-IMG_7250-800.webp 800w, ../img/opt/2024-05-IMG_7250-1600.webp 1600w, ../img/opt/2024-05-IMG_7250-2400.webp 2400w" sizes="(max-width: 640px) 80vw, 600px"><img src="../img/opt/2024-05-IMG_7250-1600.jpg" alt="Falling shadows result" loading="lazy" decoding="async"></picture></div>
+                                </div>
+                                <button type="button" class="tech-strip__btn tech-strip__btn--prev" aria-label="Scroll left"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+                                <button type="button" class="tech-strip__btn tech-strip__btn--next" aria-label="Scroll right"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tech-block__divider"></div>
+                </article>
+
+                <!-- Tech 3: Glass Parts -->
+                <article class="tech-block reveal">
+                    <div class="tech-block__inner">
+                        <div>
+                            <div class="tech-block__num">03</div>
+                            <h3 class="tech-block__title">Glass Parts Sculpting</h3>
+                            <p class="tech-block__desc">Sculptures constructed from numerous glass elements meticulously soldered together. A metallic frame is crafted first, incorporating electrical wiring for lighting fixtures. Glass pieces are framed within a special edging for interconnection. These sculptures embrace the freedom of artistic expression — glass placement follows creative intuition rather than rigid plans. Pieces exhibit chaotic forms striving toward symmetry, capturing a dynamic blend of structure and spontaneity.</p>
+                        </div>
+                        <div class="tech-strips">
+                            <div class="tech-strip tech-strip--tall">
+                                <div class="tech-strip__track">
+                                    <div class="tech-block__photo" style="--r:0.75"><picture><source type="image/webp" srcset="../img/opt/2024-02-23b3926c-da00-4b16-af7b-1eee929d9fb8-800.webp 800w, ../img/opt/2024-02-23b3926c-da00-4b16-af7b-1eee929d9fb8-1600.webp 1600w, ../img/opt/2024-02-23b3926c-da00-4b16-af7b-1eee929d9fb8-2400.webp 2400w" sizes="(max-width: 640px) 80vw, 600px"><img src="../img/opt/2024-02-23b3926c-da00-4b16-af7b-1eee929d9fb8-1600.jpg" alt="Finished form" loading="lazy" decoding="async"></picture></div>
+                                    <div class="tech-block__photo" style="--r:0.75"><picture><source type="image/webp" srcset="../img/opt/2024-05-Screenshot-2024-05-13-at-21.58.20-800.webp 800w, ../img/opt/2024-05-Screenshot-2024-05-13-at-21.58.20-1600.webp 1600w, ../img/opt/2024-05-Screenshot-2024-05-13-at-21.58.20-2400.webp 2400w" sizes="(max-width: 640px) 80vw, 600px"><img src="../img/opt/2024-05-Screenshot-2024-05-13-at-21.58.20-1600.jpg" alt="Detail" loading="lazy" decoding="async"></picture></div>
+                                </div>
+                                <button type="button" class="tech-strip__btn tech-strip__btn--prev" aria-label="Scroll left"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+                                <button type="button" class="tech-strip__btn tech-strip__btn--next" aria-label="Scroll right"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+                            </div>
+                            <div class="tech-strip tech-strip--wide">
+                                <div class="tech-strip__track">
+                                    <div class="tech-block__photo" style="--r:1.333"><picture><source type="image/webp" srcset="../img/opt/2024-05-Screenshot-2024-05-13-at-22.25.18-800.webp 800w, ../img/opt/2024-05-Screenshot-2024-05-13-at-22.25.18-1600.webp 1600w, ../img/opt/2024-05-Screenshot-2024-05-13-at-22.25.18-2400.webp 2400w" sizes="(max-width: 640px) 80vw, 600px"><img src="../img/opt/2024-05-Screenshot-2024-05-13-at-22.25.18-1600.jpg" alt="Glass parts" loading="lazy" decoding="async"></picture></div>
+                                    <div class="tech-block__photo" style="--r:1.339"><picture><source type="image/webp" srcset="../img/opt/2024-05-IMG_7517-800.webp 800w, ../img/opt/2024-05-IMG_7517-1600.webp 1600w, ../img/opt/2024-05-IMG_7517-2400.webp 2400w" sizes="(max-width: 640px) 80vw, 600px"><img src="../img/opt/2024-05-IMG_7517-1600.jpg" alt="Soldering process" loading="lazy" decoding="async"></picture></div>
+                                    <div class="tech-block__photo" style="--r:1.339"><picture><source type="image/webp" srcset="../img/opt/2024-05-Screenshot-2024-05-13-at-21.58.05-800.webp 800w, ../img/opt/2024-05-Screenshot-2024-05-13-at-21.58.05-1600.webp 1600w, ../img/opt/2024-05-Screenshot-2024-05-13-at-21.58.05-2400.webp 2400w" sizes="(max-width: 640px) 80vw, 600px"><img src="../img/opt/2024-05-Screenshot-2024-05-13-at-21.58.05-1600.jpg" alt="Assembly" loading="lazy" decoding="async"></picture></div>
+                                </div>
+                                <button type="button" class="tech-strip__btn tech-strip__btn--prev" aria-label="Scroll left"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+                                <button type="button" class="tech-strip__btn tech-strip__btn--next" aria-label="Scroll right"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tech-block__divider"></div>
+                </article>
+
+                <!-- Tech 4: Tiffany -->
+                <article class="tech-block reveal">
+                    <div class="tech-block__inner">
+                        <div>
+                            <div class="tech-block__num">04</div>
+                            <h3 class="tech-block__title">Tiffany Vitrage</h3>
+                            <p class="tech-block__desc">The copper foil method perfected by Louis Comfort Tiffany. The process begins with detailed drawings divided into individual pieces. Colored glass sheets are chosen, traced, and cut precisely. Each piece is wrapped with adhesive copper foil, then assembled and soldered with tin-lead solder. Works (60×90 cm or 80×120 cm) are installed in custom light boxes with LED backlighting — warm colours create comfort and joy, cooler colors induce calm and contemplation.</p>
+                        </div>
+                        <div class="tech-strips">
+                            <div class="tech-strip tech-strip--wide">
+                                <div class="tech-strip__track">
+                                    <div class="tech-block__photo" style="--r:1.333"><picture><source type="image/webp" srcset="../img/opt/2024-05-IMG_1008-800.webp 800w, ../img/opt/2024-05-IMG_1008-1600.webp 1600w, ../img/opt/2024-05-IMG_1008-2400.webp 2400w" sizes="(max-width: 640px) 80vw, 600px"><img src="../img/opt/2024-05-IMG_1008-1600.jpg" alt="Glass cutting" loading="lazy" decoding="async"></picture></div>
+                                    <div class="tech-block__photo" style="--r:1.333"><picture><source type="image/webp" srcset="../img/opt/2024-05-IMG_1012-800.webp 800w, ../img/opt/2024-05-IMG_1012-1600.webp 1600w, ../img/opt/2024-05-IMG_1012-2400.webp 2400w" sizes="(max-width: 640px) 80vw, 600px"><img src="../img/opt/2024-05-IMG_1012-1600.jpg" alt="Foiling process" loading="lazy" decoding="async"></picture></div>
+                                    <div class="tech-block__photo" style="--r:1.333"><picture><source type="image/webp" srcset="../img/opt/2024-05-IMG_1013-800.webp 800w, ../img/opt/2024-05-IMG_1013-1600.webp 1600w, ../img/opt/2024-05-IMG_1013-2400.webp 2400w" sizes="(max-width: 640px) 80vw, 600px"><img src="../img/opt/2024-05-IMG_1013-1600.jpg" alt="Soldering" loading="lazy" decoding="async"></picture></div>
+                                    <div class="tech-block__photo" style="--r:1.339"><picture><source type="image/webp" srcset="../img/opt/2024-05-IMG_2361-800.webp 800w, ../img/opt/2024-05-IMG_2361-1600.webp 1600w, ../img/opt/2024-05-IMG_2361-2400.webp 2400w" sizes="(max-width: 640px) 80vw, 600px"><img src="../img/opt/2024-05-IMG_2361-1600.jpg" alt="Finished piece" loading="lazy" decoding="async"></picture></div>
+                                    <div class="tech-block__photo" style="--r:1.333"><picture><source type="image/webp" srcset="../img/opt/2024-05-IMG_1010-800.webp 800w, ../img/opt/2024-05-IMG_1010-1600.webp 1600w, ../img/opt/2024-05-IMG_1010-2400.webp 2400w" sizes="(max-width: 640px) 80vw, 600px"><img src="../img/opt/2024-05-IMG_1010-1600.jpg" alt="Light box" loading="lazy" decoding="async"></picture></div>
+                                    <div class="tech-block__photo" style="--r:1.34"><picture><source type="image/webp" srcset="../img/opt/2024-05-IMG_6880-800.webp 800w, ../img/opt/2024-05-IMG_6880-1600.webp 1600w, ../img/opt/2024-05-IMG_6880-2400.webp 2400w" sizes="(max-width: 640px) 80vw, 600px"><img src="../img/opt/2024-05-IMG_6880-1600.jpg" alt="Installation" loading="lazy" decoding="async"></picture></div>
+                                </div>
+                                <button type="button" class="tech-strip__btn tech-strip__btn--prev" aria-label="Scroll left"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+                                <button type="button" class="tech-strip__btn tech-strip__btn--next" aria-label="Scroll right"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__inner">
+                <div class="footer__brand">Arthemii Ionaere</div>
+                <nav class="footer__nav">
+                    <a href="../about/" class="footer__link">About</a>
+                    <a href="../works/" class="footer__link">Works</a>
+                    <a href="../exhibitions/" class="footer__link">Exhibitions</a>
+                    <a href="../gallery/" class="footer__link">Gallery</a>
+                    <a href="../contact/" class="footer__link">Contact</a>
+                </nav>
+                <a class="footer__instagram" href="https://www.instagram.com/ionaerestudio/" target="_blank" rel="noopener" aria-label="Instagram @ionaerestudio">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><defs><radialGradient id="footerIgGradient" cx="30%" cy="107%" r="150%"><stop offset="0" stop-color="#fdf497"/><stop offset="0.05" stop-color="#fdf497"/><stop offset="0.45" stop-color="#fd5949"/><stop offset="0.6" stop-color="#d6249f"/><stop offset="0.9" stop-color="#285aeb"/></radialGradient></defs><rect width="24" height="24" rx="6.5" fill="url(#footerIgGradient)"/><rect x="5" y="5" width="14" height="14" rx="4.2" fill="none" stroke="#fff" stroke-width="1.7"/><circle cx="12" cy="12" r="3.3" fill="none" stroke="#fff" stroke-width="1.7"/><circle cx="16.4" cy="7.6" r="1.05" fill="#fff"/></svg>
+                    <span>@ionaerestudio</span>
+                </a>
+                <div class="footer__copy">&copy; 2026 Arthemii Ionaere</div>
+            </div>
+        </div>
+    </footer>
+    <script>
+    var mb=document.getElementById("menuBtn"),mn=document.getElementById("mobileNav"),mc=document.getElementById("mobileNavClose");
+    if(mb&&mn)mb.onclick=function(){mn.classList.add("is-open")};
+    if(mc&&mn)mc.onclick=function(){mn.classList.remove("is-open")};
+    if(mn){var ls=mn.querySelectorAll("a");for(var i=0;i<ls.length;i++)ls[i].onclick=function(){mn.classList.remove("is-open")}};
+    var yts=document.querySelectorAll(".yt-placeholder");
+    for(var i=0;i<yts.length;i++){(function(el){
+        el.onclick=function(){
+            var id=this.getAttribute("data-yt");
+            var f=document.createElement("iframe");
+            f.src="https://www.youtube.com/embed/"+id+"?autoplay=1&mute=0&controls=1&rel=0";
+            f.allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture";
+            f.allowFullscreen=true;
+            f.style.cssText="width:100%;height:100%;border:none";
+            this.parentNode.replaceChild(f,this);
+        };
+    })(yts[i])};
+    var vcs=document.querySelectorAll(".video-card");
+    for(var i=0;i<vcs.length;i++){(function(c){
+        var v=c.querySelector("video");if(!v)return;
+        c.onmouseenter=function(){v.play().catch(function(){})};
+        c.onmouseleave=function(){v.pause();v.currentTime=0};
+    })(vcs[i])};
+    </script>
+    <script>
+    /* Projects page: arrows that scroll each photo strip left / right */
+    (function () {
+        document.querySelectorAll('.tech-strip').forEach(function (strip) {
+            var track = strip.querySelector('.tech-strip__track');
+            function update() {
+                var max = track.scrollWidth - track.clientWidth - 2;
+                strip.classList.toggle('can-prev', track.scrollLeft > 2);
+                strip.classList.toggle('can-next', track.scrollLeft < max);
+            }
+            function go(dir) { track.scrollBy({ left: dir * track.clientWidth * 0.8, behavior: 'smooth' }); }
+            strip.querySelector('.tech-strip__btn--prev').addEventListener('click', function () { go(-1); });
+            strip.querySelector('.tech-strip__btn--next').addEventListener('click', function () { go(1); });
+            track.addEventListener('scroll', update, { passive: true });
+            window.addEventListener('resize', update);
+            track.querySelectorAll('img').forEach(function (img) { img.addEventListener('load', update); });
+            update();
+        });
+    })();
+    </script>
+    <script src="../lightbox.js"></script>
+    <script src="../i18n.js"></script>
+</body>
+</html>
