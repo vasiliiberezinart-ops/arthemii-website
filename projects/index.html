@@ -44,12 +44,17 @@
         }
         .tech-strip__track .tech-block__photo picture,
         .tech-strip__track .tech-block__photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
-        .tech-strip--tall { --strip-h: 440px; }
+        /* Tall photos a bit taller than the wide row (600 px) so both rows feel equally weighty;
+           both stay within the screen height. */
+        .tech-strip--tall { --strip-h: min(760px, calc(100vh - 140px)); }
         /* wide photos: 4x the area (2x width and height), but never wider than the screen */
         .tech-strip--wide .tech-block__photo { height: min(600px, 80vh, calc((100vw - 136px) / var(--r))); }
+        .tech-strips { gap: var(--spacing-sm); }
+        .tech-strip__track { gap: var(--spacing-sm); }
         @media (max-width: 768px) {
-            .tech-strip--tall { --strip-h: 340px; }
+            .tech-strip--tall { --strip-h: min(560px, calc(100vh - 160px)); }
             .tech-strip--wide .tech-block__photo { height: min(400px, calc((100vw - 48px) / var(--r))); }
+            .tech-strips, .tech-strip__track { gap: var(--spacing-xs); }
         }
         .tech-strip__btn {
             position: absolute;
