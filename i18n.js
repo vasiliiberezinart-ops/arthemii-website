@@ -169,6 +169,8 @@
     "Rays filtering through colored panels — 2025": ["Strahlen, die durch farbige Scheiben fallen — 2025", "Rayos que se filtran a través de paneles de color — 2025", "Rayons filtrant à travers des panneaux colorés — 2025", "Лучи, проходящие сквозь цветные панели — 2025"],
     "Glass Meditation": ["Glasmeditation", "Meditación en vidrio", "Méditation de verre", "Стеклянная медитация"],
     "Contemplative glass study — 2025": ["Kontemplative Glasstudie — 2025", "Estudio contemplativo en vidrio — 2025", "Étude contemplative en verre — 2025", "Созерцательный этюд в стекле — 2025"],
+    "Kinetic Prism": ["Kinetisches Prisma", "Prisma cinético", "Prisme cinétique", "Кинетическая призма"],
+    "Kinetic glass sculpture casting light — 2026": ["Kinetische Glasskulptur, die Licht wirft — 2026", "Escultura cinética de vidrio que proyecta luz — 2026", "Sculpture cinétique en verre projetant la lumière — 2026", "Кинетическая стеклянная скульптура, отбрасывающая свет — 2026"],
     "Studio Fragment": ["Atelierfragment", "Fragmento del estudio", "Fragment d’atelier", "Фрагмент мастерской"],
     "Behind the scenes in the studio — 2025": ["Hinter den Kulissen im Atelier — 2025", "Entre bastidores en el estudio — 2025", "Dans les coulisses de l’atelier — 2025", "За кулисами мастерской — 2025"],
     "Amber Reflections": ["Bernsteinreflexe", "Reflejos ámbar", "Reflets d’ambre", "Янтарные отражения"],
