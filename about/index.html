@@ -19,9 +19,20 @@
         .hero__eyebrow, .hero__title, .hero__subtitle, .hero__desc, .hero__actions, .hero__image {
             opacity: 1 !important; transform: none !important; animation: none !important;
         }
-        /* ===== About page: second portrait (with glass) under the first one ===== */
-        .about-image--glass { margin-top: var(--spacing-lg); background: #fff; }
-        .about-image--glass img { display: block; aspect-ratio: 16 / 9; object-fit: cover; }
+        /* ===== About page: photos placed between the paragraphs, text flows around them ===== */
+        .about-grid { grid-template-columns: 1fr; }
+        .about-text { max-width: 980px; }
+        .about-text::after { content: ""; display: block; clear: both; }
+        .about-inline { margin-bottom: var(--spacing-md); }
+        .about-inline--right { float: right; width: 42%; margin-left: var(--spacing-xl); }
+        .about-inline--left { float: left; width: 50%; margin-right: var(--spacing-xl); margin-top: 0.35rem; }
+        .about-inline img { display: block; }
+        .about-image--glass { background: #fff; }
+        .about-image--glass img { aspect-ratio: 16 / 9; object-fit: cover; }
+        .about-text .about-quote { clear: both; }
+        @media (max-width: 768px) {
+            .about-inline--right, .about-inline--left { float: none; width: 100%; margin: var(--spacing-md) 0 var(--spacing-lg); }
+        }
     </style>
 </head>
 <body>
@@ -74,6 +85,11 @@
 
                 <div class="about-grid">
                     <div class="about-text reveal">
+                        <figure class="about-image about-inline about-inline--right">
+                            <picture><source type="image/webp" srcset="../img/opt/2025-07-04490baf-0116-4f87-a7df-6c27f136d6e3-800.webp 800w, ../img/opt/2025-07-04490baf-0116-4f87-a7df-6c27f136d6e3-1600.webp 1600w, ../img/opt/2025-07-04490baf-0116-4f87-a7df-6c27f136d6e3-2400.webp 2400w" sizes="(max-width: 640px) 90vw, (max-width: 1024px) 50vw, 800px"><img src="../img/opt/2025-07-04490baf-0116-4f87-a7df-6c27f136d6e3-1600.jpg" alt="Arthemii Ionaere portrait, 2025" loading="lazy" decoding="async"></picture>
+                            <figcaption class="about-image__caption" data-i18n="about_image_caption">Portrait of the artist — 2025</figcaption>
+                        </figure>
+
                         <p data-i18n="about_p1">The abstract and contemporary approach to the use of glass and color departs from the traditional Christian symbolism of stained glass, which usually features concrete depictions of saints, biblical scenes, or symbols. However, even in this abstract form, the exploration of potential symbolism and meanings through an innovative approach to symbolism remains relevant.</p>
 
                         <p data-i18n="about_p2">Contemporary studies of stained glass art allow us to analyze the impact of abstraction on perception and interpretation. Changing styles and techniques can have an impact on aesthetic and spiritual perception, offering new forms to be integrated into contemporary art and architecture.</p>
@@ -86,6 +102,10 @@
 
                         <p data-i18n="about_p4">His first work in glass, executed in the classical Tiffany technique, marked the beginning of a dedicated series in the 60×60 santimeters format. What started as exploration soon evolved into an ambitious first major artwork: a complete collection of 36 stained glass panels spanning a total dimension of 7.2 × 1.8 metres.</p>
 
+                        <figure class="about-image about-image--glass about-inline about-inline--left">
+                            <picture><source type="image/webp" srcset="../img/opt/about-arthemii-glass-800.webp 800w, ../img/opt/about-arthemii-glass-1600.webp 1600w, ../img/opt/about-arthemii-glass-2048.webp 2048w" sizes="(max-width: 768px) 92vw, 500px"><img src="../img/opt/about-arthemii-glass-1600.jpg" alt="Arthemii Ionaere beside an iridescent glass sculpture" width="1600" height="900" loading="lazy" decoding="async"></picture>
+                        </figure>
+
                         <p data-i18n="about_p5">After two years of mastering the Tiffany technique, Arthemii turned his attention to an entirely new frontier: three-dimensional architectural objects. Result is represents in works of this kind are virtually without precedent — such projects scarcely exist in the public domain. Through sustained experimentation, Arthemii developed a original architectural forms and technological approaches, forged entirely through practice rather than established method.</p>
                         <p data-i18n="about_p6">True to his creative philosophy, these architectural works are produced without preliminary sketches or structural design, resulting in forms that are abstract, futuristic, and entirely self-determined. Yet they remain deeply connected to the two dementional (classic stainglass)  works from which his practice grew: when light passes through these three-dimensional objects, the shadows they cast onto a surface reproduce, with remarkable precision, the exact same compositions found in his stained glass panels. They are, in essence, the same visual language — the same interplay of line, light, and form — liberated into a third dimension.</p>
                          <blockquote class="about-quote">
@@ -93,15 +113,6 @@
                              </blockquote>
                     </div>
 
-                    <div class="reveal">
-                        <figure class="about-image">
-                            <picture><source type="image/webp" srcset="../img/opt/2025-07-04490baf-0116-4f87-a7df-6c27f136d6e3-800.webp 800w, ../img/opt/2025-07-04490baf-0116-4f87-a7df-6c27f136d6e3-1600.webp 1600w, ../img/opt/2025-07-04490baf-0116-4f87-a7df-6c27f136d6e3-2400.webp 2400w" sizes="(max-width: 640px) 90vw, (max-width: 1024px) 50vw, 800px"><img src="../img/opt/2025-07-04490baf-0116-4f87-a7df-6c27f136d6e3-1600.jpg" alt="Arthemii Ionaere portrait, 2025" loading="lazy" decoding="async"></picture>
-                            <figcaption class="about-image__caption" data-i18n="about_image_caption">Portrait of the artist — 2025</figcaption>
-                        </figure>
-                        <figure class="about-image about-image--glass">
-                            <picture><source type="image/webp" srcset="../img/opt/about-arthemii-glass-800.webp 800w, ../img/opt/about-arthemii-glass-1600.webp 1600w, ../img/opt/about-arthemii-glass-2048.webp 2048w" sizes="(max-width: 768px) 92vw, 520px"><img src="../img/opt/about-arthemii-glass-1600.jpg" alt="Arthemii Ionaere beside an iridescent glass sculpture" width="1600" height="900" loading="lazy" decoding="async"></picture>
-                        </figure>
-                    </div>
                 </div>
             </div>
         </section>
