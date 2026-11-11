@@ -6,7 +6,10 @@
  * the exact English text (whitespace-insensitive). Text with no entry stays
  * in English. To translate a new piece of text, add a line:
  *     "English text": ["Deutscher Text", "Texto en español", "Texte en français", "Текст по-русски", "中文文本", "日本語のテキスト"],
- * The chosen language is remembered between pages.
+ * On the first visit the language is picked automatically from the visitor's
+ * browser / system language (e.g. a German browser opens the site in German);
+ * anything not covered falls back to English. Once a visitor clicks a language
+ * button, that choice is remembered and always wins.
  * The ZH / JA buttons are added to every language switcher by this script,
  * so the pages themselves only list EN … RU.
  */
@@ -528,7 +531,6 @@
     walk(document.body);
     applyTitle();
     updateButtons();
-    try { localStorage.setItem('lang', lang); } catch (e) {}
   }
 
   // Translate text that page scripts change later (e.g. "Show more" / "Show less")
@@ -549,13 +551,36 @@
     var b = e.target.closest && e.target.closest('.header__lang-btn[data-lang]');
     if (!b) return;
     e.preventDefault();
-    setLang(b.getAttribute('data-lang'));
+    var lang = b.getAttribute('data-lang');
+    setLang(lang);
+    try { localStorage.setItem(PICKED, lang); } catch (err) {}
   });
 
+  // Language the visitor picked by hand (also honours a non-English choice saved by the old version)
+  var PICKED = 'langPicked';
+  function pickedLang() {
+    try {
+      var p = localStorage.getItem(PICKED);
+      if (p && LANGS.indexOf(p) !== -1) return p;
+      var old = localStorage.getItem('lang');
+      if (old && old !== 'en' && LANGS.indexOf(old) !== -1) return old;
+    } catch (e) {}
+    return null;
+  }
+
+  // First language in the browser's list that the site has: de-AT -> de, zh-TW -> zh, ...
+  function browserLang() {
+    var list = (navigator.languages && navigator.languages.length) ? navigator.languages : [navigator.language || navigator.userLanguage || ''];
+    for (var i = 0; i < list.length; i++) {
+      var code = String(list[i] || '').toLowerCase().split(/[-_]/)[0];
+      if (code === 'en') return 'en';
+      if (LANGS.indexOf(code) !== -1) return code;
+    }
+    return 'en';
+  }
+
   function init() {
-    var saved = null;
-    try { saved = localStorage.getItem('lang'); } catch (e) {}
-    setLang(saved && LANGS.indexOf(saved) !== -1 ? saved : 'en');
+    setLang(pickedLang() || browserLang());
     observer.observe(document.body, { childList: true, subtree: true, characterData: true });
   }
 
