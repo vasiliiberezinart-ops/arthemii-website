@@ -47,40 +47,57 @@
         /* Tall photos a bit taller than the wide row (600 px) so both rows feel equally weighty;
            both stay within the screen height. */
         .tech-strip--tall { --strip-h: min(760px, calc(100vh - 140px)); }
-        /* wide photos: 4x the area (2x width and height), but never wider than the screen */
-        .tech-strip--wide .tech-block__photo { height: min(600px, 80vh, calc((100vw - 136px) / var(--r))); }
+        /* wide photos: 1.5x smaller than before (was up to 600 px high) */
+        .tech-strip--wide .tech-block__photo { height: min(400px, 53vh, calc((100vw - 136px) / var(--r) / 1.5)); }
         .tech-strips { gap: var(--spacing-sm); }
         .tech-strip__track { gap: var(--spacing-sm); }
         @media (max-width: 768px) {
             .tech-strip--tall { --strip-h: min(560px, calc(100vh - 160px)); }
-            .tech-strip--wide .tech-block__photo { height: min(400px, calc((100vw - 48px) / var(--r))); }
+            .tech-strip--wide .tech-block__photo { height: min(267px, calc((100vw - 48px) / var(--r) / 1.5)); }
             .tech-strips, .tech-strip__track { gap: var(--spacing-xs); }
         }
+        /* Arrows: always visible when a strip can scroll (also on phones), clear contrast on any photo */
         .tech-strip__btn {
             position: absolute;
             top: calc(50% - 3px);
-            width: 44px;
-            height: 44px;
-            margin-top: -22px;
-            border: none;
+            width: 52px;
+            height: 52px;
+            margin-top: -26px;
+            border: 1px solid rgba(255,255,255,0.7);
             border-radius: 50%;
-            background: rgba(17,17,17,0.55);
+            background: rgba(17,17,17,0.72);
             color: #fff;
-            display: flex;
+            display: none;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.2s, background 0.2s;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+            transition: opacity 0.2s, background 0.2s, transform 0.2s;
+            -webkit-tap-highlight-color: transparent;
+            z-index: 2;
         }
-        .tech-strip__btn svg { width: 22px; height: 22px; stroke: currentColor; stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
-        .tech-strip__btn:hover, .tech-strip__btn:focus-visible { background: rgba(17,17,17,0.8); outline: none; }
-        .tech-strip__btn--prev { left: 8px; }
-        .tech-strip__btn--next { right: 8px; }
-        .tech-strip.can-prev .tech-strip__btn--prev,
-        .tech-strip.can-next .tech-strip__btn--next { opacity: 1; pointer-events: auto; }
-        @media (hover: none) { .tech-strip__btn { display: none; } }
+        .tech-strip.is-scrollable .tech-strip__btn { display: flex; }
+        .tech-strip__btn svg { width: 26px; height: 26px; stroke: currentColor; stroke-width: 2.4; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+        .tech-strip__btn:hover, .tech-strip__btn:focus-visible { background: rgba(17,17,17,0.92); transform: scale(1.06); outline: none; }
+        .tech-strip__btn--prev { left: 12px; }
+        .tech-strip__btn--next { right: 12px; }
+        /* at the start / end the arrow stays visible but dimmed */
+        .tech-strip.is-scrollable:not(.can-prev) .tech-strip__btn--prev,
+        .tech-strip.is-scrollable:not(.can-next) .tech-strip__btn--next { opacity: 0.3; pointer-events: none; }
+        /* soft fade on the edge that has more photos */
+        .tech-strip::before, .tech-strip::after {
+            content: ""; position: absolute; top: 0; bottom: 6px; width: 56px; pointer-events: none; z-index: 1;
+            opacity: 0; transition: opacity 0.2s;
+        }
+        .tech-strip::before { left: 0; background: linear-gradient(to right, var(--bg), transparent); }
+        .tech-strip::after { right: 0; background: linear-gradient(to left, var(--bg), transparent); }
+        .tech-strip.can-prev::before, .tech-strip.can-next::after { opacity: 1; }
+        @media (max-width: 768px) {
+            .tech-strip__btn { width: 44px; height: 44px; margin-top: -22px; }
+            .tech-strip__btn svg { width: 22px; height: 22px; }
+            .tech-strip__btn--prev { left: 8px; }
+            .tech-strip__btn--next { right: 8px; }
+        }
     </style>
 </head>
 <body>
@@ -301,6 +318,7 @@
                 var max = track.scrollWidth - track.clientWidth - 2;
                 strip.classList.toggle('can-prev', track.scrollLeft > 2);
                 strip.classList.toggle('can-next', track.scrollLeft < max);
+                strip.classList.toggle('is-scrollable', max > 2);
             }
             function go(dir) { track.scrollBy({ left: dir * track.clientWidth * 0.8, behavior: 'smooth' }); }
             strip.querySelector('.tech-strip__btn--prev').addEventListener('click', function () { go(-1); });
