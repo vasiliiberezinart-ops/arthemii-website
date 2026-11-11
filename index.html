@@ -1335,61 +1335,6 @@
         .has-synthetic-header .residency-banner__body > .section__label,
         .has-synthetic-header .residency-banner__title { display: none; }
 
-        /* ========== LIGHTBOX ========== */
-        .lightbox {
-            position: fixed;
-            inset: 0;
-            background: rgba(10,10,10,0.92);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: clamp(1rem, 4vw, 3rem);
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-            z-index: 9999;
-            transition: opacity 0.28s var(--ease-out-expo), visibility 0s linear 0.28s;
-        }
-        .lightbox.is-open {
-            opacity: 1;
-            visibility: visible;
-            pointer-events: auto;
-            transition: opacity 0.28s var(--ease-out-expo);
-        }
-        .lightbox__img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-            border-radius: 6px;
-            box-shadow: 0 30px 80px rgba(0,0,0,0.5);
-            transform: scale(0.96);
-            transition: transform 0.32s var(--ease-out-expo);
-        }
-        .lightbox.is-open .lightbox__img { transform: scale(1); }
-        .lightbox__close {
-            position: absolute;
-            top: clamp(0.75rem, 2vw, 1.5rem);
-            right: clamp(0.75rem, 2vw, 1.5rem);
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            border: none;
-            background: rgba(255,255,255,0.12);
-            color: #fff;
-            font-size: 28px;
-            line-height: 1;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.2s;
-        }
-        .lightbox__close:hover { background: rgba(255,255,255,0.25); }
-        @media (max-width: 768px) {
-            .lightbox { padding: 0.5rem; }
-            .lightbox__close { top: 0.5rem; right: 0.5rem; width: 48px; height: 48px; font-size: 32px; }
-            .lightbox__img { border-radius: 4px; }
-        }
 
         /* ========== SIDE PRODUCTS ========== */
         .side-products {
@@ -2921,47 +2866,8 @@
             videos.forEach(v => io.observe(v));
         });
 
-        /* ========== LIGHTBOX ========== */
-        (function(){
-            const lb = document.createElement('div');
-            lb.className = 'lightbox';
-            lb.innerHTML = '<button class="lightbox__close" aria-label="Close">×</button><img class="lightbox__img" alt="">';
-            document.body.appendChild(lb);
-            const lbImg = lb.querySelector('.lightbox__img');
-            const lbClose = lb.querySelector('.lightbox__close');
-
-            const open = (src, alt) => {
-                lbImg.src = src;
-                lbImg.alt = alt || '';
-                lb.classList.add('is-open');
-                document.body.style.overflow = 'hidden';
-            };
-            const close = () => {
-                lb.classList.remove('is-open');
-                document.body.style.overflow = '';
-                setTimeout(() => { lbImg.src = ''; }, 300);
-            };
-
-            const containers = '.exhibition-block__photo, .gallery__item, .side-product, .workspace__photo, .tech-block__photo';
-            document.addEventListener('click', (e) => {
-                const img = e.target.tagName === 'IMG' && e.target.closest(containers) ? e.target : null;
-                if (img) {
-                    e.preventDefault();
-                    open(img.currentSrc || img.src, img.alt);
-                }
-            });
-            lb.addEventListener('click', (e) => { if (e.target === lb || e.target === lbClose) close(); });
-            document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && lb.classList.contains('is-open')) close(); });
-
-            /* Swipe down to close on mobile */
-            let touchStartY = 0;
-            lb.addEventListener('touchstart', (e) => { touchStartY = e.touches[0].clientY; }, { passive: true });
-            lb.addEventListener('touchend', (e) => {
-                const dy = e.changedTouches[0].clientY - touchStartY;
-                if (dy > 80) close();
-            }, { passive: true });
-        })();
     </script>
+    <script src="lightbox.js"></script>
     <script src="i18n.js"></script>
     <script src="contact.js"></script>
 </body>
