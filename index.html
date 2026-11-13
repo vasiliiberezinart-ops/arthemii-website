@@ -1362,6 +1362,10 @@
             transition: transform 0.4s var(--ease-out-expo), box-shadow 0.4s ease;
         }
         .section__thumb img, .section__thumb video { display: block; width: 100%; height: 100%; object-fit: cover; }
+        /* Stacked preview photos that cross-fade (every 3 s) */
+        .section__thumb--stack { position: relative; }
+        .section__thumb--stack img { position: absolute; inset: 0; opacity: 0; transition: opacity 0.9s ease; }
+        .section__thumb--stack img.is-active { opacity: 1; }
         /* Drawings are photographed in frames: zoom in on the drawing itself */
         #drawings .section__thumb img { transform: scale(1.7); }
         .section__toggle:hover .section__thumb { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12); }
@@ -3157,6 +3161,9 @@
                 return urls.slice(0, max);
             }
 
+            const THUMB_MAX = 8;          // photos per section preview
+            const rotatingThumbs = [];
+
             sections.forEach(function (section) {
                 const container = section.querySelector(':scope > .container') || section;
                 let header = container.querySelector(':scope > .section__header');
@@ -3204,7 +3211,10 @@
                 }
                 // Desktop: one preview of the section's photos on the right of the header
                 // A section can choose its preview photo with data-thumb; otherwise its first photo is used
-                const thumbs = section.dataset.thumb ? [section.dataset.thumb] : sectionThumbs(inner, 1);
+                // Several photos per section: they take turns every 3 seconds (see THUMB ROTATION below)
+                let thumbs = sectionThumbs(inner, THUMB_MAX);
+                if (section.dataset.thumb) thumbs = [section.dataset.thumb].concat(thumbs.filter(function (u) { return u !== section.dataset.thumb; })).slice(0, THUMB_MAX);
+                if (section.dataset.thumbVideo) thumbs = thumbs.slice(0, 1);
                 if (thumbs.length) {
                     const strip = document.createElement('div');
                     strip.className = 'section__thumbs';
@@ -3228,18 +3238,30 @@
                             strip.appendChild(vbox);
                             return;
                         }
-                        const im = document.createElement('img');
-                        im.alt = '';
-                        im.decoding = 'async';
-                        im.loading = 'lazy';
-                        // Like every other photo on the page, load only after the hero video
-                        if (typeof heroReady !== 'undefined' && heroReady) im.src = url;
-                        else im.setAttribute('data-src', url);
-                        const box = document.createElement('span');
-                        box.className = 'section__thumb';
-                        box.appendChild(im);
-                        strip.appendChild(box);
                     });
+                    if (!thumbVideo) {
+                        // One frame; the photos are stacked inside it and cross-fade
+                        const box = document.createElement('span');
+                        box.className = 'section__thumb section__thumb--stack';
+                        thumbs.forEach(function (url, i) {
+                            const im = document.createElement('img');
+                            im.alt = '';
+                            im.decoding = 'async';
+                            if (i === 0) {
+                                im.className = 'is-active';
+                                im.loading = 'lazy';
+                                // Like every other photo on the page, load only after the hero video
+                                if (typeof heroReady !== 'undefined' && heroReady) im.src = url;
+                                else im.setAttribute('data-src', url);
+                            } else {
+                                // The others load one by one, just before their turn
+                                im.setAttribute('data-thumb-src', url);
+                            }
+                            box.appendChild(im);
+                        });
+                        strip.appendChild(box);
+                        if (thumbs.length > 1) rotatingThumbs.push({ section: section, box: box, index: 0 });
+                    }
                     header.appendChild(strip);
                     header.classList.add('has-thumbs');
                 }
@@ -3269,6 +3291,48 @@
                     if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setOpen(!section.classList.contains('is-open')); }
                 });
             });
+
+            /* ===== THUMB ROTATION: each section preview shows its next photo every 3 seconds ===== */
+            (function () {
+                if (!rotatingThumbs.length) return;
+                if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+                const INTERVAL = 3000;
+                function ensure(im) {
+                    const u = im.getAttribute('data-thumb-src');
+                    if (u) { im.src = u; im.removeAttribute('data-thumb-src'); }
+                }
+                function ready(im) { return !im.getAttribute('data-thumb-src') && !im.hasAttribute('data-src') && im.complete && im.naturalWidth > 0; }
+                const visible = new Set();
+                if ('IntersectionObserver' in window) {
+                    const io = new IntersectionObserver(function (entries) {
+                        entries.forEach(function (e) { if (e.isIntersecting) visible.add(e.target); else visible.delete(e.target); });
+                    }, { rootMargin: '100px 0px' });
+                    rotatingThumbs.forEach(function (t) { io.observe(t.box); });
+                } else {
+                    rotatingThumbs.forEach(function (t) { visible.add(t.box); });
+                }
+                function step(t) {
+                    if (document.hidden || t.section.classList.contains('is-open') || !visible.has(t.box)) return;
+                    const imgs = t.box.querySelectorAll('img');
+                    if (!ready(imgs[t.index])) return;              // first photo not shown yet
+                    const next = (t.index + 1) % imgs.length;
+                    ensure(imgs[next]);
+                    ensure(imgs[(next + 1) % imgs.length]);        // preload the one after
+                    if (!ready(imgs[next])) return;                 // still loading: try on the next beat
+                    imgs[t.index].classList.remove('is-active');
+                    imgs[next].classList.add('is-active');
+                    t.index = next;
+                }
+                afterHero(function () {
+                    rotatingThumbs.forEach(function (t, i) {
+                        // Start a little apart so the previews don't all change at the same moment
+                        setTimeout(function () {
+                            ensure(t.box.querySelectorAll('img')[1]);
+                            setInterval(function () { step(t); }, INTERVAL);
+                        }, (i % 6) * 450);
+                    });
+                });
+            })();
 
             // Open the section that contains a linked target (#hash links or a URL with a hash)
             function openFor(target) {
