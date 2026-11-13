@@ -1331,6 +1331,40 @@
         .section__toggle:hover .section__chevron { color: var(--text); }
         /* Section descriptions show only when the section is open */
         .section.is-collapsible:not(.is-open) .section__toggle .section__desc { display: none; }
+        /* Desktop: small previews of a section's photos on the right of its header */
+        .section__thumbs { display: none; }
+        @media (min-width: 1025px) {
+            .section__toggle.has-thumbs > :not(.section__thumbs) { max-width: min(700px, calc(100% - 320px)); }
+            .section__thumbs {
+                position: absolute;
+                top: 50%;
+                right: 0;
+                display: flex;
+                gap: 8px;
+                max-width: none;
+                transform: translateY(-50%);
+                transition: opacity 0.4s ease, transform 0.5s var(--ease-out-expo);
+            }
+            .section__thumb {
+                display: block;
+                width: 52px;
+                height: 52px;
+                overflow: hidden;
+                border-radius: 8px;
+                background: var(--bg-alt);
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+                transition: transform 0.4s var(--ease-out-expo), box-shadow 0.4s ease;
+            }
+            .section__thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
+            /* Drawings are photographed in frames: zoom in on the drawing itself */
+            #drawings .section__thumb img { transform: scale(1.75); }
+            .section__toggle:hover .section__thumb { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12); }
+            .section__toggle:hover .section__thumb:nth-child(2) { transition-delay: 0.03s; }
+            .section__toggle:hover .section__thumb:nth-child(3) { transition-delay: 0.06s; }
+            .section__toggle:hover .section__thumb:nth-child(4) { transition-delay: 0.09s; }
+            .section__toggle:hover .section__thumb:nth-child(5) { transition-delay: 0.12s; }
+            .section.is-open .section__thumbs { opacity: 0; pointer-events: none; transform: translateY(-50%) translateX(12px); }
+        }
         .section__body {
             display: grid;
             grid-template-rows: 0fr;
@@ -2969,6 +3003,33 @@
             const sections = Array.from(document.querySelectorAll('main > section.section[id]'))
                 .filter(function (s) { return KEEP_OPEN.indexOf(s.id) === -1; });
 
+            // Photo URLs inside a section (smallest size where there is a choice), without repeats
+            function sectionThumbs(root, max) {
+                const urls = [];
+                const ok = /\.(jpe?g|png|webp|gif|avif)(\?|#|$)/i;
+                function add(u) {
+                    if (!u) return;
+                    u = u.trim();
+                    if (ok.test(u) && urls.indexOf(u) === -1) urls.push(u);
+                }
+                function firstOfSet(set) { return set ? set.split(',')[0].trim().split(/\s+/)[0] : ''; }
+                root.querySelectorAll('img, video, [style*="background-image"]').forEach(function (el) {
+                    if (urls.length >= max) return;
+                    if (el.tagName === 'IMG') {
+                        const pic = el.closest('picture');
+                        const source = pic && pic.querySelector('source');
+                        const set = source && (source.getAttribute('data-srcset') || source.getAttribute('srcset'));
+                        add(firstOfSet(set) || el.getAttribute('data-src') || el.getAttribute('src'));
+                    } else if (el.tagName === 'VIDEO') {
+                        add(el.getAttribute('data-poster') || el.getAttribute('poster'));
+                    } else {
+                        const m = (el.getAttribute('style') || '').match(/background-image:\s*url\((['"]?)(.*?)\1\)/i);
+                        if (m) add(m[2]);
+                    }
+                });
+                return urls.slice(0, max);
+            }
+
             sections.forEach(function (section) {
                 const container = section.querySelector(':scope > .container') || section;
                 let header = container.querySelector(':scope > .section__header');
@@ -3013,6 +3074,28 @@
                     row.appendChild(chevron);
                 } else {
                     header.appendChild(chevron);
+                }
+                // Desktop: a few small previews of the section's photos on the right of the header
+                const thumbs = sectionThumbs(inner, 5);
+                if (thumbs.length) {
+                    const strip = document.createElement('div');
+                    strip.className = 'section__thumbs';
+                    strip.setAttribute('aria-hidden', 'true');
+                    thumbs.forEach(function (url) {
+                        const im = document.createElement('img');
+                        im.alt = '';
+                        im.decoding = 'async';
+                        im.loading = 'lazy';
+                        // Like every other photo on the page, load only after the hero video
+                        if (typeof heroReady !== 'undefined' && heroReady) im.src = url;
+                        else im.setAttribute('data-src', url);
+                        const box = document.createElement('span');
+                        box.className = 'section__thumb';
+                        box.appendChild(im);
+                        strip.appendChild(box);
+                    });
+                    header.appendChild(strip);
+                    header.classList.add('has-thumbs');
                 }
                 header.classList.add('section__toggle');
                 header.setAttribute('role', 'button');
