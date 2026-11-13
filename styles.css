@@ -1042,6 +1042,21 @@
             cursor: pointer;
         }
 
+        .exhibition-block__open {
+            display: flex;
+            width: fit-content;
+            margin-top: var(--spacing-md);
+            padding: 0.7rem 1.4rem;
+        }
+
+        .exhibition-block__open span {
+            transition: transform 0.3s var(--ease-out-expo);
+        }
+
+        .exhibition-block__open:hover span {
+            transform: translateX(3px);
+        }
+
         .exhibition-block__toggle.is-visible {
             display: inline-flex;
         }
