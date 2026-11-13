@@ -2006,6 +2006,9 @@
                                 <span class="exhibition-block__toggle-label">Show more</span>
                                 <span class="exhibition-block__toggle-arrow">▾</span>
                             </button>
+                            {% if ex.page and ex.page != "" %}
+                            <a href="{{ ex.page | relative_url }}" class="btn btn--outline exhibition-block__open">Open event page <span aria-hidden="true">→</span></a>
+                            {% endif %}
                             {% if ex.stats.size > 0 %}
                             <div class="exhibition-block__stats">
                                 {% for s in ex.stats %}

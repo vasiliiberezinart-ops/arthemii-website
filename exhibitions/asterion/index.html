@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ASTERION — theater butoh show, final workshop presentation directed by Valentin Tszin. Set design by Arthemii Ionaere &amp; Vasya Berezin. Theaterforum Kreuzberg, Berlin, 4 April 2026.">
+    <meta name="theme-color" content="#fafafa">
+    <title>ASTERION | Theater Butoh show — Arthemii Ionaere</title>
+    <meta property="og:title" content="ASTERION | Theater Butoh show — Arthemii Ionaere">
+    <meta property="og:image" content="https://arthemii.com/img/opt/asterion-01-1600.jpg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="icon" href="../../img/2024-05-cropped-Screenshot-2024-05-25-at-06.54.34-32x32.jpg" sizes="32x32">
+    <link rel="stylesheet" href="../../styles.css">
+    <style>
+        .header { transform: none !important; animation: none !important; }
+        .reveal, .video-card, .work-card, .philosophy-card, .exhibition-block, .tech-block {
+            opacity: 1 !important; transform: none !important; transition: none !important;
+        }
+        .hero__eyebrow, .hero__title, .hero__subtitle, .hero__desc, .hero__actions, .hero__image {
+            opacity: 1 !important; transform: none !important; animation: none !important;
+        }
+        .event { max-width: 1000px; }
+        .event__back { font-size: 0.875rem; color: var(--text-secondary); display: inline-block; margin-bottom: var(--spacing-md); transition: color .2s ease; }
+        .event__back:hover { color: var(--text); }
+        .event__hero { border-radius: var(--radius-md); overflow: hidden; margin-bottom: var(--spacing-lg); background: var(--bg-alt); }
+        .event__hero img { width: 100%; display: block; }
+        .event__title { font-family: var(--font-serif); font-size: clamp(1.75rem, 4vw, 2.75rem); font-weight: 400; line-height: 1.2; margin: 0 0 var(--spacing-xs); }
+        .event__location { font-size: 0.9375rem; color: var(--text-secondary); font-style: italic; margin-bottom: var(--spacing-lg); }
+        .event__quote { font-family: var(--font-serif); font-size: clamp(1.125rem, 2.2vw, 1.375rem); font-weight: 300; line-height: 1.55; color: var(--text); border-left: 2px solid var(--text); padding: 0.25rem 0 0.25rem var(--spacing-md); margin: 0 0 var(--spacing-xl); }
+        .event__quote cite { display: block; margin-top: 0.5rem; font-size: 0.8125rem; font-style: normal; letter-spacing: 0.04em; color: var(--text-tertiary); }
+        .event__grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: var(--spacing-xl); margin-bottom: var(--spacing-2xl); }
+        .event__h { font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-tertiary); margin: 0 0 var(--spacing-sm); }
+        .event__credits { display: grid; grid-template-columns: max-content 1fr; gap: 0.6rem var(--spacing-md); font-size: 0.9375rem; line-height: 1.5; margin: 0; }
+        .event__credits dt { color: var(--text-tertiary); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding-top: 0.2rem; }
+        .event__credits dd { margin: 0; color: var(--text); }
+        .event a.event__ig { color: var(--text-secondary); text-decoration: none; border-bottom: 1px solid var(--border); transition: color .2s ease, border-color .2s ease; }
+        .event a.event__ig:hover { color: var(--text); border-color: var(--text); }
+        .event__people { list-style: none; counter-reset: p; margin: 0; padding: 0; columns: 2; column-gap: var(--spacing-md); font-size: 0.9375rem; line-height: 1.5; }
+        .event__people li { counter-increment: p; break-inside: avoid; padding: 0.3rem 0; border-bottom: 1px solid var(--border); }
+        .event__people li::before { content: counter(p, decimal-leading-zero); display: inline-block; width: 2rem; font-size: 0.75rem; color: var(--text-tertiary); font-variant-numeric: tabular-nums; }
+        .event__videos-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--spacing-sm); flex-wrap: wrap; margin-bottom: var(--spacing-md); }
+        .event__videos-head h2 { font-family: var(--font-serif); font-size: clamp(1.25rem, 2.5vw, 1.75rem); font-weight: 400; margin: 0; }
+        .event__videos-head a { font-size: 0.8125rem; color: var(--text-secondary); }
+        .event__videos-head a:hover { color: var(--text); }
+        .event__videos { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-md); }
+        .event__videos .video-card:first-child { grid-column: 1 / -1; }
+        .event__videos .video-card__embed { aspect-ratio: 16/9; }
+        .event__videos .video-card__title { margin: 0; }
+        .event__videos .video-card__desc { font-size: 0.75rem; color: var(--text-tertiary); margin: 0.15rem 0 0; }
+        @media (max-width: 768px) {
+            .event__grid { grid-template-columns: 1fr; gap: var(--spacing-lg); }
+            .event__videos { grid-template-columns: 1fr; }
+            .event__credits { grid-template-columns: 1fr; gap: 0.15rem; }
+            .event__credits dd { margin-bottom: 0.6rem; }
+        }
+        @media (max-width: 480px) { .event__people { columns: 1; } }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="../../" class="header__logo">Arthemii Ionaere</a>
+        <nav class="header__nav">
+            <a href="../../about/" class="header__link">About</a>
+            <a href="../../works/" class="header__link">Works</a>
+            <a href="../../projects/" class="header__link">Projects</a>
+            <a href="../../gallery/" class="header__link">Gallery</a>
+            <a href="../../videos/" class="header__link">Videos</a>
+            <a href="../../ai-content/" class="header__link">AI Content</a>
+            <a href="../../contact/" class="header__link">Contact</a>
+            <div class="header__lang" role="group" aria-label="Language">
+                <button type="button" class="header__lang-btn is-active" data-lang="en" aria-label="English">EN</button>
+                <button type="button" class="header__lang-btn" data-lang="de" aria-label="Deutsch">DE</button>
+                <button type="button" class="header__lang-btn" data-lang="es" aria-label="Español">ES</button>
+                <button type="button" class="header__lang-btn" data-lang="fr" aria-label="Français">FR</button>
+                <button type="button" class="header__lang-btn" data-lang="ru" aria-label="Русский">RU</button>
+            </div>
+        </nav>
+        <button class="header__menu-btn" id="menuBtn" aria-label="Menu"><span></span><span></span></button>
+    </header>
+    <div class="mobile-nav" id="mobileNav">
+        <button class="mobile-nav__close" id="mobileNavClose" aria-label="Close"></button>
+        <a href="../../about/" class="mobile-nav__link">About</a>
+        <a href="../../works/" class="mobile-nav__link">Works</a>
+        <a href="../../projects/" class="mobile-nav__link">Projects</a>
+        <a href="../../gallery/" class="mobile-nav__link">Gallery</a>
+        <a href="../../videos/" class="mobile-nav__link">Videos</a>
+        <a href="../../ai-content/" class="mobile-nav__link">AI Content</a>
+        <a href="../../contact/" class="mobile-nav__link">Contact</a>
+        <div class="header__lang" role="group" aria-label="Language">
+            <button type="button" class="header__lang-btn is-active" data-lang="en" aria-label="English">EN</button>
+            <button type="button" class="header__lang-btn" data-lang="de" aria-label="Deutsch">DE</button>
+            <button type="button" class="header__lang-btn" data-lang="es" aria-label="Español">ES</button>
+            <button type="button" class="header__lang-btn" data-lang="fr" aria-label="Français">FR</button>
+            <button type="button" class="header__lang-btn" data-lang="ru" aria-label="Русский">RU</button>
+        </div>
+    </div>
+    <main style="padding-top:calc(72px + 2rem)">
+        <section class="section">
+            <div class="container event">
+                <a href="../../#exhibitions" class="event__back">&larr; Back to Exhibitions</a>
+                <div class="event__hero">
+                    <picture><source type="image/webp" srcset="../../img/opt/asterion-01-800.webp 800w, ../../img/opt/asterion-01-1600.webp 1600w, ../../img/opt/asterion-01-2400.webp 2400w" sizes="(max-width: 1040px) 92vw, 1000px"><img src="../../img/opt/asterion-01-1600.jpg" alt="ASTERION — theater butoh show" width="1600" height="893" decoding="async" fetchpriority="high"></picture>
+                </div>
+                <div class="exhibition-block__date">Saturday / April. 4 2026</div>
+                <span class="exhibition-block__type">Installation</span>
+                <h1 class="event__title">ASTERION | Theater Butoh show</h1>
+                <div class="event__location">Theaterforum Kreuzberg e.V. — Eisenbahnstraße 21, 10997 Berlin</div>
+
+                <blockquote class="event__quote">
+                    <p>Perhaps I have created the stars and the sun and this enormous house, but I no longer remember</p>
+                    <cite>Jorge Luis Borges</cite>
+                </blockquote>
+
+                <div class="event__grid">
+                    <div>
+                        <h2 class="event__h">Final workshop presentation</h2>
+                        <dl class="event__credits">
+                            <dt>Directed by</dt><dd data-no-i18n>Valentin Tszin</dd>
+                            <dt>Sound</dt><dd data-no-i18n>Makoto Sakamoto <a class="event__ig" href="https://www.instagram.com/makoto_sakamoto_recordings/" target="_blank" rel="noopener">@makoto_sakamoto_recordings</a></dd>
+                            <dt>Set design</dt><dd data-no-i18n>Arthemii Ionaere <a class="event__ig" href="https://www.instagram.com/ionaere/" target="_blank" rel="noopener">@ionaere</a> &amp; Vasya Berezin <a class="event__ig" href="https://www.instagram.com/berezinvasya/" target="_blank" rel="noopener">@berezinvasya</a></dd>
+                            <dt>Light</dt><dd data-no-i18n>Philipp Tholey</dd>
+                            <dt>Graphics</dt><dd data-no-i18n>Mascha Rodigina <a class="event__ig" href="https://www.instagram.com/mascharodigina/" target="_blank" rel="noopener">@mascharodigina</a></dd>
+                        </dl>
+                    </div>
+                    <div>
+                        <h2 class="event__h">Workshop participants</h2>
+                        <ol class="event__people">
+                            <li><span data-no-i18n>Alyy Space</span> <a class="event__ig" href="https://www.instagram.com/alyyspace/" target="_blank" rel="noopener">@alyyspace</a></li>
+                            <li><span data-no-i18n>Evgeniia Borzykh</span></li>
+                            <li><span data-no-i18n>Heri Shin</span> <a class="event__ig" href="https://www.instagram.com/fabulous_heri/" target="_blank" rel="noopener">@fabulous_heri</a></li>
+                            <li><span data-no-i18n>Jianyu Wang</span></li>
+                            <li><span data-no-i18n>Jonathan Reimann</span></li>
+                            <li><span data-no-i18n>Kara Kuckoo</span> <a class="event__ig" href="https://www.instagram.com/karakuckoo/" target="_blank" rel="noopener">@karakuckoo</a></li>
+                            <li><span data-no-i18n>Laura Gomez</span></li>
+                            <li><span data-no-i18n>Little Vanya</span></li>
+                            <li><span data-no-i18n>Maurice Ginsberg</span></li>
+                            <li><span data-no-i18n>Noemi Schrader</span></li>
+                            <li><span data-no-i18n>Ohii Katya</span></li>
+                            <li><span data-no-i18n>Rand El Zein</span></li>
+                            <li><span data-no-i18n>Rossana Signorile</span></li>
+                            <li><span data-no-i18n>Serena Landriel</span></li>
+                            <li><span data-no-i18n>Vasya Berezin</span></li>
+                            <li><span data-no-i18n>Wenke Schladitz</span> <a class="event__ig" href="https://www.instagram.com/wenke__s/" target="_blank" rel="noopener">@wenke__s</a></li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="event__videos-head">
+                    <h2>Videos</h2>
+                    <a href="https://www.youtube.com/@IonaereArthe" target="_blank" rel="noopener">YouTube — @IonaereArthe ↗</a>
+                </div>
+                <div class="event__videos">
+                    <article class="video-card">
+                        <div class="video-card__embed">
+                            <div class="yt-placeholder" data-yt="8wTBDt-78Z4" role="button" tabindex="0" aria-label="Play video: Asterion Butoh 2026" style="background-image:url(https://i.ytimg.com/vi/8wTBDt-78Z4/hqdefault.jpg)"></div>
+                        </div>
+                        <div class="video-card__info">
+                            <h3 class="video-card__title">Asterion Butoh 2026</h3>
+                            <p class="video-card__desc">7:58</p>
+                        </div>
+                    </article>
+                    <article class="video-card">
+                        <div class="video-card__embed">
+                            <div class="yt-placeholder" data-yt="2gF1fXEd0kY" role="button" tabindex="0" aria-label="Play video: Asterion Butoh — performance 04.04.2026" style="background-image:url(https://i.ytimg.com/vi/2gF1fXEd0kY/hqdefault.jpg)"></div>
+                        </div>
+                        <div class="video-card__info">
+                            <h3 class="video-card__title">Asterion Butoh — performance 04.04.2026</h3>
+                            <p class="video-card__desc">3:25</p>
+                        </div>
+                    </article>
+                    <article class="video-card">
+                        <div class="video-card__embed">
+                            <div class="yt-placeholder" data-yt="h60NTYzDvsI" role="button" tabindex="0" aria-label="Play video: Asterion Butoh 2026" style="background-image:url(https://i.ytimg.com/vi/h60NTYzDvsI/hqdefault.jpg)"></div>
+                        </div>
+                        <div class="video-card__info">
+                            <h3 class="video-card__title">Asterion Butoh 2026</h3>
+                            <p class="video-card__desc">3:50</p>
+                        </div>
+                    </article>
+                    <article class="video-card">
+                        <div class="video-card__embed">
+                            <div class="yt-placeholder" data-yt="A4rcZKTcxDU" role="button" tabindex="0" aria-label="Play video: Asterion Butoh 2026" style="background-image:url(https://i.ytimg.com/vi/A4rcZKTcxDU/hqdefault.jpg)"></div>
+                        </div>
+                        <div class="video-card__info">
+                            <h3 class="video-card__title">Asterion Butoh 2026</h3>
+                            <p class="video-card__desc">1:05</p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__inner">
+                <div class="footer__brand">Arthemii Ionaere</div>
+                <nav class="footer__nav">
+                    <a href="../../about/" class="footer__link">About</a>
+                    <a href="../../works/" class="footer__link">Works</a>
+                    <a href="../../exhibitions/" class="footer__link">Exhibitions</a>
+                    <a href="../../gallery/" class="footer__link">Gallery</a>
+                    <a href="../../contact/" class="footer__link">Contact</a>
+                </nav>
+                <a class="footer__instagram" href="https://www.instagram.com/ionaerestudio/" target="_blank" rel="noopener" aria-label="Instagram @ionaerestudio">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><defs><radialGradient id="footerIgGradient" cx="30%" cy="107%" r="150%"><stop offset="0" stop-color="#fdf497"/><stop offset="0.05" stop-color="#fdf497"/><stop offset="0.45" stop-color="#fd5949"/><stop offset="0.6" stop-color="#d6249f"/><stop offset="0.9" stop-color="#285aeb"/></radialGradient></defs><rect width="24" height="24" rx="6.5" fill="url(#footerIgGradient)"/><rect x="5" y="5" width="14" height="14" rx="4.2" fill="none" stroke="#fff" stroke-width="1.7"/><circle cx="12" cy="12" r="3.3" fill="none" stroke="#fff" stroke-width="1.7"/><circle cx="16.4" cy="7.6" r="1.05" fill="#fff"/></svg>
+                    <span>@ionaerestudio</span>
+                </a>
+                <div class="footer__copy">&copy; 2026 Arthemii Ionaere</div>
+            </div>
+        </div>
+    </footer>
+    <script>
+    var mb=document.getElementById("menuBtn"),mn=document.getElementById("mobileNav"),mc=document.getElementById("mobileNavClose");
+    if(mb&&mn)mb.onclick=function(){mn.classList.add("is-open")};
+    if(mc&&mn)mc.onclick=function(){mn.classList.remove("is-open")};
+    if(mn){var ls=mn.querySelectorAll("a");for(var i=0;i<ls.length;i++)ls[i].onclick=function(){mn.classList.remove("is-open")}};
+    var yts=document.querySelectorAll(".yt-placeholder");
+    for(var i=0;i<yts.length;i++){(function(el){
+        el.onclick=function(){
+            var id=this.getAttribute("data-yt");
+            var f=document.createElement("iframe");
+            f.src="https://www.youtube.com/embed/"+id+"?autoplay=1&mute=0&controls=1&rel=0";
+            f.allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture";
+            f.allowFullscreen=true;
+            f.style.cssText="width:100%;height:100%;border:none";
+            this.parentNode.replaceChild(f,this);
+        };
+    })(yts[i])};
+    for(var i=0;i<yts.length;i++){yts[i].onkeydown=function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();this.click();}}};
+    var vcs=document.querySelectorAll(".video-card");
+    for(var i=0;i<vcs.length;i++){(function(c){
+        var v=c.querySelector("video");if(!v)return;
+        c.onmouseenter=function(){v.play().catch(function(){})};
+        c.onmouseleave=function(){v.pause();v.currentTime=0};
+    })(vcs[i])};
+    </script>
+    <script src="../../i18n.js"></script>
+</body>
+</html>

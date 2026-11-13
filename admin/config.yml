@@ -27,6 +27,7 @@ collections:
               - { label: "Date Start", name: "date_start", widget: "string", hint: "DD.MM.YYYY" }
               - { label: "Date End", name: "date_end", widget: "string", hint: "DD.MM.YYYY", required: false, default: "" }
               - { label: "Location", name: "location", widget: "string", required: false }
+              - { label: "Event page", name: "page", widget: "string", required: false, hint: "Optional link to a separate event page, e.g. /exhibitions/asterion/ — shows an \"Open event page\" button" }
               - { label: "Description", name: "description", widget: "text" }
               - label: "Stats"
                 name: "stats"
