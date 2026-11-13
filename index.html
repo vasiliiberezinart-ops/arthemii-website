@@ -1330,35 +1330,47 @@
         .section__toggle:hover .section__chevron { color: var(--text); }
         /* Section descriptions show only when the section is open */
         .section.is-collapsible:not(.is-open) .section__toggle .section__desc { display: none; }
-        /* Desktop: small previews of a section's photos on the right of its header */
-        .section__thumbs { display: none; }
+        /* One preview of a section's photos on the right of its header (all screen sizes) */
+        .section__thumbs {
+            position: absolute;
+            top: 50%;
+            right: 0;
+            display: flex;
+            max-width: none;
+            transform: translateY(-50%);
+            transition: opacity 0.4s ease, transform 0.5s var(--ease-out-expo);
+        }
+        .section__thumb {
+            display: block;
+            width: 240px;
+            height: 160px;
+            overflow: hidden;
+            border-radius: 12px;
+            background: var(--bg-alt);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+            transition: transform 0.4s var(--ease-out-expo), box-shadow 0.4s ease;
+        }
+        .section__thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
+        /* Drawings are photographed in frames: zoom in on the drawing itself */
+        #drawings .section__thumb img { transform: scale(1.7); }
+        .section__toggle:hover .section__thumb { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12); }
+        .section.is-open .section__thumbs { opacity: 0; pointer-events: none; transform: translateY(-50%) translateX(12px); }
         @media (min-width: 1025px) {
             .section__toggle.has-thumbs > :not(.section__thumbs) { max-width: min(700px, calc(100% - 290px)); }
-            .section__thumbs {
-                position: absolute;
-                top: 50%;
-                right: 0;
-                display: flex;
-                gap: 12px;
-                max-width: none;
-                transform: translateY(-50%);
-                transition: opacity 0.4s ease, transform 0.5s var(--ease-out-expo);
-            }
-            .section__thumb {
-                display: block;
-                width: 240px;
-                height: 160px;
-                overflow: hidden;
-                border-radius: 12px;
-                background: var(--bg-alt);
-                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-                transition: transform 0.4s var(--ease-out-expo), box-shadow 0.4s ease;
-            }
-            .section__thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
-            /* Drawings are photographed in frames: zoom in on the drawing itself */
-            #drawings .section__thumb img { transform: scale(1.7); }
-            .section__toggle:hover .section__thumb { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12); }
-            .section.is-open .section__thumbs { opacity: 0; pointer-events: none; transform: translateY(-50%) translateX(12px); }
+        }
+        /* Tablets */
+        @media (max-width: 1024px) {
+            .section__thumb { width: 180px; height: 120px; border-radius: 10px; }
+            .section:not(.is-open) > .container > .section__toggle.has-thumbs > :not(.section__thumbs) { max-width: calc(100% - 200px); }
+        }
+        /* Phones: smaller photo, slightly smaller header text so both fit side by side */
+        @media (max-width: 640px) {
+            .section__thumb { width: 112px; height: 84px; border-radius: 8px; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12); }
+            .section:not(.is-open) > .container > .section__toggle.has-thumbs > :not(.section__thumbs) { max-width: calc(100% - 124px); }
+            .section:not(.is-open) > .container > .section__toggle.has-thumbs .section__title { font-size: 1.375rem; line-height: 1.25; margin-bottom: 0; }
+            .section:not(.is-open) > .container > .section__toggle.has-thumbs .section__label-row { margin-bottom: 0.75rem; }
+            .section:not(.is-open) > .container > .section__toggle.has-thumbs .section__label { font-size: 0.625rem; letter-spacing: 0.18em; padding: 0.38rem 0.75rem 0.38rem 0.6rem; }
+            .section:not(.is-open) > .container > .section__toggle.has-thumbs .yt-channel { font-size: 0.8125rem; }
         }
         .section__body {
             display: grid;
