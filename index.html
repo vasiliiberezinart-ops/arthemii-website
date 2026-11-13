@@ -1360,7 +1360,7 @@
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
             transition: transform 0.4s var(--ease-out-expo), box-shadow 0.4s ease;
         }
-        .section__thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
+        .section__thumb img, .section__thumb video { display: block; width: 100%; height: 100%; object-fit: cover; }
         /* Drawings are photographed in frames: zoom in on the drawing itself */
         #drawings .section__thumb img { transform: scale(1.7); }
         .section__toggle:hover .section__thumb { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12); }
@@ -2617,7 +2617,7 @@
         <div class="section__divider"></div>
 
         <!-- ========== VIDEO ========== -->
-        <section class="section" id="videos">
+        <section class="section" id="videos" data-thumb="video-posters/radiant-forms.jpg" data-thumb-video="video-files/radiant-forms.m4v">
             <div class="container">
                 <header class="section__header reveal">
                     <div class="section__label" data-i18n="video_label">Video</div>
@@ -3210,7 +3210,25 @@
                     const strip = document.createElement('div');
                     strip.className = 'section__thumbs';
                     strip.setAttribute('aria-hidden', 'true');
+                    const thumbVideo = section.dataset.thumbVideo;
                     thumbs.forEach(function (url) {
+                        // A section can show a short muted looping video as its preview (data-thumb-video)
+                        if (thumbVideo) {
+                            const v = document.createElement('video');
+                            v.muted = true; v.loop = true; v.autoplay = true; v.playsInline = true;
+                            ['muted', 'loop', 'autoplay', 'playsinline'].forEach(function (a) { v.setAttribute(a, ''); });
+                            v.preload = 'none';
+                            afterHero(function () {
+                                v.poster = url;
+                                v.src = thumbVideo;
+                                const p = v.play(); if (p && p.catch) p.catch(function () {});
+                            });
+                            const vbox = document.createElement('span');
+                            vbox.className = 'section__thumb';
+                            vbox.appendChild(v);
+                            strip.appendChild(vbox);
+                            return;
+                        }
                         const im = document.createElement('img');
                         im.alt = '';
                         im.decoding = 'async';
