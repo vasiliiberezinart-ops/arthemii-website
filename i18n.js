@@ -576,9 +576,11 @@
         'border:1px solid var(--border,#e5e5e5);border-radius:14px;box-shadow:0 12px 32px rgba(0,0,0,.12)}' +
       '.lang-dd.is-open .lang-dd__menu{display:grid}' +
       '.lang-dd.is-up .lang-dd__menu{top:auto;bottom:calc(100% + 8px)}' +
-      // In the full-screen mobile menu the switcher sits in the top-left corner, opposite the close button
-      '.mobile-nav .header__lang.lang-dd{position:absolute;top:18px;left:16px}' +
-      '.mobile-nav .lang-dd__menu{right:auto;left:0}' +
+      // Phones / tablets: the switcher sits in the top bar next to the name, not inside the menu overlay
+      '.mobile-nav .header__lang{display:none!important}' +
+      '.header__lang.lang-dd--bar{display:none}' +
+      '.header.has-lang-bar .header__lang.lang-dd--bar{display:inline-flex;margin-left:auto;margin-right:10px}' +
+      '.lang-dd--bar .lang-dd__menu{position:fixed;top:calc(var(--header-height,64px) + 6px);right:12px;left:auto;width:min(340px,calc(100vw - 24px))}' +
       '.lang-dd__menu .header__lang-btn{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;padding:9px 10px;border-radius:9px;' +
         'background:transparent;color:var(--text,#111);font:inherit;font-size:.8125rem;font-weight:400;letter-spacing:0;text-align:left;cursor:pointer;transition:background .15s ease}' +
       '.lang-dd__menu .header__lang-btn:hover{background:var(--bg-alt,rgba(0,0,0,.05))}' +
@@ -593,6 +595,13 @@
 
   // Turn every row of language buttons into one compact drop-down menu
   function buildDropdowns() {
+    // An extra switcher in the top bar, shown when the header links collapse into the menu button
+    document.querySelectorAll('.header').forEach(function (h) {
+      if (h.querySelector('.lang-dd--bar') || !h.querySelector('.header__menu-btn')) return;
+      var bar = document.createElement('div');
+      bar.className = 'header__lang lang-dd--bar';
+      h.insertBefore(bar, h.querySelector('.header__menu-btn'));
+    });
     document.querySelectorAll('.header__lang').forEach(function (el, n) {
       if (el.classList.contains('lang-dd')) return;
       el.classList.add('lang-dd');
@@ -683,6 +692,7 @@
     wanted = lang;
     if (EXT[lang] && !window.I18N_DATA[lang]) {
       buildDropdowns();
+      syncBar();
       updateButtons();
       loadLang(lang, function (ok) { if (wanted === lang) applyLang(ok ? lang : current); });
       return;
@@ -702,6 +712,7 @@
       html.classList.add('notranslate');
     }
     buildDropdowns();
+    syncBar();
     protectSwitcher();
     walk(document.body);
     applyTitle();
@@ -755,7 +766,15 @@
       if (items[i]) { e.preventDefault(); items[i].focus(); }
     }
   });
-  window.addEventListener('resize', function () { closeMenus(); });
+  // Show the top-bar switcher exactly when the header links are hidden (breakpoints differ per page)
+  function syncBar() {
+    document.querySelectorAll('.header').forEach(function (h) {
+      var nav = h.querySelector('.header__nav');
+      var hidden = !nav || window.getComputedStyle(nav).display === 'none';
+      h.classList.toggle('has-lang-bar', hidden && !!h.querySelector('.lang-dd--bar'));
+    });
+  }
+  window.addEventListener('resize', function () { closeMenus(); syncBar(); });
 
   // Language the visitor picked by hand (also honours a non-English choice saved by the old version)
   var PICKED = 'langPicked';
