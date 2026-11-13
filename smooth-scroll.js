@@ -13,10 +13,12 @@
   var mq = function (q) { return window.matchMedia && window.matchMedia(q).matches; };
   if (mq('(prefers-reduced-motion: reduce)')) return;
   // Phones and tablets already scroll smoothly with the finger
-  if (mq('(hover: none) and (pointer: coarse)')) return;
+  // Only for a real mouse or trackpad: phones and tablets keep their own (already smooth) scrolling
+  if (!mq('(hover: hover) and (pointer: fine)')) return;
+  if (mq('(any-pointer: coarse)') && !mq('(any-hover: hover)')) return;
 
   var EASE = 0.11;       // share of the remaining distance covered per frame (60 fps)
-  var target = 0, current = 0, running = false, last = 0;
+  var target = 0, current = 0, running = false, last = 0, disabled = false;
   var root = document.documentElement;
 
   function maxScroll() { return Math.max(0, root.scrollHeight - window.innerHeight); }
@@ -69,7 +71,7 @@
   }
 
   window.addEventListener('wheel', function (e) {
-    if (useNative(e)) { stop(); return; }
+    if (disabled || useNative(e)) { stop(); return; }
     e.preventDefault();
     if (!running) { current = target = window.scrollY; }
     target = Math.max(0, Math.min(maxScroll(), target + wheelDelta(e)));
@@ -86,4 +88,6 @@
   }, { passive: true });
   window.addEventListener('keydown', stop);
   window.addEventListener('mousedown', stop);
+  // A touch means a touch screen: hand scrolling back to the browser for good
+  window.addEventListener('touchstart', function () { stop(); disabled = true; }, { passive: true, once: true });
 })();
