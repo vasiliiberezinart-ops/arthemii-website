@@ -1465,12 +1465,10 @@
             gap: var(--spacing-xs);
         }
 
-        /* Rows only matter on phones; elsewhere the photos sit in the grid as before */
-        .tech-block__row { display: contents; }
-
-        /* Phones & small tablets: every photo visible at once, uncropped — rows of equal height
-           that fill the width exactly (each photo's width follows its proportions, --r) */
-        @media (max-width: 768px) {
+        /* Every screen size: every photo visible at once, uncropped — rows of equal height
+           that fill the width exactly (each photo's width follows its proportions, --r),
+           so wide photos stay large and there are no empty gaps */
+        @media all {
             .tech-block__photos {
                 display: flex;
                 flex-direction: column;
