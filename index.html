@@ -1580,9 +1580,9 @@
         }
         /* Phones: two drawings per line */
         @media (max-width: 640px) {
-            .drawings__row { flex-wrap: wrap; }
+            .drawings__row { flex-wrap: wrap; align-items: flex-start; }
             .drawings__row > .drawing,
-            .drawings__row > a { flex: 1 1 calc(50% - var(--spacing-sm)); aspect-ratio: var(--r); }
+            .drawings__row > a { flex: var(--r) var(--r) calc(var(--r) * 40vw); aspect-ratio: var(--r); }
         }
 
         /* Drawings → AI Content */
@@ -2545,11 +2545,19 @@
                     <h2 class="section__title">Works on paper</h2>
                     <p class="section__desc">Flowing black contours and fragments of colour that fold into crystal-like forms — drawings that share the language of the stained-glass sculptures.</p>
                 </header>
-                <div class="drawings__row reveal">
-                    <a href="drawings/" class="drawing" style="--r:0.789" aria-label="Open the Drawings page"><picture><source type="image/webp" data-srcset="img/drawings/drawing-02-800.webp 800w, img/drawings/drawing-02-1600.webp 1600w" sizes="(max-width: 640px) 50vw, 25vw"><img data-src="img/drawings/drawing-02-1600.jpg" alt="Drawing 02 — Arthemii Ionaere" loading="lazy" decoding="async"></picture></a>
-                    <a href="drawings/" class="drawing" style="--r:0.779" aria-label="Open the Drawings page"><picture><source type="image/webp" data-srcset="img/drawings/drawing-09-800.webp 800w, img/drawings/drawing-09-1600.webp 1600w" sizes="(max-width: 640px) 50vw, 25vw"><img data-src="img/drawings/drawing-09-1600.jpg" alt="Drawing 09 — Arthemii Ionaere" loading="lazy" decoding="async"></picture></a>
-                    <a href="drawings/" class="drawing" style="--r:0.805" aria-label="Open the Drawings page"><picture><source type="image/webp" data-srcset="img/drawings/drawing-13-800.webp 800w, img/drawings/drawing-13-1600.webp 1600w" sizes="(max-width: 640px) 50vw, 25vw"><img data-src="img/drawings/drawing-13-1600.jpg" alt="Drawing 13 — Arthemii Ionaere" loading="lazy" decoding="async"></picture></a>
-                    <a href="drawings/" class="drawing" style="--r:0.81" aria-label="Open the Drawings page"><picture><source type="image/webp" data-srcset="img/drawings/drawing-16-800.webp 800w, img/drawings/drawing-16-1600.webp 1600w" sizes="(max-width: 640px) 50vw, 25vw"><img data-src="img/drawings/drawing-16-1600.jpg" alt="Drawing 16 — Arthemii Ionaere" loading="lazy" decoding="async"></picture></a>
+                <div class="drawings__rows reveal">
+                    <div class="drawings__row">
+                        <a href="drawings/" class="drawing" style="--r:0.789" aria-label="Open the Drawings page"><picture><source type="image/webp" data-srcset="img/drawings/drawing-02-800.webp 800w, img/drawings/drawing-02-1600.webp 1600w" sizes="(max-width: 640px) 50vw, 25vw"><img data-src="img/drawings/drawing-02-1600.jpg" alt="Drawing 02 — Arthemii Ionaere" loading="lazy" decoding="async"></picture></a>
+                        <a href="drawings/" class="drawing" style="--r:0.85" aria-label="Open the Drawings page"><picture><source type="image/webp" data-srcset="img/drawings/drawing-25-800.webp 800w, img/drawings/drawing-25-1600.webp 1600w" sizes="(max-width: 640px) 50vw, 25vw"><img data-src="img/drawings/drawing-25-1600.jpg" alt="Drawing 25 — Arthemii Ionaere" loading="lazy" decoding="async"></picture></a>
+                        <a href="drawings/" class="drawing" style="--r:0.805" aria-label="Open the Drawings page"><picture><source type="image/webp" data-srcset="img/drawings/drawing-13-800.webp 800w, img/drawings/drawing-13-1600.webp 1600w" sizes="(max-width: 640px) 50vw, 25vw"><img data-src="img/drawings/drawing-13-1600.jpg" alt="Drawing 13 — Arthemii Ionaere" loading="lazy" decoding="async"></picture></a>
+                        <a href="drawings/" class="drawing" style="--r:0.847" aria-label="Open the Drawings page"><picture><source type="image/webp" data-srcset="img/drawings/drawing-30-800.webp 800w, img/drawings/drawing-30-1600.webp 1600w" sizes="(max-width: 640px) 50vw, 25vw"><img data-src="img/drawings/drawing-30-1600.jpg" alt="Drawing 30 — Arthemii Ionaere" loading="lazy" decoding="async"></picture></a>
+                    </div>
+                    <div class="drawings__row">
+                        <a href="drawings/" class="drawing" style="--r:0.779" aria-label="Open the Drawings page"><picture><source type="image/webp" data-srcset="img/drawings/drawing-09-800.webp 800w, img/drawings/drawing-09-1600.webp 1600w" sizes="(max-width: 640px) 50vw, 25vw"><img data-src="img/drawings/drawing-09-1600.jpg" alt="Drawing 09 — Arthemii Ionaere" loading="lazy" decoding="async"></picture></a>
+                        <a href="drawings/" class="drawing" style="--r:0.844" aria-label="Open the Drawings page"><picture><source type="image/webp" data-srcset="img/drawings/drawing-34-800.webp 800w, img/drawings/drawing-34-1600.webp 1600w" sizes="(max-width: 640px) 50vw, 25vw"><img data-src="img/drawings/drawing-34-1600.jpg" alt="Drawing 34 — Arthemii Ionaere" loading="lazy" decoding="async"></picture></a>
+                        <a href="drawings/" class="drawing" style="--r:0.81" aria-label="Open the Drawings page"><picture><source type="image/webp" data-srcset="img/drawings/drawing-16-800.webp 800w, img/drawings/drawing-16-1600.webp 1600w" sizes="(max-width: 640px) 50vw, 25vw"><img data-src="img/drawings/drawing-16-1600.jpg" alt="Drawing 16 — Arthemii Ionaere" loading="lazy" decoding="async"></picture></a>
+                        <a href="drawings/" class="drawing" style="--r:0.821" aria-label="Open the Drawings page"><picture><source type="image/webp" data-srcset="img/drawings/drawing-37-800.webp 800w, img/drawings/drawing-37-1600.webp 1600w" sizes="(max-width: 640px) 50vw, 25vw"><img data-src="img/drawings/drawing-37-1600.jpg" alt="Drawing 37 — Arthemii Ionaere" loading="lazy" decoding="async"></picture></a>
+                    </div>
                 </div>
                 <div class="drawings__more">
                     <span class="drawings__count">38 drawings</span>

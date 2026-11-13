@@ -1320,9 +1320,9 @@
         }
         /* Phones: two drawings per line */
         @media (max-width: 640px) {
-            .drawings__row { flex-wrap: wrap; }
+            .drawings__row { flex-wrap: wrap; align-items: flex-start; }
             .drawings__row > .drawing,
-            .drawings__row > a { flex: 1 1 calc(50% - var(--spacing-sm)); aspect-ratio: var(--r); }
+            .drawings__row > a { flex: var(--r) var(--r) calc(var(--r) * 40vw); aspect-ratio: var(--r); }
         }
 
         /* Drawings → AI Content */
