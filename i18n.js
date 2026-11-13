@@ -1,26 +1,62 @@
 /*
- * Arthemii Ionaere — site translations (EN / DE / ES / FR / RU / ZH / JA)
+ * Arthemii Ionaere — site translations
  *
  * How it works: every page is written in English. This script swaps visible
- * text for its German, Spanish, French, Russian, Chinese (simplified) or Japanese version using the dictionary below, keyed by
- * the exact English text (whitespace-insensitive). Text with no entry stays
- * in English. To translate a new piece of text, add a line:
+ * text for its translation, keyed by the exact English text (whitespace-insensitive).
+ * Text with no entry stays in English.
+ *
+ * German, Spanish, French, Russian, Chinese (simplified) and Japanese live in the
+ * dictionary below:
  *     "English text": ["Deutscher Text", "Texto en español", "Texte en français", "Текст по-русски", "中文文本", "日本語のテキスト"],
+ * Italian, Dutch, Portuguese, Korean, Finnish, Swedish, Romanian, Polish and Danish
+ * live in i18n/<code>.js (one file per language, loaded only when that language is
+ * chosen). Austrian German (de-AT) uses the German texts.
+ *
  * On the first visit the language is picked automatically from the visitor's
- * browser / system language (e.g. a German browser opens the site in German);
- * anything not covered falls back to English. Once a visitor clicks a language
- * button, that choice is remembered and always wins.
- * The ZH / JA buttons are added to every language switcher by this script,
- * so the pages themselves only list EN … RU.
+ * browser / system language; anything not covered falls back to English. Once a
+ * visitor picks a language in the menu, that choice is remembered and always wins.
+ * The language switcher in every page header is turned into a drop-down menu by
+ * this script, so the pages themselves only need the plain EN … RU buttons.
  */
 (function () {
   'use strict';
 
-  var LANGS = ['en', 'de', 'es', 'fr', 'ru', 'zh', 'ja'];
-  var IDX = { de: 0, es: 1, fr: 2, ru: 3, zh: 4, ja: 5 };
-  var HTML_LANG = { zh: 'zh-Hans' };
-  // Buttons added after RU in every switcher: code, label, accessible name
-  var EXTRA = [['zh', '中文', '中文（简体）'], ['ja', '日本語', '日本語']];
+  // Menu order: code, short label on the menu button, name in its own language
+  var MENU = [
+    ['en', 'EN', 'English'],
+    ['de', 'DE', 'Deutsch'],
+    ['de-at', 'AT', 'Deutsch (Österreich)'],
+    ['es', 'ES', 'Español'],
+    ['fr', 'FR', 'Français'],
+    ['it', 'IT', 'Italiano'],
+    ['pt', 'PT', 'Português'],
+    ['nl', 'NL', 'Nederlands'],
+    ['da', 'DA', 'Dansk'],
+    ['sv', 'SV', 'Svenska'],
+    ['fi', 'FI', 'Suomi'],
+    ['pl', 'PL', 'Polski'],
+    ['ro', 'RO', 'Română'],
+    ['ru', 'RU', 'Русский'],
+    ['zh', '中文', '中文（简体）'],
+    ['ja', '日本語', '日本語'],
+    ['ko', '한국어', '한국어']
+  ];
+  var LANGS = MENU.map(function (m) { return m[0]; });
+  var IDX = { de: 0, 'de-at': 0, es: 1, fr: 2, ru: 3, zh: 4, ja: 5 };
+  // Languages kept in their own file (i18n/<code>.js), loaded on demand
+  var EXT = { it: 1, nl: 1, pt: 1, ko: 1, fi: 1, sv: 1, ro: 1, pl: 1, da: 1 };
+  var EXT_VERSION = '20261113';
+  var HTML_LANG = { zh: 'zh-Hans', 'de-at': 'de-AT' };
+  var BASE = (function () {
+    var cs = document.currentScript;
+    var src = cs && cs.src ? cs.src : '';
+    if (!src) {
+      var list = document.getElementsByTagName('script');
+      for (var i = 0; i < list.length; i++) if (/i18n\.js(\?|$)/.test(list[i].src)) src = list[i].src;
+    }
+    return src.replace(/[?#].*$/, '').replace(/[^\/]*$/, '');
+  })();
+  window.I18N_DATA = window.I18N_DATA || {};
   var T = {
     "Latest show up events": ["Aktuelle Ausstellungen und Events", "Últimas exposiciones y eventos", "Dernières expositions et événements", "Последние выставки и события", "最新展览与活动", "最新の展覧会・イベント"],
     "Kinetic Fresnel lens prism \u2014 2026": ["Kinetisches Fresnel-Linsen-Prisma — 2026", "Prisma cinético con lente de Fresnel — 2026", "Prisme cinétique à lentille de Fresnel — 2026", "Кинетическая призма с линзой Френеля — 2026", "动态菲涅尔透镜棱镜 — 2026", "キネティック・フレネルレンズ・プリズム — 2026"],
@@ -444,6 +480,10 @@
   function translate(key, lang) {
     if (!key) return null;
     if (lang === 'en') return key;
+    if (EXT[lang]) {
+      var d = window.I18N_DATA[lang];
+      return d && d[key] ? d[key] : null;
+    }
     var e = T[key];
     return e ? e[IDX[lang]] : null;
   }
@@ -496,11 +536,22 @@
     if (out) document.title = out;
   }
 
+  function labelFor(lang) {
+    for (var i = 0; i < MENU.length; i++) if (MENU[i][0] === lang) return MENU[i];
+    return MENU[0];
+  }
+
   function updateButtons() {
     document.querySelectorAll('.header__lang-btn[data-lang]').forEach(function (b) {
       var on = b.getAttribute('data-lang') === current;
       b.classList.toggle('is-active', on);
-      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      b.setAttribute('aria-checked', on ? 'true' : 'false');
+    });
+    var m = labelFor(current);
+    document.querySelectorAll('.lang-dd__code').forEach(function (el) { el.textContent = m[1]; });
+    document.querySelectorAll('.lang-dd__toggle').forEach(function (el) {
+      el.setAttribute('aria-label', 'Language: ' + m[2]);
+      el.setAttribute('title', m[2]);
     });
   }
 
@@ -509,29 +560,96 @@
   // Japanese headings: break lines between phrases, not inside words (Chrome / Edge)
   (function () {
     var st = document.createElement('style');
-    st.textContent = 'html:lang(ja) h1,html:lang(ja) h2,html:lang(ja) h3{word-break:auto-phrase}';
+    st.textContent = 'html:lang(ja) h1,html:lang(ja) h2,html:lang(ja) h3{word-break:auto-phrase}' +
+      'html:lang(ko) h1,html:lang(ko) h2,html:lang(ko) h3{word-break:keep-all}' +
+      // Language drop-down
+      '.header__lang.lang-dd{position:relative;display:inline-flex;padding:0;border:0;gap:0;border-radius:0}' +
+      '.lang-dd__toggle{display:inline-flex;align-items:center;gap:6px;padding:6px 10px 6px 9px;border:1px solid var(--border,#e5e5e5);border-radius:999px;' +
+        'background:transparent;color:var(--text,#111);font:inherit;font-size:.6875rem;font-weight:600;letter-spacing:.05em;cursor:pointer;line-height:1;transition:border-color .2s ease,background .2s ease}' +
+      '.lang-dd__toggle:hover,.lang-dd.is-open .lang-dd__toggle{border-color:var(--text,#111)}' +
+      '.lang-dd__toggle svg{width:14px;height:14px;flex:none}' +
+      '.lang-dd__toggle .lang-dd__chev{width:10px;height:10px;transition:transform .2s ease}' +
+      '.lang-dd.is-open .lang-dd__chev{transform:rotate(180deg)}' +
+      '.lang-dd__menu{position:absolute;top:calc(100% + 8px);right:0;z-index:1100;display:none;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px;' +
+        'width:min(340px,calc(100vw - 32px));max-height:min(70vh,440px);overflow-y:auto;padding:6px;background:var(--bg,#fafafa);' +
+        'border:1px solid var(--border,#e5e5e5);border-radius:14px;box-shadow:0 12px 32px rgba(0,0,0,.12)}' +
+      '.lang-dd.is-open .lang-dd__menu{display:grid}' +
+      '.lang-dd.is-up .lang-dd__menu{top:auto;bottom:calc(100% + 8px)}' +
+      // In the full-screen mobile menu the switcher sits in the top-left corner, opposite the close button
+      '.mobile-nav .header__lang.lang-dd{position:absolute;top:18px;left:16px}' +
+      '.mobile-nav .lang-dd__menu{right:auto;left:0}' +
+      '.lang-dd__menu .header__lang-btn{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;padding:9px 10px;border-radius:9px;' +
+        'background:transparent;color:var(--text,#111);font:inherit;font-size:.8125rem;font-weight:400;letter-spacing:0;text-align:left;cursor:pointer;transition:background .15s ease}' +
+      '.lang-dd__menu .header__lang-btn:hover{background:var(--bg-alt,rgba(0,0,0,.05))}' +
+      '.lang-dd__menu .header__lang-btn.is-active{background:var(--text,#111);color:var(--bg,#fff);font-weight:600}' +
+      '.lang-dd__menu .header__lang-btn small{font-size:.625rem;font-weight:600;letter-spacing:.05em;opacity:.5}' +
+      '.mobile-nav .lang-dd__toggle{font-size:.8125rem;padding:9px 14px 9px 12px}';
     document.head.appendChild(st);
   })();
 
-  function addButtons() {
-    document.querySelectorAll('.header__lang').forEach(function (el) {
-      var last = el.querySelector('.header__lang-btn[data-lang="ru"]');
-      if (!last) return;
-      EXTRA.forEach(function (x) {
-        var b = el.querySelector('.header__lang-btn[data-lang="' + x[0] + '"]');
-        if (!b) {
-          b = last.cloneNode(false);
-          b.classList.remove('is-active');
-          b.setAttribute('data-lang', x[0]);
-          b.setAttribute('lang', HTML_LANG[x[0]] || x[0]);
-          b.setAttribute('aria-label', x[2]);
-          b.setAttribute('title', x[2]);
-          b.textContent = x[1];
-          last.parentNode.insertBefore(b, last.nextSibling);
-        }
-        last = b;
+  var GLOBE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9s1.3-6.3 3.8-9z"/></svg>';
+  var CHEV = '<svg class="lang-dd__chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5"/></svg>';
+
+  // Turn every row of language buttons into one compact drop-down menu
+  function buildDropdowns() {
+    document.querySelectorAll('.header__lang').forEach(function (el, n) {
+      if (el.classList.contains('lang-dd')) return;
+      el.classList.add('lang-dd');
+      el.removeAttribute('role');
+      el.innerHTML = '';
+      var id = 'lang-dd-menu-' + n;
+      var toggle = document.createElement('button');
+      toggle.type = 'button';
+      toggle.className = 'lang-dd__toggle';
+      toggle.setAttribute('aria-haspopup', 'menu');
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-controls', id);
+      toggle.innerHTML = GLOBE + '<span class="lang-dd__code"></span>' + CHEV;
+      var menu = document.createElement('div');
+      menu.className = 'lang-dd__menu';
+      menu.id = id;
+      menu.setAttribute('role', 'menu');
+      MENU.forEach(function (m) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'header__lang-btn';
+        b.setAttribute('role', 'menuitemradio');
+        b.setAttribute('data-lang', m[0]);
+        b.setAttribute('lang', HTML_LANG[m[0]] || m[0]);
+        var name = document.createElement('span');
+        name.textContent = m[2];
+        var code = document.createElement('small');
+        code.textContent = m[0] === 'de-at' ? 'AT' : m[0].toUpperCase();
+        b.appendChild(name);
+        b.appendChild(code);
+        menu.appendChild(b);
       });
+      el.appendChild(toggle);
+      el.appendChild(menu);
     });
+  }
+
+  function closeMenus(except) {
+    document.querySelectorAll('.lang-dd.is-open').forEach(function (dd) {
+      if (dd === except) return;
+      dd.classList.remove('is-open', 'is-up');
+      var t = dd.querySelector('.lang-dd__toggle');
+      if (t) t.setAttribute('aria-expanded', 'false');
+    });
+  }
+
+  function openMenu(dd) {
+    closeMenus(dd);
+    var t = dd.querySelector('.lang-dd__toggle');
+    var menu = dd.querySelector('.lang-dd__menu');
+    dd.classList.add('is-open');
+    t.setAttribute('aria-expanded', 'true');
+    // Open upwards when there is more room above (e.g. at the bottom of the mobile menu)
+    var r = t.getBoundingClientRect();
+    var need = Math.min(menu.scrollHeight, 440) + 12;
+    dd.classList.toggle('is-up', window.innerHeight - r.bottom < need && r.top > window.innerHeight - r.bottom);
+    var active = menu.querySelector('.is-active') || menu.querySelector('.header__lang-btn');
+    if (active) { try { active.focus({ preventScroll: true }); } catch (e) { active.focus(); } }
   }
 
   function protectSwitcher() {
@@ -541,8 +659,37 @@
     });
   }
 
+  var loading = {};
+  function loadLang(lang, done) {
+    if (window.I18N_DATA[lang]) { done(true); return; }
+    if (loading[lang]) { loading[lang].push(done); return; }
+    loading[lang] = [done];
+    var sc = document.createElement('script');
+    sc.src = BASE + 'i18n/' + lang + '.js?v=' + EXT_VERSION;
+    sc.async = true;
+    var finish = function (ok) {
+      var cbs = loading[lang] || []; delete loading[lang];
+      cbs.forEach(function (cb) { cb(ok); });
+    };
+    sc.onload = function () { finish(!!window.I18N_DATA[lang]); };
+    sc.onerror = function () { finish(false); };
+    document.head.appendChild(sc);
+  }
+
+  var wanted = null;
   function setLang(lang) {
     if (LANGS.indexOf(lang) === -1) lang = 'en';
+    wanted = lang;
+    if (EXT[lang] && !window.I18N_DATA[lang]) {
+      buildDropdowns();
+      updateButtons();
+      loadLang(lang, function (ok) { if (wanted === lang) applyLang(ok ? lang : current); });
+      return;
+    }
+    applyLang(lang);
+  }
+
+  function applyLang(lang) {
     current = lang;
     var html = document.documentElement;
     html.lang = HTML_LANG[lang] || lang;
@@ -553,7 +700,7 @@
       html.setAttribute('translate', 'no');
       html.classList.add('notranslate');
     }
-    addButtons();
+    buildDropdowns();
     protectSwitcher();
     walk(document.body);
     applyTitle();
@@ -575,13 +722,39 @@
   });
 
   document.addEventListener('click', function (e) {
+    var t = e.target.closest && e.target.closest('.lang-dd__toggle');
+    if (t) {
+      e.preventDefault();
+      var dd = t.closest('.lang-dd');
+      if (dd.classList.contains('is-open')) closeMenus(); else openMenu(dd);
+      return;
+    }
     var b = e.target.closest && e.target.closest('.header__lang-btn[data-lang]');
-    if (!b) return;
+    if (!b) { if (!(e.target.closest && e.target.closest('.lang-dd__menu'))) closeMenus(); return; }
     e.preventDefault();
     var lang = b.getAttribute('data-lang');
+    closeMenus();
     setLang(lang);
     try { localStorage.setItem(PICKED, lang); } catch (err) {}
   });
+
+  // Keyboard: Esc closes the menu, arrow keys move between languages
+  document.addEventListener('keydown', function (e) {
+    var dd = document.querySelector('.lang-dd.is-open');
+    if (!dd) return;
+    if (e.key === 'Escape') {
+      closeMenus();
+      var t = dd.querySelector('.lang-dd__toggle'); if (t) t.focus();
+      return;
+    }
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      var items = Array.prototype.slice.call(dd.querySelectorAll('.header__lang-btn'));
+      var i = items.indexOf(document.activeElement);
+      i = e.key === 'ArrowDown' ? Math.min(items.length - 1, i + 1) : Math.max(0, i - 1);
+      if (items[i]) { e.preventDefault(); items[i].focus(); }
+    }
+  });
+  window.addEventListener('resize', function () { closeMenus(); });
 
   // Language the visitor picked by hand (also honours a non-English choice saved by the old version)
   var PICKED = 'langPicked';
@@ -595,11 +768,13 @@
     return null;
   }
 
-  // First language in the browser's list that the site has: de-AT -> de, zh-TW -> zh, ...
+  // First language in the browser's list that the site has: de-AT -> de-at, de-CH -> de, zh-TW -> zh, ...
   function browserLang() {
     var list = (navigator.languages && navigator.languages.length) ? navigator.languages : [navigator.language || navigator.userLanguage || ''];
     for (var i = 0; i < list.length; i++) {
-      var code = String(list[i] || '').toLowerCase().split(/[-_]/)[0];
+      var full = String(list[i] || '').toLowerCase().replace('_', '-');
+      if (LANGS.indexOf(full) !== -1) return full;
+      var code = full.split('-')[0];
       if (code === 'en') return 'en';
       if (LANGS.indexOf(code) !== -1) return code;
     }
