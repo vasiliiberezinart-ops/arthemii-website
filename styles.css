@@ -1658,3 +1658,7 @@
             .header__nav { display: none; }
             .header__menu-btn { display: block; }
         }
+
+        /* "Works" is no longer in the top navigation (header and mobile menu); the footer keeps it */
+        .header__link[href$="works/"],
+        .mobile-nav__link[href$="works/"] { display: none; }
