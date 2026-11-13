@@ -1,6 +1,6 @@
 /*
  * Photo lightbox with previous / next and a close button.
- * Used on the homepage and the Gallery page.
+ * Used on the homepage, the Gallery page and the Drawings page.
  *
  * Click a photo inside one of CONTAINERS to open it full screen. The arrows,
  * the keyboard (← → Esc) and swipes (left / right, down to close) move through
@@ -9,7 +9,7 @@
 (function () {
   'use strict';
 
-  var CONTAINERS = ['.gallery__item', '.exhibition-block__photo', '.side-product', '.workspace__photo', '.tech-block__photo'];
+  var CONTAINERS = ['.gallery__item', '.drawing', '.exhibition-block__photo', '.side-product', '.workspace__photo', '.tech-block__photo'];
 
   var css = '' +
     '.lightbox{position:fixed;inset:0;background:rgba(10,10,10,.94);display:flex;align-items:center;justify-content:center;' +

@@ -1507,6 +1507,43 @@
             color: var(--text-secondary);
         }
 
+        /* ========== DRAWINGS ========== */
+        /* Rows of drawings: each item's flex-grow and aspect-ratio equal its width/height (--r),
+           so a row is filled edge to edge at one common height, uncropped. */
+        .drawings__rows { display: flex; flex-direction: column; gap: var(--spacing-md); }
+        .drawings__row { display: flex; gap: var(--spacing-md); }
+        .drawings__row > .drawing,
+        .drawings__row > a {
+            display: block;
+            flex: var(--r) 1 0;
+            aspect-ratio: var(--r);
+            min-width: 0;
+        }
+        .drawing { overflow: hidden; background: var(--bg-alt); box-shadow: 0 10px 30px rgba(0,0,0,.08); }
+        .drawing picture, .drawing img { display: block; width: 100%; height: 100%; object-fit: cover; }
+        .drawing img { transition: transform 0.6s var(--ease-out-expo); }
+        .drawing:hover img { transform: scale(1.03); }
+        .drawings__more {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--spacing-sm);
+            flex-wrap: wrap;
+            margin-top: var(--spacing-lg);
+        }
+        .drawings__count { font-size: 0.8125rem; color: var(--text-tertiary); letter-spacing: 0.04em; }
+        .drawings__more .btn span { transition: transform 0.3s var(--ease-out-expo); }
+        .drawings__more .btn:hover span { transform: translateX(3px); }
+        @media (max-width: 768px) {
+            .drawings__rows, .drawings__row { gap: var(--spacing-sm); }
+        }
+        /* Phones: two drawings per line */
+        @media (max-width: 640px) {
+            .drawings__row { flex-wrap: wrap; }
+            .drawings__row > .drawing,
+            .drawings__row > a { flex: 1 1 calc(50% - var(--spacing-sm)); aspect-ratio: 0.8; }
+        }
+
         /* ========== GALLERY ========== */
         /* Homepage gallery: rows of only tall or only wide photos.
            Each photo's flex-grow and aspect-ratio equal its width/height (--r),
@@ -1835,6 +1872,7 @@
             <a href="works/" class="header__link">Works</a>
             <a href="projects/" class="header__link">Projects</a>
             <a href="gallery/" class="header__link">Gallery</a>
+            <a href="drawings/" class="header__link">Drawings</a>
             <a href="videos/" class="header__link">Videos</a>
             <a href="ai-content/" class="header__link">AI Content</a>
             <a href="contact/" class="header__link">Contact</a>
@@ -1860,6 +1898,7 @@
         <a href="works/" class="mobile-nav__link">Works</a>
         <a href="projects/" class="mobile-nav__link">Projects</a>
         <a href="gallery/" class="mobile-nav__link">Gallery</a>
+        <a href="drawings/" class="mobile-nav__link">Drawings</a>
         <a href="videos/" class="mobile-nav__link">Videos</a>
         <a href="ai-content/" class="mobile-nav__link">AI Content</a>
         <a href="contact/" class="mobile-nav__link">Contact</a>
@@ -2415,6 +2454,29 @@
             </div>
         </section>
         <div class="section__divider"></div>
+
+        <!-- ========== DRAWINGS ========== -->
+        <section class="section" id="drawings">
+            <div class="container">
+                <header class="section__header reveal">
+                    <div class="section__label">Drawings</div>
+                    <h2 class="section__title">Works on paper</h2>
+                    <p class="section__desc">Flowing black contours and fragments of colour that fold into crystal-like forms — drawings that share the language of the stained-glass sculptures.</p>
+                </header>
+                <div class="drawings__row reveal">
+                    <a href="drawings/" class="drawing" style="--r:0.789" aria-label="Open the Drawings page"><picture><source type="image/webp" data-srcset="img/drawings/drawing-02-800.webp 800w, img/drawings/drawing-02-1600.webp 1600w" sizes="(max-width: 640px) 50vw, 25vw"><img data-src="img/drawings/drawing-02-1600.jpg" alt="Drawing 02 — Arthemii Ionaere" loading="lazy" decoding="async"></picture></a>
+                    <a href="drawings/" class="drawing" style="--r:0.779" aria-label="Open the Drawings page"><picture><source type="image/webp" data-srcset="img/drawings/drawing-09-800.webp 800w, img/drawings/drawing-09-1600.webp 1600w" sizes="(max-width: 640px) 50vw, 25vw"><img data-src="img/drawings/drawing-09-1600.jpg" alt="Drawing 09 — Arthemii Ionaere" loading="lazy" decoding="async"></picture></a>
+                    <a href="drawings/" class="drawing" style="--r:0.805" aria-label="Open the Drawings page"><picture><source type="image/webp" data-srcset="img/drawings/drawing-13-800.webp 800w, img/drawings/drawing-13-1600.webp 1600w" sizes="(max-width: 640px) 50vw, 25vw"><img data-src="img/drawings/drawing-13-1600.jpg" alt="Drawing 13 — Arthemii Ionaere" loading="lazy" decoding="async"></picture></a>
+                    <a href="drawings/" class="drawing" style="--r:0.81" aria-label="Open the Drawings page"><picture><source type="image/webp" data-srcset="img/drawings/drawing-16-800.webp 800w, img/drawings/drawing-16-1600.webp 1600w" sizes="(max-width: 640px) 50vw, 25vw"><img data-src="img/drawings/drawing-16-1600.jpg" alt="Drawing 16 — Arthemii Ionaere" loading="lazy" decoding="async"></picture></a>
+                </div>
+                <div class="drawings__more">
+                    <span class="drawings__count">20 drawings</span>
+                    <a href="drawings/" class="btn btn--outline">View all drawings <span aria-hidden="true">→</span></a>
+                </div>
+            </div>
+        </section>
+        <div class="section__divider"></div>
+
 
         <!-- ========== SIDE PRODUCTS ========== -->
         <section class="section" id="side-products">
