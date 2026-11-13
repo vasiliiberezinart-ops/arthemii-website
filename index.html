@@ -2159,7 +2159,7 @@
 
         <!-- ========== SIDE PRODUCTS CSS handled inline below ========== -->
         <!-- ========== DRAWINGS ========== -->
-        <section class="section" id="drawings">
+        <section class="section" id="drawings" data-thumb="img/drawings/drawing-38-800.webp">
             <div class="container">
                 <header class="section__header reveal">
                     <div class="section__label">Drawings</div>
@@ -3148,7 +3148,8 @@
                     header.appendChild(chevron);
                 }
                 // Desktop: one preview of the section's photos on the right of the header
-                const thumbs = sectionThumbs(inner, 1);
+                // A section can choose its preview photo with data-thumb; otherwise its first photo is used
+                const thumbs = section.dataset.thumb ? [section.dataset.thumb] : sectionThumbs(inner, 1);
                 if (thumbs.length) {
                     const strip = document.createElement('div');
                     strip.className = 'section__thumbs';
