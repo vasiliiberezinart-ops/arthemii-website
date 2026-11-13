@@ -579,6 +579,13 @@
       // In the full-screen mobile menu the switcher sits in the top-left corner, opposite the close button
       '.mobile-nav .header__lang.lang-dd{position:absolute;top:18px;left:16px}' +
       '.mobile-nav .lang-dd__menu{right:auto;left:0}' +
+      // Phones and tablets: the switcher sits in the top bar next to the menu button, not inside the menu
+      '@media (max-width:1024px){' +
+        '.header__nav{display:flex !important;margin-left:auto;margin-right:10px;gap:0 !important}' +
+        '.header__nav > :not(.header__lang){display:none !important}' +
+        '.mobile-nav .header__lang{display:none !important}' +
+        '.header__nav .lang-dd__menu{position:fixed;top:66px;right:12px;left:auto;width:min(340px,calc(100vw - 24px));max-height:calc(100vh - 80px);overflow-y:auto}' +
+      '}' +
       '.lang-dd__menu .header__lang-btn{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;padding:9px 10px;border-radius:9px;' +
         'background:transparent;color:var(--text,#111);font:inherit;font-size:.8125rem;font-weight:400;letter-spacing:0;text-align:left;cursor:pointer;transition:background .15s ease}' +
       '.lang-dd__menu .header__lang-btn:hover{background:var(--bg-alt,rgba(0,0,0,.05))}' +
