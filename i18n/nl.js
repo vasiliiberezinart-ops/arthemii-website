@@ -194,6 +194,7 @@ window.I18N_DATA["nl"] = {
   "Works on paper": "Werken op papier",
   "Flowing black contours and fragments of colour that fold into crystal-like forms — drawings that share the language of the stained-glass sculptures.": "Vloeiende zwarte contouren en kleurfragmenten die zich vouwen tot kristalachtige vormen — tekeningen die de taal van de glassculpturen delen.",
   "View all drawings": "Alle tekeningen bekijken",
+  "Read more": "Lees meer",
   "20 drawings": "20 tekeningen",
   "Every work in this section is generated from my own drawings. It always starts with a drawing on paper — in essence a precise schematic. Artificial intelligence reads its lines easily, which makes it possible to grow anything from it: architecture, jewellery or whatever the idea calls for.": "Elk werk in dit onderdeel is gegenereerd uit mijn eigen tekeningen. Het begint altijd met een tekening op papier — in wezen een nauwkeurig schema. Kunstmatige intelligentie leest de lijnen gemakkelijk, waardoor er van alles uit kan groeien: architectuur, sieraden of wat het idee ook vraagt.",
   "See the drawings": "Bekijk de tekeningen",
