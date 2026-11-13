@@ -1333,7 +1333,7 @@
         /* Desktop: small previews of a section's photos on the right of its header */
         .section__thumbs { display: none; }
         @media (min-width: 1025px) {
-            .section__toggle.has-thumbs > :not(.section__thumbs) { max-width: min(700px, calc(100% - 320px)); }
+            .section__toggle.has-thumbs > :not(.section__thumbs) { max-width: min(700px, calc(100% - 290px)); }
             .section__thumbs {
                 position: absolute;
                 top: 50%;
@@ -1346,19 +1346,18 @@
             }
             .section__thumb {
                 display: block;
-                width: 136px;
-                height: 102px;
+                width: 240px;
+                height: 160px;
                 overflow: hidden;
-                border-radius: 10px;
+                border-radius: 12px;
                 background: var(--bg-alt);
-                box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
                 transition: transform 0.4s var(--ease-out-expo), box-shadow 0.4s ease;
             }
             .section__thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
             /* Drawings are photographed in frames: zoom in on the drawing itself */
-            #drawings .section__thumb img { transform: scale(1.3); }
+            #drawings .section__thumb img { transform: scale(1.7); }
             .section__toggle:hover .section__thumb { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12); }
-            .section__toggle:hover .section__thumb:nth-child(2) { transition-delay: 0.03s; }
             .section.is-open .section__thumbs { opacity: 0; pointer-events: none; transform: translateY(-50%) translateX(12px); }
         }
         .section__body {
@@ -3128,8 +3127,8 @@
                 } else {
                     header.appendChild(chevron);
                 }
-                // Desktop: a few small previews of the section's photos on the right of the header
-                const thumbs = sectionThumbs(inner, 2);
+                // Desktop: one preview of the section's photos on the right of the header
+                const thumbs = sectionThumbs(inner, 1);
                 if (thumbs.length) {
                     const strip = document.createElement('div');
                     strip.className = 'section__thumbs';
