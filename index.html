@@ -1852,6 +1852,32 @@
 
         /* ========== RENDERS AND DRAWINGS ========== */
         .renders__photos { margin-bottom: var(--spacing-lg); }
+        /* AI Content: the drawings the renders are generated from */
+        .ai-source { max-width: 760px; margin-bottom: var(--spacing-xl); }
+        .ai-source__text { font-size: 1.0625rem; line-height: 1.75; color: var(--text-secondary); margin-bottom: var(--spacing-sm); }
+        .ai-source__link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text);
+            border-bottom: 1px solid var(--text);
+            padding-bottom: 2px;
+            margin-bottom: var(--spacing-md);
+        }
+        .ai-source__link span { transition: transform 0.3s var(--ease-out-expo); }
+        .ai-source__link:hover span { transform: translateX(3px); }
+        .ai-source__drawings { display: grid; grid-template-columns: repeat(4, 150px); gap: var(--spacing-sm); align-items: center; }
+        .ai-source__drawing { display: block; box-shadow: 0 6px 18px rgba(0,0,0,0.08); transition: transform 0.4s var(--ease-out-expo), box-shadow 0.4s ease; }
+        .ai-source__drawing img { display: block; width: 100%; height: auto; }
+        .ai-source__drawing:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(0,0,0,0.12); }
+        @media (max-width: 640px) {
+            .ai-source__drawings { grid-template-columns: repeat(4, 1fr); gap: var(--spacing-xs); }
+        }
+
         .renders__poster { width: 100%; height: 100%; object-fit: cover; display: block; background: var(--bg-alt); }
         .renders__videos .video-card__embed { background: #111; }
         .ai-arch { margin-top: var(--spacing-2xl); }
@@ -2543,6 +2569,17 @@
                     </a>
                 </header>
 
+                <div class="ai-source" data-no-thumbs>
+                    <p class="ai-source__text">Every work in this section is generated from my own drawings. It always starts with a drawing on paper — in essence a precise schematic. Artificial intelligence reads its lines easily, which makes it possible to grow anything from it: architecture, jewellery or whatever the idea calls for.</p>
+                    <a href="drawings/" class="ai-source__link">See the drawings <span aria-hidden="true">→</span></a>
+                    <div class="ai-source__drawings">
+                        <a href="drawings/" class="ai-source__drawing" aria-label="Open the Drawings page"><picture><source type="image/webp" data-srcset="img/drawings/drawing-01-800.webp 800w" sizes="160px"><img data-src="img/drawings/drawing-01-1600.jpg" alt="Drawing 01 — the source of the AI renders" loading="lazy" decoding="async"></picture></a>
+                        <a href="drawings/" class="ai-source__drawing" aria-label="Open the Drawings page"><picture><source type="image/webp" data-srcset="img/drawings/drawing-08-800.webp 800w" sizes="160px"><img data-src="img/drawings/drawing-08-1600.jpg" alt="Drawing 08 — the source of the AI renders" loading="lazy" decoding="async"></picture></a>
+                        <a href="drawings/" class="ai-source__drawing" aria-label="Open the Drawings page"><picture><source type="image/webp" data-srcset="img/drawings/drawing-16-800.webp 800w" sizes="160px"><img data-src="img/drawings/drawing-16-1600.jpg" alt="Drawing 16 — the source of the AI renders" loading="lazy" decoding="async"></picture></a>
+                        <a href="drawings/" class="ai-source__drawing" aria-label="Open the Drawings page"><picture><source type="image/webp" data-srcset="img/drawings/drawing-20-800.webp 800w" sizes="160px"><img data-src="img/drawings/drawing-20-1600.jpg" alt="Drawing 20 — the source of the AI renders" loading="lazy" decoding="async"></picture></a>
+                    </div>
+                </div>
+
                 <div class="gallery__rows renders__photos">
                     <div class="gallery__row gallery__row--wide">
                         <div class="gallery__item" style="--r:1.776"><picture><source type="image/webp" data-srcset="img/renders/DQz7gIWjB1K-800.webp 800w, img/renders/DQz7gIWjB1K.webp 1160w" sizes="(max-width: 640px) 50vw, 33vw"><img data-src="img/renders/DQz7gIWjB1K.jpg" alt="Render by Arthemii Ionaere" loading="lazy" decoding="async"></picture></div>
@@ -3011,6 +3048,7 @@
                 function firstOfSet(set) { return set ? set.split(',')[0].trim().split(/\s+/)[0] : ''; }
                 root.querySelectorAll('img, video, [style*="background-image"]').forEach(function (el) {
                     if (urls.length >= max) return;
+                    if (el.closest('[data-no-thumbs]')) return;
                     if (el.tagName === 'IMG') {
                         const pic = el.closest('picture');
                         const source = pic && pic.querySelector('source');
