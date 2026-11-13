@@ -1465,8 +1465,38 @@
             gap: var(--spacing-xs);
         }
 
+        /* Phones & small tablets: each project's photos in one swipeable row of equal height,
+           edge to edge, with the next photo peeking in so it is clear there is more */
         @media (max-width: 768px) {
-            .tech-block__photos { grid-template-columns: repeat(2, 1fr); }
+            .tech-block__photos {
+                display: flex;
+                gap: 8px;
+                overflow-x: auto;
+                overflow-y: hidden;
+                overscroll-behavior-x: contain;
+                scroll-snap-type: x mandatory;
+                scroll-padding: 0 var(--spacing-md);
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+                margin: var(--spacing-xs) calc(-1 * var(--spacing-md)) 0;
+                padding: 0 var(--spacing-md);
+            }
+            .tech-block__photos::-webkit-scrollbar { display: none; }
+            .tech-block__photos > .tech-block__photo {
+                flex: 0 0 auto;
+                height: min(64vw, 320px);
+                scroll-snap-align: start;
+            }
+            .tech-block__photos > .tech-block__photo picture { display: block; height: 100%; }
+            .tech-block__photos > .tech-block__photo img {
+                height: 100%;
+                width: auto;
+                min-width: 34vw;
+                max-width: 82vw;
+                object-fit: cover;
+            }
+            /* Placeholder width until the photo has loaded */
+            .tech-block__photos > .tech-block__photo img[data-src] { width: 56vw; }
         }
 
         .tech-block__photo {
