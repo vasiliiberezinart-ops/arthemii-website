@@ -194,6 +194,7 @@ window.I18N_DATA["fi"] = {
   "Works on paper": "Teoksia paperille",
   "Flowing black contours and fragments of colour that fold into crystal-like forms — drawings that share the language of the stained-glass sculptures.": "Virtaavia mustia ääriviivoja ja värin sirpaleita, jotka taittuvat kidemäisiksi muodoiksi — piirustuksia, joilla on sama kieli kuin lasiveistoksilla.",
   "View all drawings": "Katso kaikki piirustukset",
+  "Read more": "Lue lisää",
   "20 drawings": "20 piirustusta",
   "Every work in this section is generated from my own drawings. It always starts with a drawing on paper — in essence a precise schematic. Artificial intelligence reads its lines easily, which makes it possible to grow anything from it: architecture, jewellery or whatever the idea calls for.": "Jokainen tämän osion teos on luotu omista piirustuksistani. Kaikki alkaa aina piirustuksesta paperilla — pohjimmiltaan tarkasta kaaviosta. Tekoäly lukee sen viivat helposti, joten siitä voi kasvattaa mitä tahansa: arkkitehtuuria, koruja tai mitä idea vaatii.",
   "See the drawings": "Katso piirustukset",

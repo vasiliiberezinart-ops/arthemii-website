@@ -194,6 +194,7 @@ window.I18N_DATA["pt"] = {
   "Works on paper": "Obras sobre papel",
   "Flowing black contours and fragments of colour that fold into crystal-like forms — drawings that share the language of the stained-glass sculptures.": "Contornos negros fluidos e fragmentos de cor que se dobram em formas semelhantes a cristais — desenhos que partilham a linguagem das esculturas em vidro.",
   "View all drawings": "Ver todos os desenhos",
+  "Read more": "Ler mais",
   "20 drawings": "20 desenhos",
   "Every work in this section is generated from my own drawings. It always starts with a drawing on paper — in essence a precise schematic. Artificial intelligence reads its lines easily, which makes it possible to grow anything from it: architecture, jewellery or whatever the idea calls for.": "Todas as obras desta secção são geradas a partir dos meus próprios desenhos. Tudo começa sempre com um desenho em papel — no fundo, um esquema preciso. A inteligência artificial lê facilmente as suas linhas, o que permite fazer crescer daí qualquer coisa: arquitetura, joalharia ou o que a ideia pedir.",
   "See the drawings": "Ver os desenhos",

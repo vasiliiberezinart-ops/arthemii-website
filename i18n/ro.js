@@ -194,6 +194,7 @@ window.I18N_DATA["ro"] = {
   "Works on paper": "Lucrări pe hârtie",
   "Flowing black contours and fragments of colour that fold into crystal-like forms — drawings that share the language of the stained-glass sculptures.": "Contururi negre fluide și fragmente de culoare care se pliază în forme asemănătoare cristalelor — desene care împărtășesc limbajul sculpturilor din sticlă.",
   "View all drawings": "Vezi toate desenele",
+  "Read more": "Citește mai mult",
   "20 drawings": "20 de desene",
   "Every work in this section is generated from my own drawings. It always starts with a drawing on paper — in essence a precise schematic. Artificial intelligence reads its lines easily, which makes it possible to grow anything from it: architecture, jewellery or whatever the idea calls for.": "Fiecare lucrare din această secțiune este generată din propriile mele desene. Totul începe mereu cu un desen pe hârtie — în esență, o schemă precisă. Inteligența artificială îi citește ușor liniile, ceea ce face posibil să crească din el orice: arhitectură, bijuterii sau orice cere ideea.",
   "See the drawings": "Vezi desenele",

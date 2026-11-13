@@ -194,6 +194,7 @@ window.I18N_DATA["ko"] = {
   "Works on paper": "종이 작업",
   "Flowing black contours and fragments of colour that fold into crystal-like forms — drawings that share the language of the stained-glass sculptures.": "흐르는 검은 윤곽선과 색의 조각들이 결정 같은 형태로 접혀 드는 드로잉 — 유리 조각과 같은 언어를 공유합니다.",
   "View all drawings": "드로잉 전체 보기",
+  "Read more": "더 읽기",
   "20 drawings": "드로잉 20점",
   "Every work in this section is generated from my own drawings. It always starts with a drawing on paper — in essence a precise schematic. Artificial intelligence reads its lines easily, which makes it possible to grow anything from it: architecture, jewellery or whatever the idea calls for.": "이 섹션의 모든 작품은 제 드로잉에서 생성되었습니다. 언제나 종이 위의 드로잉에서 시작하는데, 이는 본질적으로 정밀한 도식입니다. 인공지능은 그 선을 쉽게 읽어 내기에, 건축이든 주얼리든 아이디어가 원하는 무엇이든 그로부터 키워 낼 수 있습니다.",
   "See the drawings": "드로잉 보기",
