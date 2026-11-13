@@ -1571,8 +1571,23 @@
         @media (max-width: 640px) {
             .drawings__row { flex-wrap: wrap; }
             .drawings__row > .drawing,
-            .drawings__row > a { flex: 1 1 calc(50% - var(--spacing-sm)); aspect-ratio: 0.8; }
+            .drawings__row > a { flex: 1 1 calc(50% - var(--spacing-sm)); aspect-ratio: var(--r); }
         }
+
+        /* Drawings → AI Content */
+        .drawings-ai {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--spacing-md) var(--spacing-xl);
+            flex-wrap: wrap;
+            margin-top: var(--spacing-xl);
+            padding-top: var(--spacing-lg);
+            border-top: 1px solid var(--border);
+        }
+        .drawings-ai__text { flex: 1 1 420px; max-width: 700px; font-size: 1.0625rem; line-height: 1.75; color: var(--text-secondary); margin: 0; }
+        .drawings-ai__btn span { transition: transform 0.3s var(--ease-out-expo); }
+        .drawings-ai__btn:hover span { transform: translateX(3px); }
 
         /* ========== GALLERY ========== */
         /* Homepage gallery: rows of only tall or only wide photos.
@@ -2526,8 +2541,12 @@
                     <a href="drawings/" class="drawing" style="--r:0.81" aria-label="Open the Drawings page"><picture><source type="image/webp" data-srcset="img/drawings/drawing-16-800.webp 800w, img/drawings/drawing-16-1600.webp 1600w" sizes="(max-width: 640px) 50vw, 25vw"><img data-src="img/drawings/drawing-16-1600.jpg" alt="Drawing 16 — Arthemii Ionaere" loading="lazy" decoding="async"></picture></a>
                 </div>
                 <div class="drawings__more">
-                    <span class="drawings__count">20 drawings</span>
+                    <span class="drawings__count">38 drawings</span>
                     <a href="drawings/" class="btn btn--outline">View all drawings <span aria-hidden="true">→</span></a>
+                </div>
+                <div class="drawings-ai">
+                    <p class="drawings-ai__text">These drawings later became the source of my AI content: each one is a precise schematic that artificial intelligence reads and turns into architecture, jewellery and other forms.</p>
+                    <a href="#ai-content" class="btn btn--primary drawings-ai__btn">AI Content <span aria-hidden="true">→</span></a>
                 </div>
             </div>
         </section>
@@ -3356,7 +3375,7 @@
     </script>
     <script src="lightbox.js"></script>
     <script src="video-lightbox.js"></script>
-    <script src="i18n.js?v=20261113"></script>
+    <script src="i18n.js?v=20261113b"></script>
     <script src="contact.js"></script>
 </body>
 </html>
