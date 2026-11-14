@@ -4,3 +4,15 @@ url: https://arthemii.com
 exclude:
   - README.md
   - CNAME
+plugins:
+  - jekyll-sitemap
+# Keep the CMS and old redirect pages out of the sitemap
+defaults:
+  - scope:
+      path: "admin"
+    values:
+      sitemap: false
+  - scope:
+      path: "technologies"
+    values:
+      sitemap: false

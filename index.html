@@ -8,6 +8,15 @@
     <meta name="description" content="Arthemii Ionaere — Contemporary stained glass artist exploring abstract art through light, color, and form.">
     <meta name="theme-color" content="#fafafa">
     <title>Arthemii Ionaere — Contemporary Stained Glass</title>
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Arthemii Ionaere">
+    <meta property="og:title" content="Arthemii Ionaere — Contemporary Stained Glass">
+    <meta property="og:description" content="Arthemii Ionaere — Contemporary stained glass artist exploring abstract art through light, color, and form.">
+    <meta property="og:url" content="https://arthemii.com/">
+    <meta property="og:image" content="https://arthemii.com/img/og-default.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
 
 
     <!-- Hero video first: poster + video get top priority, everything else waits (see HERO-FIRST script) -->
@@ -2079,6 +2088,12 @@
             box-shadow: 0 6px 18px rgba(214,36,159,0.18);
         }
         .about-more { margin-top: var(--spacing-md); }
+        /* Section names never break onto two lines; social links stay on one line on phones */
+        .section__label { white-space: nowrap; }
+        @media (max-width: 640px) {
+            .yt-channel { white-space: nowrap; width: max-content; max-width: none !important; font-size: 0.75rem; gap: 0.5rem; padding: 0.4rem 0.85rem 0.4rem 0.4rem; }
+            .yt-channel svg, .yt-channel.ig-channel svg { width: 24px; height: 24px; }
+        }
     </style>
 </head>
 <body>
@@ -2348,11 +2363,11 @@
         <div class="section__divider"></div>
 
         <!-- ========== EXHIBITIONS ========== -->
-        <section class="section" id="exhibitions" data-thumbs="/img/uploads/hf_20260423_122957_2f4c752c-0695-4d9a-b034-b930d1da5091.png|video-posters/light-architecture.jpg|video-posters/luminous-grid.jpg|img/new-lart-01.jpg|img/new-noisy-01.jpg|img/2024-12-Screenshot-2024-12-24-at-01.14.57.png|video-posters/prismatic-dance.jpg|img/2024-05-Screenshot-2024-05-25-at-16.52.48-1.png">
+        <section class="section" id="exhibitions" data-thumbs="/img/uploads/hf_20260423_122957_2f4c752c-0695-4d9a-b034-b930d1da5091.jpg|video-posters/light-architecture.jpg|video-posters/luminous-grid.jpg|img/new-lart-01.jpg|img/new-noisy-01.jpg|img/2024-12-Screenshot-2024-12-24-at-01.14.57.jpg|video-posters/prismatic-dance.jpg|img/2024-05-Screenshot-2024-05-25-at-16.52.48-1.jpg">
             <div class="container">
                 <header class="section__header reveal">
                     <div class="section__label">Exhibitions</div>
-                    <h2 class="section__title">Latest show up events</h2>
+                    <h2 class="section__title">Recent exhibitions &amp; events</h2>
                 </header>
 
                 {% for ex in site.data.exhibitions.items %}
@@ -3095,7 +3110,7 @@
             <div class="container">
                 <header class="section__header reveal">
                     <div class="section__label" data-i18n="contact_label">Contact</div>
-                    <h2 class="section__title" data-i18n="contact_title">Join the artist</h2>
+                    <h2 class="section__title" data-i18n="contact_title">Get in touch</h2>
                     <p class="section__desc" data-i18n="contact_desc">Whether you're interested in collaboration, artworks to order or buy, discussing a project, or simply sharing your thoughts.</p>
                 </header>
 
