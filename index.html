@@ -1592,6 +1592,57 @@
             .tech-block__head .tech-block__title { font-size: 1.0625rem; }
         }
 
+        /* ===== Homepage Exhibitions: each exhibition folds open / closed like the projects ===== */
+        .exhibition-block.is-collapsible { margin-bottom: 0; }
+        .exhibition-block__head {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            min-height: 72px;
+            padding: var(--spacing-xs) 0;
+            cursor: pointer;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        .exhibition-block__head:focus-visible { outline: 2px solid var(--text); outline-offset: 6px; border-radius: 4px; }
+        .exhibition-block__head-text { min-width: 0; }
+        .exhibition-block__head .exhibition-block__title { margin: 0 0 0.35rem; }
+        .exhibition-block__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.75rem; }
+        .exhibition-block__meta .exhibition-block__date { margin: 0; }
+        .exhibition-block__meta .exhibition-block__type { margin: 0; }
+        .exhibition-block__chev {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 1.75rem; height: 1.75rem; flex-shrink: 0;
+            color: var(--text-secondary);
+            transition: transform 0.45s var(--ease-out-expo), color 0.3s ease;
+        }
+        .exhibition-block__chev svg { width: 20px; height: 20px; display: block; }
+        .exhibition-block__head:hover .exhibition-block__chev { color: var(--text); }
+        .exhibition-block.is-open .exhibition-block__chev { transform: rotate(180deg); }
+        .exhibition-block__mini {
+            margin-left: auto; flex-shrink: 0;
+            width: 104px; height: 70px; border-radius: 8px; overflow: hidden;
+            background: var(--bg-alt); box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+            transition: opacity 0.35s ease, transform 0.45s var(--ease-out-expo);
+        }
+        .exhibition-block.is-open .exhibition-block__mini { opacity: 0; transform: translateX(10px); pointer-events: none; }
+        .exhibition-block__body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.6s var(--ease-out-expo); }
+        .exhibition-block.is-open .exhibition-block__body { grid-template-rows: 1fr; }
+        .exhibition-block__body-inner { overflow: hidden; min-height: 0; }
+        .exhibition-block.is-open.is-settled .exhibition-block__body-inner { overflow: visible; }
+        .exhibition-block__body .exhibition-block__header { padding-top: var(--spacing-sm); }
+        .exhibition-block.is-collapsible .exhibition-block__divider { margin-top: var(--spacing-sm); transition: margin-top 0.5s var(--ease-out-expo); }
+        .exhibition-block.is-collapsible.is-open .exhibition-block__divider { margin-top: var(--spacing-xl); }
+        /* Small previews of a project / exhibition: their photos cross-fade one after another */
+        .mini-stack { position: relative; }
+        .mini-stack img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.9s ease; }
+        .mini-stack img.is-active { opacity: 1; }
+        @media (max-width: 640px) {
+            .exhibition-block__mini { width: 84px; height: 56px; }
+            .exhibition-block__head .exhibition-block__title { font-size: 1.0625rem; }
+        }
+
         /* ========== RESIDENCY ========== */
         .residency-banner {
             display: grid;
@@ -3585,6 +3636,131 @@
                 body.appendChild(bodyInner);
                 bodyInner.appendChild(inner);
                 block.classList.add('is-collapsible');
+                let settle = null;
+                function setOpen(open) {
+                    clearTimeout(settle);
+                    block.classList.toggle('is-open', open);
+                    block.classList.remove('is-settled');
+                    head.setAttribute('aria-expanded', open ? 'true' : 'false');
+                    bodyInner.inert = !open;
+                    if (open) settle = setTimeout(function () { block.classList.add('is-settled'); }, 650);
+                }
+                setOpen(false);
+                head.addEventListener('click', function () { setOpen(!block.classList.contains('is-open')); });
+                head.addEventListener('keydown', function (e) {
+                    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setOpen(!block.classList.contains('is-open')); }
+                });
+            });
+        })();
+
+        /* ===== Small previews that cycle through a block's photos (Projects + Exhibitions) ===== */
+        function fillMiniStack(mini, block, urls) {
+            urls = urls.filter(function (u, i) { return u && urls.indexOf(u) === i; }).slice(0, 8);
+            if (!urls.length) return;
+            mini.innerHTML = '';
+            mini.classList.add('mini-stack');
+            const imgs = urls.map(function (url, i) {
+                const im = document.createElement('img');
+                im.alt = ''; im.decoding = 'async';
+                im.dataset.full = url;
+                if (i === 0) im.classList.add('is-active');
+                mini.appendChild(im);
+                return im;
+            });
+            function load(im) { if (!im.getAttribute('src')) im.src = im.dataset.full; }
+            // Like every other photo on the page, start only after the hero video
+            if (typeof afterHero === 'function') afterHero(function () { load(imgs[0]); });
+            else load(imgs[0]);
+            if (imgs.length < 2) return;
+            let visible = false;
+            if ('IntersectionObserver' in window) {
+                new IntersectionObserver(function (entries) { visible = entries[0].isIntersecting; }).observe(mini);
+            } else visible = true;
+            let cur = 0;
+            setInterval(function () {
+                if (!visible || document.hidden || block.classList.contains('is-open')) return;
+                if (typeof heroReady !== 'undefined' && !heroReady) return;
+                const next = imgs[(cur + 1) % imgs.length];
+                load(next);
+                // Preload the one after, so the next change is instant
+                load(imgs[(cur + 2) % imgs.length]);
+                if (!next.complete || !next.naturalWidth) return; // try again on the next tick
+                imgs[cur].classList.remove('is-active');
+                cur = (cur + 1) % imgs.length;
+                imgs[cur].classList.add('is-active');
+            }, 3000);
+        }
+        function firstOfSrcset(img) {
+            const pic = img.closest('picture');
+            const src = pic && pic.querySelector('source');
+            const set = src && (src.getAttribute('data-srcset') || src.getAttribute('srcset'));
+            return (set ? set.split(',')[0].trim().split(/\s+/)[0] : '') || img.getAttribute('data-src') || img.getAttribute('src');
+        }
+
+        /* Projects: the preview next to each project now cycles through all its photos */
+        document.querySelectorAll('#projects .tech-block').forEach(function (block) {
+            const mini = block.querySelector('.tech-block__mini');
+            if (!mini) return;
+            const urls = [];
+            block.querySelectorAll('.tech-block__photo img').forEach(function (img) { urls.push(firstOfSrcset(img)); });
+            block.querySelectorAll('.tech-video video').forEach(function (v) { urls.push(v.getAttribute('data-poster') || v.getAttribute('poster')); });
+            fillMiniStack(mini, block, urls);
+        });
+
+        /* ===== EXHIBITIONS: each exhibition folds open / closed (like the projects) ===== */
+        (function () {
+            const CHEV = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>';
+            document.querySelectorAll('#exhibitions .exhibition-block').forEach(function (block) {
+                const header = block.querySelector(':scope > .exhibition-block__header');
+                const title = header && header.querySelector('.exhibition-block__title');
+                if (!header || !title) return;
+                const date = header.querySelector('.exhibition-block__date');
+                const type = header.querySelector('.exhibition-block__type');
+
+                const head = document.createElement('div');
+                head.className = 'exhibition-block__head';
+                head.setAttribute('role', 'button');
+                head.setAttribute('tabindex', '0');
+                const text = document.createElement('div');
+                text.className = 'exhibition-block__head-text';
+                text.appendChild(title);
+                // The date (and the kind of show) stay visible under the name while closed
+                if (date || type) {
+                    const meta = document.createElement('div');
+                    meta.className = 'exhibition-block__meta';
+                    if (date) meta.appendChild(date);
+                    if (type && type.textContent.trim()) meta.appendChild(type);
+                    text.appendChild(meta);
+                }
+                head.appendChild(text);
+                const chev = document.createElement('span');
+                chev.className = 'exhibition-block__chev';
+                chev.setAttribute('aria-hidden', 'true');
+                chev.innerHTML = CHEV;
+                head.appendChild(chev);
+
+                const urls = [];
+                header.querySelectorAll('.exhibition-block__photo img').forEach(function (img) {
+                    urls.push(img.getAttribute('data-src') || img.getAttribute('src'));
+                });
+                if (urls.length) {
+                    const mini = document.createElement('span');
+                    mini.className = 'exhibition-block__mini';
+                    mini.setAttribute('aria-hidden', 'true');
+                    head.appendChild(mini);
+                    fillMiniStack(mini, block, urls);
+                }
+
+                const body = document.createElement('div');
+                body.className = 'exhibition-block__body';
+                const bodyInner = document.createElement('div');
+                bodyInner.className = 'exhibition-block__body-inner';
+                block.insertBefore(head, header);
+                block.insertBefore(body, header);
+                body.appendChild(bodyInner);
+                bodyInner.appendChild(header);
+                block.classList.add('is-collapsible');
+
                 let settle = null;
                 function setOpen(open) {
                     clearTimeout(settle);
