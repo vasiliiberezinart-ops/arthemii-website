@@ -1,6 +1,7 @@
 /* Arthemii Ionaere — Polski translations, loaded by i18n.js on demand. Keys are the English texts. */
 window.I18N_DATA = window.I18N_DATA || {};
 window.I18N_DATA["pl"] = {
+  "36 stained glass panels — 7.2 × 1.8 m": "36 paneli witrażowych — 7,2 × 1,8 m",
   "Latest show up events": "Najnowsze wystawy i wydarzenia",
   "Kinetic Fresnel lens prism — 2026": "Kinetyczny pryzmat z soczewką Fresnela — 2026",
   "Sending…": "Wysyłanie…",

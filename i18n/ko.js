@@ -1,6 +1,7 @@
 /* Arthemii Ionaere — 한국어 translations, loaded by i18n.js on demand. Keys are the English texts. */
 window.I18N_DATA = window.I18N_DATA || {};
 window.I18N_DATA["ko"] = {
+  "36 stained glass panels — 7.2 × 1.8 m": "스테인드글라스 패널 36개 — 7.2 × 1.8m",
   "Latest show up events": "최근 전시와 이벤트",
   "Kinetic Fresnel lens prism — 2026": "키네틱 프레넬 렌즈 프리즘 — 2026",
   "Sending…": "보내는 중…",

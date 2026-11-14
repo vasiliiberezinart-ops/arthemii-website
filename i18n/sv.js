@@ -1,6 +1,7 @@
 /* Arthemii Ionaere — Svenska translations, loaded by i18n.js on demand. Keys are the English texts. */
 window.I18N_DATA = window.I18N_DATA || {};
 window.I18N_DATA["sv"] = {
+  "36 stained glass panels — 7.2 × 1.8 m": "36 glasmålningspaneler — 7,2 × 1,8 m",
   "Latest show up events": "Senaste utställningar och evenemang",
   "Kinetic Fresnel lens prism — 2026": "Kinetiskt prisma med fresnellins — 2026",
   "Sending…": "Skickar…",
