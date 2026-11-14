@@ -216,6 +216,7 @@
     "Glass Meditation": ["Glasmeditation", "Meditación en vidrio", "Méditation de verre", "Стеклянная медитация", "玻璃冥想", "ガラスの瞑想"],
     "Contemplative glass study — 2025": ["Kontemplative Glasstudie — 2025", "Estudio contemplativo en vidrio — 2025", "Étude contemplative en verre — 2025", "Созерцательный этюд в стекле — 2025", "沉思的玻璃习作 — 2025", "瞑想的なガラスのスタディ — 2025"],
     "Kinetic Prism": ["Kinetisches Prisma", "Prisma cinético", "Prisme cinétique", "Кинетическая призма", "动态棱镜", "キネティック・プリズム"],
+    "Kinetic Prizm": ["Kinetisches Prisma", "Prisma cinético", "Prisme cinétique", "Кинетическая призма", "动态棱镜", "キネティック・プリズム"],
     "Kinetic glass sculpture casting light — 2026": ["Kinetische Glasskulptur, die Licht wirft — 2026", "Escultura cinética de vidrio que proyecta luz — 2026", "Sculpture cinétique en verre projetant la lumière — 2026", "Кинетическая стеклянная скульптура, отбрасывающая свет — 2026", "投射光芒的动态玻璃雕塑 — 2026", "光を投げかけるキネティック・ガラス彫刻 — 2026"],
     "Previous": ["Zurück", "Anterior", "Précédent", "Назад", "上一个", "前へ"],
     "Next": ["Weiter", "Siguiente", "Suivant", "Далее", "下一个", "次へ"],

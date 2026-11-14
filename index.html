@@ -3512,12 +3512,14 @@
                     imgs[next].classList.add('is-active');
                     t.index = next;
                 }
-                // One clock for all previews; each starts a little later so they don't change at the same moment
-                setInterval(function () {
-                    rotatingThumbs.forEach(function (t, i) {
-                        setTimeout(function () { step(t); }, (i % 6) * 450);
-                    });
-                }, INTERVAL);
+                // Each preview keeps its own, slightly different pace (about 2.5–3.9 s) and starts a little later,
+                // so the previews never change at the same moment
+                const PACE = [0, 450, -300, 750, -500, 250, 900, -150];
+                rotatingThumbs.forEach(function (t, i) {
+                    setTimeout(function () {
+                        setInterval(function () { step(t); }, INTERVAL + PACE[i % PACE.length]);
+                    }, (i % 6) * 450);
+                });
             })();
 
             /* ===== CLIP ROTATION: the Video section preview plays its next short clip every 4 seconds ===== */
@@ -3688,7 +3690,7 @@
                 imgs[cur].classList.remove('is-active');
                 cur = (cur + 1) % imgs.length;
                 imgs[cur].classList.add('is-active');
-            }, 3000);
+            }, 2600 + Math.round(Math.random() * 1800)); // each preview at its own slightly different pace
         }
         function firstOfSrcset(img) {
             const pic = img.closest('picture');
