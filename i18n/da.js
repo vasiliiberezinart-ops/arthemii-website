@@ -1,6 +1,8 @@
 /* Arthemii Ionaere — Dansk translations, loaded by i18n.js on demand. Keys are the English texts. */
 window.I18N_DATA = window.I18N_DATA || {};
 window.I18N_DATA["da"] = {
+  "Five distinct approaches to working with colored glass — from traditional Tiffany technique to experimental shadow prism installations.": "Fem forskellige måder at arbejde med farvet glas på — fra den traditionelle Tiffany-teknik til eksperimenterende installationer med skyggeprismer.",
+  "Moving works that light passes through: as they turn, their shadows create striking analog visual effects. A custom drive was developed for this project, allowing the rotation speed to be adjusted.": "Bevægelige værker, som lyset passerer igennem: når de drejer, skaber deres skygger fascinerende analoge visuelle effekter. Til projektet blev der udviklet et eget drev, så rotationshastigheden kan reguleres.",
   "36 stained glass panels — 7.2 × 1.8 m": "36 glasmaleripaneler — 7,2 × 1,8 m",
   "Latest show up events": "Seneste udstillinger og begivenheder",
   "Kinetic Fresnel lens prism — 2026": "Kinetisk prisme med fresnellinse — 2026",

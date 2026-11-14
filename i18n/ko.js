@@ -1,6 +1,8 @@
 /* Arthemii Ionaere — 한국어 translations, loaded by i18n.js on demand. Keys are the English texts. */
 window.I18N_DATA = window.I18N_DATA || {};
 window.I18N_DATA["ko"] = {
+  "Five distinct approaches to working with colored glass — from traditional Tiffany technique to experimental shadow prism installations.": "색유리를 다루는 다섯 가지 방식 — 전통적인 티파니 기법부터 실험적인 그림자 프리즘 설치까지.",
+  "Moving works that light passes through: as they turn, their shadows create striking analog visual effects. A custom drive was developed for this project, allowing the rotation speed to be adjusted.": "빛이 통과하는 움직이는 작품입니다. 회전하면서 드리우는 그림자가 흥미로운 아날로그 시각 효과를 만들어 냅니다. 이 프로젝트를 위해 회전 속도를 조절할 수 있는 독자적인 구동 장치를 개발했습니다.",
   "36 stained glass panels — 7.2 × 1.8 m": "스테인드글라스 패널 36개 — 7.2 × 1.8m",
   "Latest show up events": "최근 전시와 이벤트",
   "Kinetic Fresnel lens prism — 2026": "키네틱 프레넬 렌즈 프리즘 — 2026",

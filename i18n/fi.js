@@ -1,6 +1,8 @@
 /* Arthemii Ionaere — Suomi translations, loaded by i18n.js on demand. Keys are the English texts. */
 window.I18N_DATA = window.I18N_DATA || {};
 window.I18N_DATA["fi"] = {
+  "Five distinct approaches to working with colored glass — from traditional Tiffany technique to experimental shadow prism installations.": "Viisi erilaista tapaa työskennellä värilasin kanssa — perinteisestä Tiffany-tekniikasta kokeellisiin varjoprisma-installaatioihin.",
+  "Moving works that light passes through: as they turn, their shadows create striking analog visual effects. A custom drive was developed for this project, allowing the rotation speed to be adjusted.": "Liikkuvia teoksia, joiden läpi valo kulkee: niiden pyöriessä varjot luovat kiehtovia analogisia visuaalisia efektejä. Projektia varten kehitettiin oma käyttölaite, jolla pyörimisnopeutta voi säätää.",
   "36 stained glass panels — 7.2 × 1.8 m": "36 lasimaalauspaneelia — 7,2 × 1,8 m",
   "Latest show up events": "Viimeisimmät näyttelyt ja tapahtumat",
   "Kinetic Fresnel lens prism — 2026": "Kineettinen Fresnel-linssiprisma — 2026",
