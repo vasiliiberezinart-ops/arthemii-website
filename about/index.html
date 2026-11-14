@@ -30,6 +30,9 @@
         .about-image--glass { background: #fff; }
         .about-image--glass img { aspect-ratio: 16 / 9; object-fit: cover; }
         .about-text .about-quote { clear: both; }
+        /* Full-width photo between paragraphs */
+        .about-image--wide { clear: both; margin: var(--spacing-lg) 0 var(--spacing-xl); overflow: visible; border-radius: 0; }
+        .about-image--wide img { display: block; border-radius: var(--radius-md); aspect-ratio: 16 / 9; object-fit: cover; }
         @media (max-width: 768px) {
             .about-inline--right, .about-inline--left { float: none; width: 100%; margin: var(--spacing-md) 0 var(--spacing-lg); }
         }
@@ -104,11 +107,18 @@
 
                         <p data-i18n="about_p4">His first work in glass, executed in the classical Tiffany technique, marked the beginning of a dedicated series in the 60×60 santimeters format. What started as exploration soon evolved into an ambitious first major artwork: a complete collection of 36 stained glass panels spanning a total dimension of 7.2 × 1.8 metres.</p>
 
+                        <figure class="about-image about-image--wide">
+                            <picture><source type="image/webp" srcset="../img/opt/about-vitrage-800.webp 800w, ../img/opt/about-vitrage-1600.webp 1600w, ../img/opt/about-vitrage-2400.webp 2400w" sizes="(max-width: 1024px) 92vw, 980px"><img src="../img/opt/about-vitrage-1600.jpg" alt="Collection of 36 stained glass panels, 7.2 × 1.8 m, lit from behind in a dark hall" width="1600" height="900" loading="lazy" decoding="async"></picture>
+                            <figcaption class="about-image__caption">36 stained glass panels — 7.2 × 1.8 m</figcaption>
+                        </figure>
+
+
+
+                        <p data-i18n="about_p5">After two years of mastering the Tiffany technique, Arthemii turned his attention to an entirely new frontier: three-dimensional architectural objects. Result is represents in works of this kind are virtually without precedent — such projects scarcely exist in the public domain. Through sustained experimentation, Arthemii developed a original architectural forms and technological approaches, forged entirely through practice rather than established method.</p>
                         <figure class="about-image about-image--glass about-inline about-inline--left">
                             <picture><source type="image/webp" srcset="../img/opt/about-arthemii-glass-800.webp 800w, ../img/opt/about-arthemii-glass-1600.webp 1600w, ../img/opt/about-arthemii-glass-2048.webp 2048w" sizes="(max-width: 768px) 92vw, 500px"><img src="../img/opt/about-arthemii-glass-1600.jpg" alt="Arthemii Ionaere beside an iridescent glass sculpture" width="1600" height="900" loading="lazy" decoding="async"></picture>
                         </figure>
 
-                        <p data-i18n="about_p5">After two years of mastering the Tiffany technique, Arthemii turned his attention to an entirely new frontier: three-dimensional architectural objects. Result is represents in works of this kind are virtually without precedent — such projects scarcely exist in the public domain. Through sustained experimentation, Arthemii developed a original architectural forms and technological approaches, forged entirely through practice rather than established method.</p>
                         <p data-i18n="about_p6">True to his creative philosophy, these architectural works are produced without preliminary sketches or structural design, resulting in forms that are abstract, futuristic, and entirely self-determined. Yet they remain deeply connected to the two dementional (classic stainglass)  works from which his practice grew: when light passes through these three-dimensional objects, the shadows they cast onto a surface reproduce, with remarkable precision, the exact same compositions found in his stained glass panels. They are, in essence, the same visual language — the same interplay of line, light, and form — liberated into a third dimension.</p>
                          <blockquote class="about-quote">
                             <p data-i18n="about_quote">Today, Arthemii continues to push the boundaries of his practice, venturing into the architecture of light itself. He is currently developing kinetic prisms and expanding into the field of installation art, exploring how light, movement, and space can be woven into immersive environments. Alongside this, he actively pursues collaborations across disciplines — working with theatre, club culture, and live performance — bringing his visual language into dialogue with other art forms and redefining the contexts in which his work can be experienced</p>
@@ -154,22 +164,6 @@
                         <h3 class="philosophy-card__title" data-i18n="phil_3_title">Spiritual Perception</h3>
                         <p class="philosophy-card__text" data-i18n="phil_3_text">Changing styles and techniques influence aesthetic and spiritual perception, offering new forms for integration into contemporary art and architecture. Glass becomes a medium between light consciousness and spatial experience.</p>
                     </article>
-                </div>
-            </div>
-        </section>
-<div class="section__divider"></div>
-<!-- ========== RESIDENCY ========== -->
-        <section class="section" id="residency">
-            <div class="container">
-                <div class="residency-banner reveal">
-                    <div class="residency-banner__image">
-                        <picture><source type="image/webp" srcset="../img/opt/2024-05-Screenshot-2024-05-25-at-17.18.33-800.webp 800w, ../img/opt/2024-05-Screenshot-2024-05-25-at-17.18.33-1600.webp 1600w, ../img/opt/2024-05-Screenshot-2024-05-25-at-17.18.33-2400.webp 2400w" sizes="(max-width: 640px) 90vw, (max-width: 1024px) 50vw, 800px"><img src="../img/opt/2024-05-Screenshot-2024-05-25-at-17.18.33-1600.jpg" alt="Arena Contemporary Berlin" loading="lazy" decoding="async"></picture>
-                    </div>
-                    <div class="residency-banner__body">
-                        <div class="section__label">Residency</div>
-                        <h3 class="residency-banner__title">Haus Der Visionaere — Berlin — Arena Treptow</h3>
-                        <p class="residency-banner__desc">1500m&sup2; independent art space joining the expansive operations of Berlin Arena Treptow. With a strong emphasis on performing and contemporary arts, equipped with artist studios, rehearsing rooms and 4D sound. Independent and inspired by modern hybrid cultural spaces such as Gaîté Lyrique and Palais de Tokyo (Paris), Arena Contemporary aims to break the stillness of established art institutions and build a bridge of opportunity, inspiration, and participation towards the higher arts.</p>
-                    </div>
                 </div>
             </div>
         </section>
