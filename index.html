@@ -1364,8 +1364,8 @@
         .section__thumb img, .section__thumb video { display: block; width: 100%; height: 100%; object-fit: cover; }
         /* Stacked preview photos that cross-fade (every 3 s) */
         .section__thumb--stack { position: relative; }
-        .section__thumb--stack img { position: absolute; inset: 0; opacity: 0; transition: opacity 0.9s ease; }
-        .section__thumb--stack img.is-active { opacity: 1; }
+        .section__thumb--stack img, .section__thumb--stack video { position: absolute; inset: 0; opacity: 0; transition: opacity 0.9s ease; }
+        .section__thumb--stack img.is-active, .section__thumb--stack video.is-active { opacity: 1; }
         /* Drawings use their own previews (img/drawings/thumbs): the whole drawing on white paper, uncropped */
         #drawings .section__thumb { background: #fff; }
         #drawings .section__thumb img { object-fit: contain; }
@@ -2621,7 +2621,7 @@
         <div class="section__divider"></div>
 
         <!-- ========== VIDEO ========== -->
-        <section class="section" id="videos" data-thumb="video-posters/radiant-forms.jpg" data-thumb-video="video-files/radiant-forms.m4v">
+        <section class="section" id="videos" data-thumb="video-posters/radiant-forms.jpg" data-thumb-videos="video-files/previews/radiant-forms|video-files/previews/chromatic-flow|video-files/previews/color-convergence|video-files/previews/glass-rotation|video-files/previews/prismatic-dance|video-files/previews/spectrum-shift|video-files/previews/light-passage|video-files/previews/studio-fragment">
             <div class="container">
                 <header class="section__header reveal">
                     <div class="section__label" data-i18n="video_label">Video</div>
@@ -3164,6 +3164,7 @@
 
             const THUMB_MAX = 8;          // photos per section preview
             const rotatingThumbs = [];
+            const rotatingClips = [];
 
             sections.forEach(function (section) {
                 const container = section.querySelector(':scope > .container') || section;
@@ -3217,6 +3218,30 @@
                 let thumbs = section.dataset.thumbs ? section.dataset.thumbs.split('|').filter(Boolean).slice(0, THUMB_MAX) : sectionThumbs(inner, THUMB_MAX);
                 if (!section.dataset.thumbs && section.dataset.thumb) thumbs = [section.dataset.thumb].concat(thumbs.filter(function (u) { return u !== section.dataset.thumb; })).slice(0, THUMB_MAX);
                 if (section.dataset.thumbVideo) thumbs = thumbs.slice(0, 1);
+                // data-thumb-videos: short preview clips (base path; .mp4 clip + .jpg poster) that take turns every 4 seconds
+                if (section.dataset.thumbVideos) {
+                    const clips = section.dataset.thumbVideos.split('|').filter(Boolean);
+                    const vstrip = document.createElement('div');
+                    vstrip.className = 'section__thumbs';
+                    vstrip.setAttribute('aria-hidden', 'true');
+                    const vbox = document.createElement('span');
+                    vbox.className = 'section__thumb section__thumb--stack';
+                    clips.forEach(function (base, i) {
+                        const v = document.createElement('video');
+                        v.muted = true; v.loop = true; v.playsInline = true;
+                        ['muted', 'loop', 'playsinline'].forEach(function (a) { v.setAttribute(a, ''); });
+                        v.preload = 'none';
+                        v.setAttribute('data-clip', base + '.mp4');
+                        v.setAttribute('data-clip-poster', base + '.jpg');
+                        if (i === 0) v.className = 'is-active';
+                        vbox.appendChild(v);
+                    });
+                    vstrip.appendChild(vbox);
+                    header.appendChild(vstrip);
+                    header.classList.add('has-thumbs');
+                    rotatingClips.push({ section: section, box: vbox, index: 0 });
+                    thumbs = [];
+                }
                 if (thumbs.length) {
                     const strip = document.createElement('div');
                     strip.className = 'section__thumbs';
@@ -3345,6 +3370,55 @@
                         setTimeout(function () { step(t); }, (i % 6) * 450);
                     });
                 }, INTERVAL);
+            })();
+
+            /* ===== CLIP ROTATION: the Video section preview plays its next short clip every 4 seconds ===== */
+            (function () {
+                if (!rotatingClips.length) return;
+                const INTERVAL = 4000;
+                function load(v) {
+                    const u = v.getAttribute('data-clip');
+                    if (!u) return;
+                    v.poster = v.getAttribute('data-clip-poster');
+                    v.src = u;
+                    v.preload = 'auto';
+                    v.removeAttribute('data-clip');
+                }
+                function play(v) { try { const p = v.play(); if (p && p.catch) p.catch(function () {}); } catch (e) {} }
+                function onScreen(el) {
+                    const r = el.getBoundingClientRect();
+                    const h = window.innerHeight || document.documentElement.clientHeight;
+                    return r.width > 0 && r.bottom > -100 && r.top < h + 100;
+                }
+                rotatingClips.forEach(function (t) {
+                    const vids = t.box.querySelectorAll('video');
+                    // Poster of the first clip right away (after the hero video), then the clip itself
+                    afterHero(function () { load(vids[0]); play(vids[0]); if (vids[1]) load(vids[1]); });
+                });
+                setInterval(function () {
+                    rotatingClips.forEach(function (t) {
+                        if (typeof heroReady !== 'undefined' && !heroReady) return;
+                        const vids = t.box.querySelectorAll('video');
+                        const cur = vids[t.index];
+                        const shown = !document.hidden && !t.section.classList.contains('is-open') && onScreen(t.box);
+                        if (!shown) { if (!cur.paused) cur.pause(); return; }
+                        if (vids.length < 2) { play(cur); return; }
+                        const next = (t.index + 1) % vids.length;
+                        load(vids[next]);
+                        load(vids[(next + 1) % vids.length]);   // fetch the one after in the background (clips are small)
+                        try { vids[next].currentTime = 0; } catch (e) {}
+                        play(vids[next]);
+                        vids[next].classList.add('is-active');
+                        cur.classList.remove('is-active');
+                        setTimeout(function () { cur.pause(); }, 1000);
+                        t.index = next;
+                    });
+                }, INTERVAL);
+                // Resume the visible clip when coming back to the page
+                document.addEventListener('visibilitychange', function () {
+                    if (document.hidden) return;
+                    rotatingClips.forEach(function (t) { const v = t.box.querySelectorAll('video')[t.index]; if (v && v.src) play(v); });
+                });
             })();
 
             // Open the section that contains a linked target (#hash links or a URL with a hash)
