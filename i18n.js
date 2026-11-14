@@ -8,7 +8,7 @@
  * German, Spanish, French, Russian, Chinese (simplified) and Japanese live in the
  * dictionary below:
  *     "English text": ["Deutscher Text", "Texto en español", "Texte en français", "Текст по-русски", "中文文本", "日本語のテキスト"],
- * Italian, Dutch, Portuguese, Korean, Finnish, Swedish, Romanian, Polish and Danish
+ * Italian, Dutch, Portuguese, Korean, Finnish, Swedish, Romanian, Polish, Danish and Turkish
  * live in i18n/<code>.js (one file per language, loaded only when that language is
  * chosen). Austrian German (de-AT) uses the German texts.
  *
@@ -36,6 +36,7 @@
     ['fi', 'FI', 'Suomi'],
     ['pl', 'PL', 'Polski'],
     ['ro', 'RO', 'Română'],
+    ['tr', 'TR', 'Türkçe'],
     ['ru', 'RU', 'Русский'],
     ['zh', '中文', '中文（简体）'],
     ['ja', '日本語', '日本語'],
@@ -44,7 +45,7 @@
   var LANGS = MENU.map(function (m) { return m[0]; });
   var IDX = { de: 0, 'de-at': 0, es: 1, fr: 2, ru: 3, zh: 4, ja: 5 };
   // Languages kept in their own file (i18n/<code>.js), loaded on demand
-  var EXT = { it: 1, nl: 1, pt: 1, ko: 1, fi: 1, sv: 1, ro: 1, pl: 1, da: 1 };
+  var EXT = { it: 1, nl: 1, pt: 1, ko: 1, fi: 1, sv: 1, ro: 1, pl: 1, da: 1, tr: 1 };
   var EXT_VERSION = '20261114';
   var HTML_LANG = { zh: 'zh-Hans', 'de-at': 'de-AT' };
   var BASE = (function () {
