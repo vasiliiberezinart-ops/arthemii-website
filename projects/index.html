@@ -34,7 +34,16 @@
             overflow: hidden;
             cursor: zoom-in;
         }
-        .tech-gallery.is-laid-out .tech-block__photo { flex: none; }
+        .tech-gallery .tech-video {
+            flex: var(--r) 1 calc(var(--r) * 220px);
+            aspect-ratio: var(--r);
+            min-width: 0;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            background: #111;
+        }
+        .tech-gallery .tech-video video { display: block; width: 100%; height: 100%; object-fit: cover; }
+        .tech-gallery.is-laid-out .tech-block__photo, .tech-gallery.is-laid-out .tech-video { flex: none; }
         .tech-gallery .tech-block__photo picture,
         .tech-gallery .tech-block__photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
         @media (max-width: 768px) { .tech-gallery { --gap: 6px; } }
@@ -87,7 +96,7 @@
                 <header class="section__header reveal">
                     <div class="section__label">Projects</div>
                     <h2 class="section__title">Craftsmanship & Techniques</h2>
-                    <p class="section__desc">Four distinct approaches to working with colored glass — from traditional Tiffany technique to experimental shadow prism installations.</p>
+                    <p class="section__desc">Five distinct approaches to working with colored glass — from traditional Tiffany technique to experimental shadow prism installations.</p>
                 </header>
 
                 <!-- Tech 1: Metal Frame -->
@@ -131,11 +140,37 @@
                     <div class="tech-block__divider"></div>
                 </article>
 
-                <!-- Tech 3: Glass Parts -->
                 <article class="tech-block reveal">
                     <div class="tech-block__inner">
                         <div>
                             <div class="tech-block__num">03</div>
+                            <h3 class="tech-block__title">Kinetic Prizm</h3>
+                            <p class="tech-block__desc">Moving works that light passes through: as they turn, their shadows create striking analog visual effects. A custom drive was developed for this project, allowing the rotation speed to be adjusted.</p>
+                        </div>
+                        <div class="tech-gallery">
+                            <div class="tech-video" style="--r:1.779"><video muted loop playsinline preload="none" poster="../video-files/kinetic/kinetic-08.jpg" data-src="../video-files/kinetic/kinetic-08.mp4"></video></div>
+                            <div class="tech-video" style="--r:1.779"><video muted loop playsinline preload="none" poster="../video-files/kinetic/kinetic-04.jpg" data-src="../video-files/kinetic/kinetic-04.mp4"></video></div>
+                            <div class="tech-video" style="--r:1.779"><video muted loop playsinline preload="none" poster="../video-files/kinetic/kinetic-07.jpg" data-src="../video-files/kinetic/kinetic-07.mp4"></video></div>
+                            <div class="tech-video" style="--r:1.779"><video muted loop playsinline preload="none" poster="../video-files/kinetic/kinetic-05.jpg" data-src="../video-files/kinetic/kinetic-05.mp4"></video></div>
+                            <div class="tech-video" style="--r:1.779"><video muted loop playsinline preload="none" poster="../video-files/kinetic/kinetic-10.jpg" data-src="../video-files/kinetic/kinetic-10.mp4"></video></div>
+                            <div class="tech-video" style="--r:1.779"><video muted loop playsinline preload="none" poster="../video-files/kinetic/kinetic-02.jpg" data-src="../video-files/kinetic/kinetic-02.mp4"></video></div>
+                            <div class="tech-video" style="--r:1.779"><video muted loop playsinline preload="none" poster="../video-files/kinetic/kinetic-06.jpg" data-src="../video-files/kinetic/kinetic-06.mp4"></video></div>
+                            <div class="tech-video" style="--r:1.779"><video muted loop playsinline preload="none" poster="../video-files/kinetic/kinetic-09.jpg" data-src="../video-files/kinetic/kinetic-09.mp4"></video></div>
+                            <div class="tech-video" style="--r:1.779"><video muted loop playsinline preload="none" poster="../video-files/kinetic/kinetic-03.jpg" data-src="../video-files/kinetic/kinetic-03.mp4"></video></div>
+                            <div class="tech-video" style="--r:1.779"><video muted loop playsinline preload="none" poster="../video-files/kinetic/kinetic-11.jpg" data-src="../video-files/kinetic/kinetic-11.mp4"></video></div>
+                            <div class="tech-video" style="--r:1.779"><video muted loop playsinline preload="none" poster="../video-files/kinetic/kinetic-13.jpg" data-src="../video-files/kinetic/kinetic-13.mp4"></video></div>
+                            <div class="tech-video" style="--r:1.779"><video muted loop playsinline preload="none" poster="../video-files/kinetic/kinetic-12.jpg" data-src="../video-files/kinetic/kinetic-12.mp4"></video></div>
+                            <div class="tech-video" style="--r:1.779"><video muted loop playsinline preload="none" poster="../video-files/kinetic/kinetic-01.jpg" data-src="../video-files/kinetic/kinetic-01.mp4"></video></div>
+                        </div>
+                    </div>
+                    <div class="tech-block__divider"></div>
+                </article>
+
+                <!-- Tech 3: Glass Parts -->
+                <article class="tech-block reveal">
+                    <div class="tech-block__inner">
+                        <div>
+                            <div class="tech-block__num">04</div>
                             <h3 class="tech-block__title">Glass Parts Sculpting</h3>
                             <p class="tech-block__desc">Sculptures constructed from numerous glass elements meticulously soldered together. A metallic frame is crafted first, incorporating electrical wiring for lighting fixtures. Glass pieces are framed within a special edging for interconnection. These sculptures embrace the freedom of artistic expression — glass placement follows creative intuition rather than rigid plans. Pieces exhibit chaotic forms striving toward symmetry, capturing a dynamic blend of structure and spontaneity.</p>
                         </div>
@@ -154,7 +189,7 @@
                 <article class="tech-block reveal">
                     <div class="tech-block__inner">
                         <div>
-                            <div class="tech-block__num">04</div>
+                            <div class="tech-block__num">05</div>
                             <h3 class="tech-block__title">Tiffany Vitrage</h3>
                             <p class="tech-block__desc">The copper foil method perfected by Louis Comfort Tiffany. The process begins with detailed drawings divided into individual pieces. Colored glass sheets are chosen, traced, and cut precisely. Each piece is wrapped with adhesive copper foil, then assembled and soldered with tin-lead solder. Works (60×90 cm or 80×120 cm) are installed in custom light boxes with LED backlighting — warm colours create comfort and joy, cooler colors induce calm and contemplation.</p>
                         </div>
@@ -223,11 +258,12 @@
         function layout(g) {
             var W = g.clientWidth; if (!W) return;
             var gap = parseFloat(getComputedStyle(g).columnGap) || 8;
-            var items = Array.prototype.slice.call(g.querySelectorAll('.tech-block__photo'));
+            var items = Array.prototype.slice.call(g.querySelectorAll('.tech-block__photo, .tech-video'));
             var H = target(W);
             var maxH = Math.min(H * 1.6, window.innerHeight * 0.8);
-            var row = [], sum = 0;
+            var row = [], sum = 0, lastH = 0;
             function place(r, h) {
+                lastH = h;
                 r.forEach(function (it) {
                     it.style.width = Math.floor(it._r * h * 100) / 100 + 'px';
                     it.style.height = Math.floor(h * 100) / 100 + 'px';
@@ -240,9 +276,9 @@
                 if (h <= H) { place(row, Math.min(h, maxH)); row = []; sum = 0; }
             });
             if (row.length) {
-                // last row: fill the width if that doesn't make it much taller than the others
+                // last row: same height as the rows above (fills the width only if that makes it smaller)
                 var h = (W - gap * (row.length - 1)) / sum;
-                place(row, Math.min(h, H * 1.25, maxH));
+                place(row, Math.min(h, lastH || H, maxH));
             }
             g.classList.add('is-laid-out');
         }
@@ -252,6 +288,7 @@
     })();
     </script>
     <script src="../lightbox.js"></script>
+    <script src="../tech-video.js"></script>
     <script src="../smooth-scroll.js" defer></script>
     <script src="../i18n.js"></script>
 </body>
