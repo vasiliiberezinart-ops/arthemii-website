@@ -1366,8 +1366,9 @@
         .section__thumb--stack { position: relative; }
         .section__thumb--stack img { position: absolute; inset: 0; opacity: 0; transition: opacity 0.9s ease; }
         .section__thumb--stack img.is-active { opacity: 1; }
-        /* Drawings are photographed in frames: zoom in on the drawing itself */
-        #drawings .section__thumb img { transform: scale(1.7); }
+        /* Drawings use their own previews (img/drawings/thumbs): the whole drawing on white paper, uncropped */
+        #drawings .section__thumb { background: #fff; }
+        #drawings .section__thumb img { object-fit: contain; }
         .section__toggle:hover .section__thumb { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12); }
         .section.is-open .section__thumbs { opacity: 0; pointer-events: none; transform: translateY(-50%) translateX(12px); }
         @media (min-width: 1025px) {
@@ -2251,7 +2252,7 @@
 
         <!-- ========== SIDE PRODUCTS CSS handled inline below ========== -->
         <!-- ========== DRAWINGS ========== -->
-        <section class="section" id="drawings" data-thumb="img/drawings/drawing-38-800.webp">
+        <section class="section" id="drawings" data-thumb="img/drawings/thumbs/drawing-38.webp" data-thumbs="img/drawings/thumbs/drawing-38.webp|img/drawings/thumbs/drawing-31.webp|img/drawings/thumbs/drawing-24.webp|img/drawings/thumbs/drawing-30.webp|img/drawings/thumbs/drawing-23.webp|img/drawings/thumbs/drawing-33.webp|img/drawings/thumbs/drawing-02.webp|img/drawings/thumbs/drawing-21.webp">
             <div class="container">
                 <header class="section__header reveal">
                     <div class="section__label">Drawings</div>
@@ -3298,7 +3299,7 @@
             /* ===== THUMB ROTATION: each section preview shows its next photo every 3 seconds ===== */
             (function () {
                 if (!rotatingThumbs.length) return;
-                if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+                // A soft cross-fade isn't movement, so it also runs with "Reduce Motion" on (common on iPhones)
                 const INTERVAL = 3000;
                 function ensure(im) {
                     const u = im.getAttribute('data-thumb-src');
@@ -3311,21 +3312,21 @@
                     const r = im.naturalWidth / im.naturalHeight;
                     return r < 1.25 || r > 1.95;
                 }
-                const visible = new Set();
-                if ('IntersectionObserver' in window) {
-                    const io = new IntersectionObserver(function (entries) {
-                        entries.forEach(function (e) { if (e.isIntersecting) visible.add(e.target); else visible.delete(e.target); });
-                    }, { rootMargin: '100px 0px' });
-                    rotatingThumbs.forEach(function (t) { io.observe(t.box); });
-                } else {
-                    rotatingThumbs.forEach(function (t) { visible.add(t.box); });
+                // On screen? (checked on every beat — simple and reliable on every browser, iPhone Safari included)
+                function onScreen(el) {
+                    const r = el.getBoundingClientRect();
+                    const h = window.innerHeight || document.documentElement.clientHeight;
+                    return r.width > 0 && r.bottom > -100 && r.top < h + 100;
                 }
                 function step(t) {
-                    if (document.hidden || t.section.classList.contains('is-open') || !visible.has(t.box)) return;
+                    if (typeof heroReady !== 'undefined' && !heroReady) return;   // photos load only after the hero video
+                    if (document.hidden || t.section.classList.contains('is-open') || !onScreen(t.box)) return;
                     const imgs = t.box.querySelectorAll('img');
-                    if (!ready(imgs[t.index])) return;              // first photo not shown yet
+                    if (imgs.length < 2) return;
+                    if (t.index >= imgs.length) t.index = 0;
+                    ensure(imgs[(t.index + 1) % imgs.length]);
+                    if (!ready(imgs[t.index])) return;              // current photo not shown yet
                     const next = (t.index + 1) % imgs.length;
-                    ensure(imgs[next]);
                     // Drop photos that failed to load or don't fit the frame, then move on
                     if (unsuitable(t, imgs[next]) && imgs.length > 2) {
                         imgs[next].remove();
@@ -3338,15 +3339,12 @@
                     imgs[next].classList.add('is-active');
                     t.index = next;
                 }
-                afterHero(function () {
+                // One clock for all previews; each starts a little later so they don't change at the same moment
+                setInterval(function () {
                     rotatingThumbs.forEach(function (t, i) {
-                        // Start a little apart so the previews don't all change at the same moment
-                        setTimeout(function () {
-                            ensure(t.box.querySelectorAll('img')[1]);
-                            setInterval(function () { step(t); }, INTERVAL);
-                        }, (i % 6) * 450);
+                        setTimeout(function () { step(t); }, (i % 6) * 450);
                     });
-                });
+                }, INTERVAL);
             })();
 
             // Open the section that contains a linked target (#hash links or a URL with a hash)
