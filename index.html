@@ -1366,8 +1366,9 @@
         .section__thumb--stack { position: relative; }
         .section__thumb--stack img { position: absolute; inset: 0; opacity: 0; transition: opacity 0.9s ease; }
         .section__thumb--stack img.is-active { opacity: 1; }
-        /* Drawings are photographed in frames: zoom in on the drawing itself */
-        #drawings .section__thumb img { transform: scale(1.7); }
+        /* Drawings use their own previews (img/drawings/thumbs): the whole drawing on white paper, uncropped */
+        #drawings .section__thumb { background: #fff; }
+        #drawings .section__thumb img { object-fit: contain; }
         .section__toggle:hover .section__thumb { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12); }
         .section.is-open .section__thumbs { opacity: 0; pointer-events: none; transform: translateY(-50%) translateX(12px); }
         @media (min-width: 1025px) {
@@ -2251,7 +2252,7 @@
 
         <!-- ========== SIDE PRODUCTS CSS handled inline below ========== -->
         <!-- ========== DRAWINGS ========== -->
-        <section class="section" id="drawings" data-thumb="img/drawings/drawing-38-800.webp">
+        <section class="section" id="drawings" data-thumb="img/drawings/thumbs/drawing-38.webp" data-thumbs="img/drawings/thumbs/drawing-38.webp|img/drawings/thumbs/drawing-31.webp|img/drawings/thumbs/drawing-24.webp|img/drawings/thumbs/drawing-30.webp|img/drawings/thumbs/drawing-23.webp|img/drawings/thumbs/drawing-33.webp|img/drawings/thumbs/drawing-02.webp|img/drawings/thumbs/drawing-21.webp">
             <div class="container">
                 <header class="section__header reveal">
                     <div class="section__label">Drawings</div>
@@ -3298,7 +3299,7 @@
             /* ===== THUMB ROTATION: each section preview shows its next photo every 3 seconds ===== */
             (function () {
                 if (!rotatingThumbs.length) return;
-                if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+                // A soft cross-fade isn't movement, so it also runs with "Reduce Motion" on (common on iPhones)
                 const INTERVAL = 3000;
                 function ensure(im) {
                     const u = im.getAttribute('data-thumb-src');
