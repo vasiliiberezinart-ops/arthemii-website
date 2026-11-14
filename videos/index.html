@@ -435,11 +435,46 @@
         };
     })(yts[i])};
     var vcs=document.querySelectorAll(".video-card");
+    // Videos play by themselves (muted) while they are on screen and pause when scrolled away —
+    // on phones and on computers. Click still opens the full-screen viewer with sound.
+    var autoVids=[];
     for(var i=0;i<vcs.length;i++){(function(c){
-        var v=c.querySelector("video");if(!v)return;
-        c.onmouseenter=function(){v.play().catch(function(){})};
-        c.onmouseleave=function(){v.pause();v.currentTime=0};
+        var v=c.querySelector("video");
+        if(!v){
+            // YouTube cards: play their local copy silently inside the card
+            var ph=c.querySelector(".yt-placeholder[data-yt]");
+            if(!ph)return;
+            v=document.createElement("video");
+            v.preload="none";
+            v.setAttribute("data-src","../video-files/yt-"+ph.getAttribute("data-yt")+".mp4");
+            v.poster="../video-posters/yt-"+ph.getAttribute("data-yt")+".jpg";
+            v.style.cssText="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none";
+            if(getComputedStyle(ph).position==="static")ph.style.position="relative";
+            ph.appendChild(v);
+        }
+        v.muted=true;v.loop=true;v.playsInline=true;
+        v.setAttribute("muted","");v.setAttribute("loop","");v.setAttribute("playsinline","");
+        autoVids.push(v);
     })(vcs[i])};
+    function playV(v){
+        if(!v.getAttribute("src")&&v.getAttribute("data-src"))v.src=v.getAttribute("data-src");
+        var p=v.play();if(p&&p.catch)p.catch(function(){});
+    }
+    if("IntersectionObserver" in window){
+        var vio=new IntersectionObserver(function(entries){
+            entries.forEach(function(e){
+                if(e.isIntersecting&&!document.hidden)playV(e.target);else e.target.pause();
+            });
+        },{threshold:0.35});
+        autoVids.forEach(function(v){vio.observe(v);});
+        document.addEventListener("visibilitychange",function(){
+            autoVids.forEach(function(v){
+                if(document.hidden){v.pause();return;}
+                var r=v.getBoundingClientRect();
+                if(r.bottom>0&&r.top<innerHeight)playV(v);
+            });
+        });
+    }else{autoVids.forEach(playV);}
     </script>
     <script src="../video-lightbox.js"></script>
     <script src="../smooth-scroll.js" defer></script>
