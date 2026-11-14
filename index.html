@@ -3312,21 +3312,21 @@
                     const r = im.naturalWidth / im.naturalHeight;
                     return r < 1.25 || r > 1.95;
                 }
-                const visible = new Set();
-                if ('IntersectionObserver' in window) {
-                    const io = new IntersectionObserver(function (entries) {
-                        entries.forEach(function (e) { if (e.isIntersecting) visible.add(e.target); else visible.delete(e.target); });
-                    }, { rootMargin: '100px 0px' });
-                    rotatingThumbs.forEach(function (t) { io.observe(t.box); });
-                } else {
-                    rotatingThumbs.forEach(function (t) { visible.add(t.box); });
+                // On screen? (checked on every beat — simple and reliable on every browser, iPhone Safari included)
+                function onScreen(el) {
+                    const r = el.getBoundingClientRect();
+                    const h = window.innerHeight || document.documentElement.clientHeight;
+                    return r.width > 0 && r.bottom > -100 && r.top < h + 100;
                 }
                 function step(t) {
-                    if (document.hidden || t.section.classList.contains('is-open') || !visible.has(t.box)) return;
+                    if (typeof heroReady !== 'undefined' && !heroReady) return;   // photos load only after the hero video
+                    if (document.hidden || t.section.classList.contains('is-open') || !onScreen(t.box)) return;
                     const imgs = t.box.querySelectorAll('img');
-                    if (!ready(imgs[t.index])) return;              // first photo not shown yet
+                    if (imgs.length < 2) return;
+                    if (t.index >= imgs.length) t.index = 0;
+                    ensure(imgs[(t.index + 1) % imgs.length]);
+                    if (!ready(imgs[t.index])) return;              // current photo not shown yet
                     const next = (t.index + 1) % imgs.length;
-                    ensure(imgs[next]);
                     // Drop photos that failed to load or don't fit the frame, then move on
                     if (unsuitable(t, imgs[next]) && imgs.length > 2) {
                         imgs[next].remove();
@@ -3339,15 +3339,12 @@
                     imgs[next].classList.add('is-active');
                     t.index = next;
                 }
-                afterHero(function () {
+                // One clock for all previews; each starts a little later so they don't change at the same moment
+                setInterval(function () {
                     rotatingThumbs.forEach(function (t, i) {
-                        // Start a little apart so the previews don't all change at the same moment
-                        setTimeout(function () {
-                            ensure(t.box.querySelectorAll('img')[1]);
-                            setInterval(function () { step(t); }, INTERVAL);
-                        }, (i % 6) * 450);
+                        setTimeout(function () { step(t); }, (i % 6) * 450);
                     });
-                });
+                }, INTERVAL);
             })();
 
             // Open the section that contains a linked target (#hash links or a URL with a hash)
