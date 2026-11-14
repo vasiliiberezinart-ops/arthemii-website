@@ -2,6 +2,7 @@
 window.I18N_DATA = window.I18N_DATA || {};
 window.I18N_DATA["ro"] = {
   "Five distinct approaches to working with colored glass — from traditional Tiffany technique to experimental shadow prism installations.": "Cinci abordări distincte ale lucrului cu sticla colorată — de la tehnica Tiffany tradițională la instalații experimentale cu prisme de umbră.",
+  "Kinetic Prizm": "Prismă cinetică",
   "Moving works that light passes through: as they turn, their shadows create striking analog visual effects. A custom drive was developed for this project, allowing the rotation speed to be adjusted.": "Lucrări în mișcare prin care trece lumina: în timp ce se rotesc, umbrele lor creează efecte vizuale analogice surprinzătoare. Pentru acest proiect a fost dezvoltat un mecanism propriu de acționare, care permite reglarea vitezei de rotație.",
   "36 stained glass panels — 7.2 × 1.8 m": "36 de panouri de vitraliu — 7,2 × 1,8 m",
   "Latest show up events": "Ultimele expoziții și evenimente",

@@ -2,6 +2,7 @@
 window.I18N_DATA = window.I18N_DATA || {};
 window.I18N_DATA["sv"] = {
   "Five distinct approaches to working with colored glass — from traditional Tiffany technique to experimental shadow prism installations.": "Fem olika sätt att arbeta med färgat glas — från traditionell Tiffanyteknik till experimentella installationer med skuggprismor.",
+  "Kinetic Prizm": "Kinetiskt prisma",
   "Moving works that light passes through: as they turn, their shadows create striking analog visual effects. A custom drive was developed for this project, allowing the rotation speed to be adjusted.": "Rörliga verk som ljuset passerar genom: när de roterar skapar deras skuggor fängslande analoga visuella effekter. För projektet utvecklades en egen drivning som gör det möjligt att reglera rotationshastigheten.",
   "36 stained glass panels — 7.2 × 1.8 m": "36 glasmålningspaneler — 7,2 × 1,8 m",
   "Latest show up events": "Senaste utställningar och evenemang",
