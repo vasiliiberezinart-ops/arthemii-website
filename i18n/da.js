@@ -1,6 +1,7 @@
 /* Arthemii Ionaere — Dansk translations, loaded by i18n.js on demand. Keys are the English texts. */
 window.I18N_DATA = window.I18N_DATA || {};
 window.I18N_DATA["da"] = {
+  "36 stained glass panels — 7.2 × 1.8 m": "36 glasmaleripaneler — 7,2 × 1,8 m",
   "Latest show up events": "Seneste udstillinger og begivenheder",
   "Kinetic Fresnel lens prism — 2026": "Kinetisk prisme med fresnellinse — 2026",
   "Sending…": "Sender…",
