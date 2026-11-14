@@ -45,7 +45,7 @@
   var IDX = { de: 0, 'de-at': 0, es: 1, fr: 2, ru: 3, zh: 4, ja: 5 };
   // Languages kept in their own file (i18n/<code>.js), loaded on demand
   var EXT = { it: 1, nl: 1, pt: 1, ko: 1, fi: 1, sv: 1, ro: 1, pl: 1, da: 1 };
-  var EXT_VERSION = '20261113';
+  var EXT_VERSION = '20261114';
   var HTML_LANG = { zh: 'zh-Hans', 'de-at': 'de-AT' };
   var BASE = (function () {
     var cs = document.currentScript;
@@ -271,6 +271,7 @@
     "See the drawings": ["Zu den Zeichnungen", "Ver los dibujos", "Voir les dessins", "Смотреть рисунки", "查看素描", "ドローイングを見る"],
     "These drawings later became the source of my AI content: each one is a precise schematic that artificial intelligence reads and turns into architecture, jewellery and other forms.": ["Aus diesen Zeichnungen entstanden später meine KI-Inhalte: Jede von ihnen ist ein präzises Schema, das künstliche Intelligenz liest und in Architektur, Schmuck und andere Formen verwandelt.", "De estos dibujos nació después mi contenido de IA: cada uno es un esquema preciso que la inteligencia artificial lee y convierte en arquitectura, joyería y otras formas.", "C’est à partir de ces dessins qu’est né ensuite mon contenu IA : chacun est un schéma précis que l’intelligence artificielle lit et transforme en architecture, en bijoux et en d’autres formes.", "Из этих рисунков потом создавался мой ИИ-контент: каждый из них — чёткая схема, которую искусственный интеллект считывает и превращает в архитектуру, ювелирные украшения и другие формы.", "这些素描后来成为我 AI 内容的来源：每一幅都是一张清晰的图式，人工智能读取它，并将其转化为建筑、珠宝和其他形态。", "これらのドローイングから、のちに私のAIコンテンツが生まれました。一枚一枚が明確な設計図であり、AIがそれを読み取って建築やジュエリー、さまざまな形へと変えていきます。"],
     "38 drawings": ["38 Zeichnungen", "38 dibujos", "38 dessins", "38 рисунков", "38 幅素描", "ドローイング 38 点"],
+    "36 stained glass panels — 7.2 × 1.8 m": ["36 Glasmalerei-Paneele — 7,2 × 1,8 m", "36 paneles de vidriera — 7,2 × 1,8 m", "36 panneaux de vitrail — 7,2 × 1,8 m", "36 витражных панелей — 7,2 × 1,8 м", "36 块彩色玻璃面板 — 7.2 × 1.8 米", "36枚のステンドグラスパネル — 7.2 × 1.8 m"],
     "ASTERION | Theater Butoh show": ["ASTERION | Butoh-Theatershow", "ASTERION | Espectáculo de teatro butoh", "ASTERION | Spectacle de théâtre butô", "ASTERION | Театральное буто-шоу", "ASTERION | 舞踏剧场演出", "ASTERION | 舞踏シアター公演"],
     "Open event page →": ["Zur Eventseite →", "Abrir página del evento →", "Ouvrir la page de l’événement →", "Открыть страницу события →", "打开活动页面 →", "イベントページを開く →"],
     "Open event page": ["Zur Eventseite", "Abrir página del evento", "Ouvrir la page de l’événement", "Открыть страницу события", "打开活动页面", "イベントページを開く"],
