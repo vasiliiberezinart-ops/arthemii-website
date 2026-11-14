@@ -1,6 +1,8 @@
 /* Arthemii Ionaere — Italiano translations, loaded by i18n.js on demand. Keys are the English texts. */
 window.I18N_DATA = window.I18N_DATA || {};
 window.I18N_DATA["it"] = {
+  "Five distinct approaches to working with colored glass — from traditional Tiffany technique to experimental shadow prism installations.": "Cinque approcci distinti alla lavorazione del vetro colorato — dalla tradizionale tecnica Tiffany alle installazioni sperimentali con prismi d’ombra.",
+  "Moving works that light passes through: as they turn, their shadows create striking analog visual effects. A custom drive was developed for this project, allowing the rotation speed to be adjusted.": "Opere in movimento attraversate dalla luce: ruotando, le loro ombre creano sorprendenti effetti visivi analogici. Per questo progetto è stato sviluppato un motore apposito che permette di regolare la velocità di rotazione.",
   "36 stained glass panels — 7.2 × 1.8 m": "36 pannelli di vetrata — 7,2 × 1,8 m",
   "Latest show up events": "Ultime mostre ed eventi",
   "Kinetic Fresnel lens prism — 2026": "Prisma cinetico con lente di Fresnel — 2026",
